@@ -1,6 +1,5 @@
 package scripts.SPXAIOMiner.data;
 
-import org.tribot.api2007.types.RSArea;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
 
@@ -9,7 +8,7 @@ import org.tribot.api2007.types.RSTile;
  */
 public class Variables {
 
-    // public RSArea area;
+    public RSTile area;
 
     public RSObject targetOre;
 
@@ -22,9 +21,6 @@ public class Variables {
 
 
     public OreType oreType;
-
-
-    public RSTile area = new RSTile(3181, 3372, 0);
 
 }
 

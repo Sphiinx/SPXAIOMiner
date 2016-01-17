@@ -1,19 +1,21 @@
 package scripts.SPXAIOMiner.data;
 
-import org.tribot.api2007.types.RSArea;
+import org.tribot.api2007.types.RSTile;
 
 /**
  * Created by Sphiinx on 1/16/2016.
  */
-public class Location {
+public enum Location {
 
-    private final RSArea area;
+    VARROCKWEST(new RSTile(3181, 3372, 0));
 
-    Location(RSArea area) {
+    private final RSTile area;
+
+    Location(RSTile area) {
         this.area = area;
     }
 
-    public RSArea getArea() {
+    public RSTile getArea() {
         return area;
     }
 

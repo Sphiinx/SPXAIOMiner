@@ -1,7 +1,6 @@
 package scripts.SPXAIOMiner.nodes;
 
 import org.tribot.api.General;
-import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Inventory;
 import org.tribot.api2007.WebWalking;
@@ -20,14 +19,12 @@ public class WalkToQuarry extends Node{
     @Override
     public void execute() {
         General.println("Walking...");
-        if (WebWalking.walkTo(vars.area)) {
-            Timing.waitCondition(new Condition() {
-                @Override
-                public boolean active() {
-                    return vars.targetOre != null && vars.targetOre.isOnScreen();
-                }
-            }, General.random(50, 75));
-        }
+        WebWalking.walkTo(vars.area, new Condition() {
+            @Override
+            public boolean active() {
+                return vars.targetOre != null && vars.targetOre.isOnScreen();
+            }
+        }, General.random(50, 100));
     }
 
 

@@ -2,6 +2,7 @@ package scripts.SPXAIOMiner.gui;
 
 
 
+import scripts.SPXAIOMiner.data.Location;
 import scripts.SPXAIOMiner.data.Variables;
 
 import javax.swing.*;
@@ -86,7 +87,7 @@ public class GUI extends javax.swing.JFrame {
         jLabel5.setText("Radius:");
 
         quarryLocation.setFont(new java.awt.Font("Ubuntu", 0, 12));
-        quarryLocation.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        quarryLocation.setModel(new javax.swing.DefaultComboBoxModel<>(Location.values()));
 
         oreType.setFont(new java.awt.Font("Ubuntu", 0, 12));
         oreType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
@@ -428,6 +429,7 @@ public class GUI extends javax.swing.JFrame {
     }
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {
+        variables.area = ((Location)quarryLocation.getSelectedItem()).getArea();
         variables.guiComplete = true;
         setVisible(false);
     }

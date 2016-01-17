@@ -3,6 +3,7 @@ package scripts.SPXAIOMiner.nodes;
 import org.tribot.api.Clicking;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
+import org.tribot.api.rs3.Minimap;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api.types.generic.Filter;
 import org.tribot.api.util.Sorting;
@@ -12,6 +13,8 @@ import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
 import scripts.SPXAIOMiner.API.Framework.Node;
 import scripts.SPXAIOMiner.data.Variables;
+
+import java.awt.*;
 
 /**
  * Created by Sphiinx on 1/16/2016.
@@ -44,14 +47,19 @@ public class MineOre extends Node{
                     }
                 }
             } else {
-                RSTile[] path = Walking.generateStraightScreenPath(vars.targetOre.getPosition());
-                if (Walking.walkScreenPath(path)) {
-                    Timing.waitCondition(new Condition() {
-                        @Override
-                        public boolean active() {
-                            return vars.targetOre.isOnScreen();
-                        }
-                    }, General.random(1200, 1500));
+                Point ore = Projection.tileToMinimap(vars.targetOre);
+                if (Projection.isInMinimap(ore)) {
+                    RSTile[] path = Walking.generateStraightScreenPath(vars.targetOre.getPosition());
+                    if (Walking.walkScreenPath(path)) {
+                        Timing.waitCondition(new Condition() {
+                            @Override
+                            public boolean active() {
+                                return vars.targetOre.isOnScreen();
+                            }
+                        }, General.random(1200, 1500));
+                    }
+                } else {
+                    WebWalking.walkTo(vars.targetOre);
                 }
             }
         }
