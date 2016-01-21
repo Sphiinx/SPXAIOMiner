@@ -14,6 +14,22 @@ public class Constants {
     public static final Font TEXT_FONT = new Font("Arial", 0, 12);
     public static final RenderingHints ANTIALIASING = new RenderingHints(
             RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    public static final String[] GEMS = new String[] {
+            "Uncut sapphire",
+            "Uncut emerald",
+            "Uncut ruby",
+            "Uncut diamond"
+    };
+    public static final String[] PICKAXES = new String[] {
+            "Bronze pickaxe",
+            "Iron pickaxe",
+            "Steel pickaxe",
+            "Black pickaxe",
+            "Mithril pickaxe",
+            "Adamant pickaxe",
+            "Rune pickaxe",
+            "Dragon pickaxe"
+    };
 
 }
 

@@ -2,8 +2,11 @@ package scripts.SPXAIOMiner.gui;
 
 
 
-import scripts.SPXAIOMiner.data.Location;
-import scripts.SPXAIOMiner.data.Variables;
+import scripts.SPXAIOMiner.data.*;
+import scripts.SPXAIOMiner.data.enums.Location;
+import scripts.SPXAIOMiner.data.enums.Mode;
+import scripts.SPXAIOMiner.data.enums.OreType;
+import scripts.SPXAIOMiner.data.enums.Worlds;
 
 import javax.swing.*;
 
@@ -19,7 +22,6 @@ public class GUI extends javax.swing.JFrame {
         initComponents();
     }
 
-    @SuppressWarnings("unchecked")
     private void initComponents() {
 
         try {
@@ -59,11 +61,9 @@ public class GUI extends javax.swing.JFrame {
         jPanel6 = new javax.swing.JPanel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
-        jLabel14 = new javax.swing.JLabel();
         jLabel15 = new javax.swing.JLabel();
         upgradePickaxe = new javax.swing.JCheckBox();
         drawObjects = new javax.swing.JCheckBox();
-        drawPath = new javax.swing.JCheckBox();
         disablePaint = new javax.swing.JCheckBox();
         start = new javax.swing.JButton();
 
@@ -88,9 +88,15 @@ public class GUI extends javax.swing.JFrame {
 
         quarryLocation.setFont(new java.awt.Font("Ubuntu", 0, 12));
         quarryLocation.setModel(new javax.swing.DefaultComboBoxModel<>(Location.values()));
+        quarryLocation.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                quarryLocationActionPerformed(evt);
+            }
+        });
 
         oreType.setFont(new java.awt.Font("Ubuntu", 0, 12));
-        oreType.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        Location selectedLoc = ((Location)quarryLocation.getSelectedItem());
+        oreType.setModel(new javax.swing.DefaultComboBoxModel<>(selectedLoc.getOreType()));
 
         radiusMine.setFont(new java.awt.Font("Ubuntu", 0, 12));
         radiusMine.setText("Yes");
@@ -146,16 +152,16 @@ public class GUI extends javax.swing.JFrame {
                                 .addContainerGap(16, Short.MAX_VALUE))
         );
 
-        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Dropping", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 0, 14))); // NOI18N
+        jPanel4.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Method", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 0, 14))); // NOI18N
 
         jLabel6.setFont(new java.awt.Font("Ubuntu", 0, 12));
-        jLabel6.setText("Dropping Mode:");
+        jLabel6.setText("Mode:");
 
         jLabel11.setFont(new java.awt.Font("Ubuntu", 0, 12));
         jLabel11.setText("Drop Gems:");
 
         droppingMode.setFont(new java.awt.Font("Ubuntu", 0, 12));
-        droppingMode.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Bank", "Powermine", "M1D1", "MouseKeys" }));
+        droppingMode.setModel(new javax.swing.DefaultComboBoxModel<>(Mode.values()));
 
         dropGems.setFont(new java.awt.Font("Ubuntu", 0, 12));
         dropGems.setText("Yes");
@@ -214,7 +220,7 @@ public class GUI extends javax.swing.JFrame {
         });
 
         worldHopMode.setFont(new java.awt.Font("Ubuntu", 0, 12));
-        worldHopMode.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Members", "Free", "Deadman" }));
+        worldHopMode.setModel(new javax.swing.DefaultComboBoxModel<>(Worlds.values()));
         worldHopMode.setEnabled(false);
 
         worldHopPlayersNear.setFont(new java.awt.Font("Ubuntu", 0, 12));
@@ -307,9 +313,6 @@ public class GUI extends javax.swing.JFrame {
         jLabel13.setFont(new java.awt.Font("Ubuntu", 0, 12));
         jLabel13.setText("Draw Objects:");
 
-        jLabel14.setFont(new java.awt.Font("Ubuntu", 0, 12));
-        jLabel14.setText("Draw Path:");
-
         jLabel15.setFont(new java.awt.Font("Ubuntu", 0, 12));
         jLabel15.setText("Disable Paint:");
 
@@ -320,10 +323,6 @@ public class GUI extends javax.swing.JFrame {
         drawObjects.setFont(new java.awt.Font("Ubuntu", 0, 12));
         drawObjects.setText("Yes");
         drawObjects.setFocusPainted(false);
-
-        drawPath.setFont(new java.awt.Font("Ubuntu", 0, 12));
-        drawPath.setText("Yes");
-        drawPath.setFocusPainted(false);
 
         disablePaint.setFont(new java.awt.Font("Ubuntu", 0, 12));
         disablePaint.setText("Yes");
@@ -336,16 +335,18 @@ public class GUI extends javax.swing.JFrame {
                         .addGroup(jPanel6Layout.createSequentialGroup()
                                 .addContainerGap()
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel12)
-                                        .addComponent(jLabel13)
-                                        .addComponent(jLabel14)
-                                        .addComponent(jLabel15))
-                                .addGap(137, 137, 137)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(upgradePickaxe, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
-                                        .addComponent(drawObjects, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(drawPath, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(disablePaint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel12)
+                                                        .addComponent(jLabel13))
+                                                .addGap(137, 137, 137)
+                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(upgradePickaxe, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
+                                                        .addComponent(drawObjects, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                                .addComponent(jLabel15)
+                                                .addGap(156, 156, 156)
+                                                .addComponent(disablePaint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -359,10 +360,6 @@ public class GUI extends javax.swing.JFrame {
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel13)
                                         .addComponent(drawObjects))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel14)
-                                        .addComponent(drawPath))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel15)
@@ -383,8 +380,8 @@ public class GUI extends javax.swing.JFrame {
                 jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 186, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(348, Short.MAX_VALUE))
+                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(389, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Settings", jPanel2);
@@ -429,9 +426,39 @@ public class GUI extends javax.swing.JFrame {
     }
 
     private void startActionPerformed(java.awt.event.ActionEvent evt) {
+        if (dropGems.isSelected()) {
+            variables.dropGems = true;
+        }
+        if (upgradePickaxe.isSelected()) {
+            variables.upgradePickaxe = true;
+        }
+        if (worldHop.isSelected()) {
+            variables.worldHop = true;
+            variables.playersToHop = Integer.parseInt(worldHopPlayersNear.getValue().toString());
+            variables.worlds = ((Worlds)worldHopMode.getSelectedItem());
+            if (worldHopOresAval.isSelected()) {
+                variables.oresHop = true;
+            }
+        }
+        if (drawObjects.isSelected()) {
+            variables.drawObjects = true;
+        }
+        if (disablePaint.isSelected()) {
+            variables.disablePaint = true;
+        }
+        if (radiusMine.isSelected()) {
+            variables.radius = Integer.parseInt(radiusAmount.getValue().toString());
+        }
         variables.area = ((Location)quarryLocation.getSelectedItem()).getArea();
+        variables.oreType = ((OreType)oreType.getSelectedItem());
+        variables.mode = ((Mode)droppingMode.getSelectedItem());
         variables.guiComplete = true;
         setVisible(false);
+    }
+
+    private void quarryLocationActionPerformed(java.awt.event.ActionEvent evt) {
+        Location selectedLoc = ((Location)quarryLocation.getSelectedItem());
+        oreType.setModel(new javax.swing.DefaultComboBoxModel<>(selectedLoc.getOreType()));
     }
 
     private void worldHopActionPerformed(java.awt.event.ActionEvent evt) {
@@ -482,7 +509,7 @@ public class GUI extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel6;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JComboBox oreType;
-    private javax.swing.JComboBox quarryLocation;
+    JComboBox<Location> quarryLocation;
     private javax.swing.JSpinner radiusAmount;
     private javax.swing.JCheckBox radiusMine;
     private javax.swing.JButton start;

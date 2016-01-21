@@ -1,13 +1,15 @@
-package scripts.SPXAIOMiner.nodes;
+package scripts.SPXAIOMiner.nodes.Mine;
 
 import org.tribot.api.Clicking;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
-import org.tribot.api.rs3.Minimap;
+import org.tribot.api.rs3.*;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api.types.generic.Filter;
 import org.tribot.api.util.Sorting;
 import org.tribot.api2007.*;
+import org.tribot.api2007.Player;
+import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.ext.Filters;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
@@ -85,7 +87,15 @@ public class MineOre extends Node{
             @Override
             public boolean accept(RSObject rsObject) {
                 if (colorCheck(rsObject)) {
+                    if (vars.oresHop) {
+                        General.println("False");
+                        vars.shouldWeHop = false;
+                    }
                     return true;
+                }
+                if (vars.oresHop) {
+                    General.println("True");
+                    vars.shouldWeHop = true;
                 }
                 return false;
             }
@@ -94,7 +104,7 @@ public class MineOre extends Node{
 
     private boolean colorCheck(RSObject object) {
         for (short color : object.getDefinition().getModifiedColors()) {
-            if (color == 53) { //TODO CHANGE COLOR
+            if (color == vars.oreType.getColor()) {
                 return true;
             }
         }
@@ -108,7 +118,7 @@ public class MineOre extends Node{
 
     @Override
     public boolean validate() {
-        return !Inventory.isFull();
+        return !Inventory.isFull() && vars.area.distanceTo(Player.getPosition()) <= vars.radius;
     }
 
 }
