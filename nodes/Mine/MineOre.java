@@ -23,6 +23,8 @@ import java.awt.*;
  */
 public class MineOre extends Node{
 
+    private RSObject targetOre;
+
     private final Filter<RSObject> ORE_FILTER = oreFilter();
 
     public MineOre(Variables v) {
@@ -36,10 +38,10 @@ public class MineOre extends Node{
 
     private void mineOre() {
         getActualOre();
-        if (vars.targetOre != null) {
-            if (vars.targetOre.isOnScreen()) {
+        if (targetOre != null) {
+            if (targetOre.isOnScreen()) {
                 if (Player.getAnimation() == -1 && !Player.isMoving()) {
-                    if (Clicking.click("Mine", vars.targetOre)) {
+                    if (Clicking.click("Mine", targetOre)) {
                         Timing.waitCondition(new Condition() {
                             @Override
                             public boolean active() {
@@ -49,19 +51,19 @@ public class MineOre extends Node{
                     }
                 }
             } else {
-                Point ore = Projection.tileToMinimap(vars.targetOre);
+                Point ore = Projection.tileToMinimap(targetOre);
                 if (Projection.isInMinimap(ore)) {
-                    RSTile[] path = Walking.generateStraightScreenPath(vars.targetOre.getPosition());
+                    RSTile[] path = Walking.generateStraightScreenPath(targetOre.getPosition());
                     if (Walking.walkScreenPath(path)) {
                         Timing.waitCondition(new Condition() {
                             @Override
                             public boolean active() {
-                                return vars.targetOre.isOnScreen();
+                                return targetOre.isOnScreen();
                             }
                         }, General.random(1200, 1500));
                     }
                 } else {
-                    WebWalking.walkTo(vars.targetOre);
+                    WebWalking.walkTo(targetOre);
                 }
             }
         }
@@ -70,9 +72,11 @@ public class MineOre extends Node{
     private void getActualOre() {
         RSObject[] actualOre = getAllObjects();
         if (actualOre.length > 0) {
-            vars.targetOre = actualOre[0];
+            if (Player.getPosition().distanceTo(actualOre[0]) <= vars.radius) {
+                targetOre = actualOre[0];
+            }
         } else {
-            vars.targetOre = null;
+            targetOre = null;
         }
     }
 
