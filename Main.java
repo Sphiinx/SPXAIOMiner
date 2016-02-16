@@ -27,7 +27,7 @@ import java.util.ArrayList;
 /**
  * Created by Sphiinx on 12/21/2015.
  */
-@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.1)
+@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.2)
 public class Main extends Script implements MessageListening07, Painting, MouseSplinePainting, MousePainting, MouseActions, Ending {
 
     private Variables variables = new Variables();
@@ -115,6 +115,13 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
 
     private void getItemPrice() {
         variables.orePrice = PriceChecking07.getGEPrice(variables.oreType.getItemIDs()[0]);
+        if (variables.orePrice == 0) {
+            General.println("We were unable to get the current prices for the Ore...");
+            General.println("Runescapes website may be having issues...");
+            General.println("Stopping script...");
+            AntiBan.destroy();
+            variables.stopScript = true;
+        }
     }
     //</editor-fold>
 

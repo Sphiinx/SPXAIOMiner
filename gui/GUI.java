@@ -806,6 +806,7 @@ public class GUI extends JFrame {
             } else {
                 General.println("For radius mining, please start the script logged in...");
                 General.println("Stopping script...");
+                AntiBan.destroy();
                 variables.stopScript = true;
             }
         } else {
