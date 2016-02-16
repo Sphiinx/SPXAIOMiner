@@ -14,22 +14,22 @@ public enum Location {
     AL_KHARID(new RSTile(3299, 3296, 0), OreType.COPPER, OreType.IRON, OreType.SILVER, OreType.COAL, OreType.GOLD, OreType.MITHRIL, OreType.ADAMANTITE),
     BARBARIAN_VILLAGE(new RSTile(3081, 3422, 0), OreType.TIN, OreType.COAL),
     WEST_FALADOR(new RSTile(2908, 3360, 0), OreType.COPPER, OreType.TIN, OreType.IRON, OreType.COAL),
+    DWARVEN_MINE(new RSTile(3045, 9777, 0), OreType.COPPER, OreType.COAL, OreType.TIN, OreType.IRON, OreType.GOLD, OreType.MITHRIL, OreType.ADAMANTITE),
+    MINING_GUILD(new RSTile(3040, 9738), OreType.COAL, OreType.MITHRIL),
     RIMMINGTON(new RSTile(2978, 3241, 0), OreType.TIN, OreType.COPPER, OreType.IRON, OreType.CLAY, OreType.GOLD),
+    SHILO_VILLAGE(new RSTile(2824, 2999, 0), OreType.GEMS),
     CRAFTING_GUILD(new RSTile(2940, 3286, 0), OreType.CLAY, OreType.SILVER, OreType.GOLD),
-    SHILO_VILLAGE(new RSTile(2823, 3000, 0)),
     EAST_ARDOUGNE(new RSTile(2701, 3332, 0), OreType.IRON, OreType.COAL),
     SOUTH_ARDOUGNE(new RSTile(2604, 3221, 0), OreType.IRON, OreType.COAL),
     YANILLE(new RSTile(2630, 3140, 0), OreType.CLAY, OreType.COPPER, OreType.TIN, OreType.IRON, OreType.COAL, OreType.MITHRIL),
     PORT_KHAZARD(new RSTile(2654, 3170, 0), OreType.TIN, OreType.COPPER, OreType.MITHRIL),
+    SILVAREA(new RSTile(3372, 3500), OreType.LIMESTONE),
     COAL_TRUCKS(new RSTile(2581, 3481, 0), OreType.COAL),
     WILDERNESS_SOUTHW(new RSTile(3017, 3592, 0), OreType.COAL),
     WILDERNESS_SOUTH(new RSTile(3106, 3567, 0), OreType.COAL, OreType.IRON),
     WILDERNESS_NORTH(new RSTile(3087, 3762, 0), OreType.IRON, OreType.COAL, OreType.MITHRIL, OreType.ADAMANTITE);
-    // QUARRY(new RSTile(3171, 2912, 0)),
-    // DWARVEN_MINE(new RSTile()),
-    // MINING_GUILD(new RSTile()),
-    // TZHARR(new RSTile()),
-    // HEROS_GUILD(new RSTile()),
+    //**TBA** HEROS_GUILD(new RSTile(2937, 9884, 0), OreType.RUNITE),
+    //**TBA** QUARRY(new RSTile(3171, 2912, 0)),
 
     private final RSTile area;
     private OreType[] supportedOre;

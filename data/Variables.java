@@ -1,6 +1,7 @@
 package scripts.SPXAIOMiner.data;
 
-import org.tribot.api2007.types.RSArea;
+import org.tribot.api2007.types.RSObject;
+import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
 import scripts.SPXAIOMiner.data.enums.Mode;
 import scripts.SPXAIOMiner.data.enums.OreType;
@@ -15,27 +16,72 @@ import java.util.Properties;
  */
 public class Variables {
 
-    public boolean drawObjects;
-    public boolean disablePaint;
-    public boolean worldHop;
     public boolean oresHop;
-    public boolean shouldWeHop;
+    public boolean worldHop;
     public boolean dropGems;
-    public boolean guiComplete;
+    public boolean drawTiles;
     public boolean stopScript;
-    public boolean upgradePickaxe;
     public boolean radiusMine;
+    public boolean drawObjects;
+    public boolean shouldWeHop;
+    public boolean guiComplete;
+    public boolean slaveSystem;
+    public boolean disablePaint;
+    public boolean masterSystem;
+    public boolean runFromCombat;
+    public boolean upgradePickaxe;
+    public boolean drawRadius = true;
+    public boolean isUpgradingPickaxe;
+    public boolean isSlaveSystemEnabled;
+
     public double version;
+
+    public long oreHR;
+    public long timeRan;
+    public long profitHR;
+    public long xpPerHour;
+    public long resetTimeRan;
+    public long timeRanMinutes;
+    public long timeUntilTrade;
+    public long moneyLeftUntilTrade;
+
+    public int profit;
+    public int startXP;
+    public int gainedXP;
+    public int orePrice;
+    public int oresMined;
+    public int variation;
+    public int startLevel;
+    public int profitReset;
     public int radius = 30;
+    public int masterWorld;
+    public int transferMade;
+    public int gainedLevels;
     public int playersToHop;
-    public String status;
+    public int masterTrades;
+    public int orePriceTotal;
+    public int resetOresMined;
+    public int transferMinutes;
+
+    public File path;
+
+    public Mode mode;
     public Worlds worlds;
     public OreType oreType;
-    public Mode mode;
     public Pickaxe pickaxe;
-    public Properties properties = new Properties();
-    public File path;
+
     public RSTile area;
-    
+    public RSTile currentMasterPosition;
+
+    public String status;
+    public String masterName;
+    public String masterPositon;
+    public String playerTrading;
+
+    public RSPlayer[] master;
+    public RSObject[] oreToDraw;
+
+    public Properties properties = new Properties();
+
 }
 

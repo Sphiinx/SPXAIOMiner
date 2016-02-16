@@ -1,17 +1,22 @@
-package scripts.SPXAIOMiner.nodes;
+package scripts.SPXAIOMiner.tasks;
 
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.*;
-import scripts.API.Game.Inventory.Inventory07;
-import scripts.SPXAIOMiner.API.Framework.Node;
-import scripts.SPXAIOMiner.data.Variables;
+
+import scripts.SPXAIOMiner.API.Framework.Task;
+import scripts.SPXAIOMiner.API.Game.Banking.Banking07;
+import scripts.SPXAIOMiner.API.Game.Inventory.Inventory07;
+import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
+import scripts.SPXAIOMiner.data.*;
+import scripts.SPXAIOMiner.data.Constants;
+import scripts.SPXAIOMiner.data.enums.Location;
 
 /**
  * Created by Sphiinx on 1/16/2016.
  */
-public class DepositItems extends Node{
+public class DepositItems extends Task {
 
     public DepositItems(Variables v) {
         super(v);
@@ -19,10 +24,14 @@ public class DepositItems extends Node{
 
     @Override
     public void execute() {
-        if (Banking.isInBank()) {
+        if (Banking07.isInBank()) {
             openBank();
         } else {
-            walkToBank();
+            if (vars.area.equals(Location.SHILO_VILLAGE.getArea())) {
+                Walking.walkPath(Walking.randomizePath(Constants.SHILO_VILLAGE_PATH, 2, 2));
+            } else {
+                walkToBank();
+            }
         }
     }
 
@@ -63,8 +72,8 @@ public class DepositItems extends Node{
     }
 
     @Override
-    public String toString(){
-        return "Depositing items...";
+    public String toString() {
+        return "Depositing items" + Utility07.loadingPeriods();
     }
 
     @Override

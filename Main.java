@@ -2,174 +2,228 @@ package scripts.SPXAIOMiner;
 
 import org.tribot.api.General;
 import org.tribot.api.Timing;
-import org.tribot.api.input.Mouse;
 import org.tribot.api2007.*;
-import org.tribot.api2007.types.RSArea;
-import org.tribot.api2007.types.RSTile;
 import org.tribot.script.Script;
 import org.tribot.script.ScriptManifest;
-import org.tribot.script.interfaces.MousePainting;
-import org.tribot.script.interfaces.MouseSplinePainting;
+import org.tribot.script.interfaces.*;
 import org.tribot.script.interfaces.Painting;
 import org.tribot.util.Util;
-import scripts.SPXAIOMiner.API.Framework.Node;
-import scripts.SPXAIOMiner.API.Game.Projection.Projection07;
+import scripts.SPXAIOMiner.API.Framework.Task;
+import scripts.SPXAIOMiner.API.Game.PriceChecking.PriceChecking07;
+import scripts.SPXAIOMiner.API.Paint;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Variables;
 
 import scripts.SPXAIOMiner.gui.GUI;
-import scripts.SPXAIOMiner.nodes.DepositItems;
-import scripts.SPXAIOMiner.nodes.Mine.*;
-import scripts.SPXAIOMiner.nodes.WalkToQuarry;
-import scripts.SPXAIOMiner.nodes.WorldHop;
+import scripts.SPXAIOMiner.paint.Global;
+import scripts.SPXAIOMiner.paint.Master;
+import scripts.SPXAIOMiner.paint.Normal;
+import scripts.SPXAIOMiner.paint.Slave;
 
 import java.awt.*;
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collections;
 
 /**
  * Created by Sphiinx on 12/21/2015.
  */
 @ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.1)
-public class Main extends Script implements Painting, MouseSplinePainting, MousePainting {
+public class Main extends Script implements MessageListening07, Painting, MouseSplinePainting, MousePainting, MouseActions, Ending {
 
     private Variables variables = new Variables();
-    private ArrayList<Node> nodes = new ArrayList<>();
-    public GUI gui = new GUI(variables);
+    private GUI gui = new GUI(variables);
+    private Global global = new Global(variables);
+    private Master master = new Master(variables);
+    private Normal normal = new Normal(variables);
+    private Slave slave = new Slave(variables);
+    private Collection collection = new Collection(variables);
 
     @Override
     public void run() {
+        General.useAntiBanCompliance(true);
+        tribotUserCheck();
+        General.println("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
         variables.path = new File(Util.getWorkingDirectory().getAbsolutePath(), "[SPX]AIOMiner_" + General.getTRiBotUsername() + "_settings" + ".ini");
-        initializeGui();
-        General.println(variables.area);
-        addCollection();
         variables.version = getClass().getAnnotation(ScriptManifest.class).version();
+        getStartInformation();
+        initializeGui();
+        getItemPrice();
+        collection.addCollection();
         loop(100, 150);
     }
 
     private void loop(int min, int max) {
         while (!variables.stopScript) {
-            for (final Node node : nodes) {
-                if (node.validate()) {
-                    variables.status = node.toString();
-                    node.execute();
-                    General.sleep(min, max);
-                }
-            }
+            collection.tasks.stream().filter(Task::validate).forEach(task -> {
+                variables.status = task.toString();
+                task.execute();
+                General.sleep(min, max);
+            });
         }
     }
 
-    private void addCollection() {
-        if (variables.worldHop) {
-            Collections.addAll(nodes, new WorldHop(variables));
-        }
-        if (variables.dropGems) {
-            Collections.addAll(nodes, new DropUnwanted(variables));
-        }
-        if (variables.upgradePickaxe) {
+    private void tribotUserCheck() {
+        if (General.getTRiBotUsername().equals("Sphiinx") || General.getTRiBotUsername().equals("xSlapppz")) {
+            General.println("Your Tribot profile has been accepted.");
+            General.println("Username: " + General.getTRiBotUsername());
 
+        } else {
+            General.println("You're not currently one of the beta testers!");
+            General.println("Username: " + General.getTRiBotUsername());
+            General.println("Stopping Script...");
+            stopScript();
         }
-        switch (variables.mode) {
-            case BANKING:
-                Collections.addAll(nodes, new DepositItems(variables));
-                break;
-            case POWERMINE:
-                Collections.addAll(nodes, new Powermine(variables));
-                break;
-            case M1D1:
-                Collections.addAll(nodes, new M1D1(variables));
-                break;
-            case MOUSEKEYS:
-                Collections.addAll(nodes, new MouseKeys(variables));
-                break;
-        }
-        Collections.addAll(nodes, new WalkToQuarry(variables), new MineOre(variables));
     }
 
+    //<editor-fold defaultstate="collapsed" desc="InitializeGUI">
     public void initializeGui() {
-        EventQueue.invokeLater(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    sleep(50);
-                    variables.status = "Initializing...";
-                    gui.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                sleep(50);
+                variables.status = "Initializing...";
+                gui.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
         do
             sleep(10);
         while (!variables.guiComplete);
     }
+    //</editor-fold>
 
-    private void getStartLevels() {
+    //<editor-fold defaultstate="collapsed" desc="StartInformation">
+    private void getStartInformation() {
+        variables.resetTimeRan = System.currentTimeMillis();
+        variables.startLevel = Skills.getActualLevel(Skills.SKILLS.MINING);
+        variables.startXP = Skills.getXP(Skills.SKILLS.MINING);
+        variables.resetTimeRan = Timing.currentTimeMillis();
     }
 
-    private void getStartExp() {
+    private void getItemPrice() {
+        variables.orePrice = PriceChecking07.getGEPrice(variables.oreType.getItemIDs()[0]);
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Painting">
     public void onPaint(Graphics g1) {
-        if (!variables.disablePaint) {
-            Graphics2D g = (Graphics2D) g1;
-            g.setRenderingHints(Constants.ANTIALIASING);
-            if (Login.getLoginState() == Login.STATE.INGAME) {
-
-                long timeRan = System.currentTimeMillis() - Constants.START_TIME;
-
-                g.setColor(Constants.BLACK_COLOR);
-                g.fillRoundRect(11, 220, 200, 110, 8, 8); // Paint background
-                g.setColor(Constants.RED_COLOR);
-                g.drawRoundRect(9, 218, 202, 112, 8, 8); // Red outline
-                g.fillRoundRect(13, 223, 194, 22, 8, 8); // Title background
-                g.setFont(Constants.TITLE_FONT);
-                g.setColor(Color.WHITE);
-                g.drawString("[SPX] AIO Miner", 18, 239);
-                g.setFont(Constants.TEXT_FONT);
-                g.drawString("Runtime: " + Timing.msToString(timeRan), 14, 260);
-                g.drawString("Levels Gained: ", 14, 276);
-                g.drawString("Gained Exp: ", 14, 293);
-                g.drawString("Status: " + variables.status, 14, 310);
-                g.drawString("v" + variables.version, 185, 326);
-
-                if (variables.radiusMine && variables.area != null) {
-                    RSArea radiusArea = new RSArea(new RSTile[]{
-                            new RSTile(variables.area.getX() - variables.radius, variables.area.getY() + variables.radius, variables.area.getPlane()),
-                            new RSTile(variables.area.getX() + variables.radius, variables.area.getY() + variables.radius, variables.area.getPlane()),
-                            new RSTile(variables.area.getX() + variables.radius, variables.area.getY() - variables.radius, variables.area.getPlane()),
-                            new RSTile(variables.area.getX() - variables.radius, variables.area.getY() - variables.radius, variables.area.getPlane()),
-                    });
-                    Projection07.drawArea(radiusArea, g);
-                    Projection07.drawMinimapArea(radiusArea, g);
+        Graphics2D g = (Graphics2D) g1;
+        g.setRenderingHints(Constants.ANTIALIASING);
+        if (Login.getLoginState() == Login.STATE.INGAME) {
+            if (!variables.disablePaint) {
+                global.drawRadius(g);
+                global.drawObjects(g);
+                global.drawTiles(g);
+                global.generalInfo(g);
+                if (variables.masterSystem) {
+                    master.systemInfo(g);
+                } else {
+                    normal.systemInfo(g);
+                    slave.systemInfo(g);
                 }
-
+            } else {
+                global.drawCloseButton(g);
             }
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="MousePainting">
     @Override
     public void paintMouse(Graphics graphics, Point point, Point point1) {
-        graphics.setColor(Color.BLACK);
-        graphics.drawRect(Mouse.getPos().x - 13, Mouse.getPos().y - 13, 27, 27); // Square rectangle Stroke
-        graphics.drawRect(Mouse.getPos().x, Mouse.getPos().y - 512, 1, 500); // Top y axis Line Stroke
-        graphics.drawRect(Mouse.getPos().x, Mouse.getPos().y + 13, 1, 500); // Bottom y axis Line Stroke
-        graphics.drawRect(Mouse.getPos().x + 13, Mouse.getPos().y, 800, 1); // Right x axis line Stroke
-        graphics.drawRect(Mouse.getPos().x - 812, Mouse.getPos().y, 800, 1); // left x axis line Stroke
-        graphics.fillOval(Mouse.getPos().x - 3, Mouse.getPos().y - 3, 7, 7); // Center dot stroke
-        graphics.setColor(Constants.RED_COLOR);
-        graphics.drawRect(Mouse.getPos().x - 12, Mouse.getPos().y - 12, 25, 25); // Square rectangle
-        graphics.drawRect(Mouse.getPos().x, Mouse.getPos().y - 512, 0, 500); // Top y axis Line
-        graphics.drawRect(Mouse.getPos().x, Mouse.getPos().y + 13, 0, 500); // Bottom y axis Line
-        graphics.drawRect(Mouse.getPos().x + 13, Mouse.getPos().y, 800, 0); // Right x axis line
-        graphics.drawRect(Mouse.getPos().x - 812, Mouse.getPos().y, 800, 0); // left x axis line
-        graphics.fillOval(Mouse.getPos().x - 2, Mouse.getPos().y - 2, 5, 5); // Center dot
+        Paint.drawMouse(graphics);
     }
 
     @Override
     public void paintMouseSpline(Graphics graphics, ArrayList<Point> arrayList) {
     }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="MessageListening07">
+    @Override
+    public void tradeRequestReceived(String s) {
+        if (variables.masterSystem) {
+            variables.playerTrading = s;
+        }
+    }
+
+    @Override
+    public void serverMessageReceived(String s) {
+        if (s.contains("Accepted trade.")) {
+            variables.masterTrades++;
+            if (variables.slaveSystem) {
+                variables.resetOresMined = 0;
+                variables.resetTimeRan = System.currentTimeMillis();
+                variables.isSlaveSystemEnabled = false;
+            }
+        }
+        if (s.contains("You manage to mine some") || s.contains("You just mined")) {
+            AntiBan.sleepReactionTime();
+            AntiBan.incrementResourcesWon();
+            variables.oresMined++;
+            variables.resetOresMined++;
+        }
+    }
+
+    @Override
+    public void playerMessageReceived(String s, String s1) {
+
+    }
+
+    @Override
+    public void personalMessageReceived(String s, String s1) {
+
+    }
+
+    @Override
+    public void duelRequestReceived(String s, String s1) {
+
+    }
+
+    @Override
+    public void clanMessageReceived(String s, String s1) {
+
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="MouseActions">
+    @Override
+    public void mouseReleased(Point point, int i, boolean b) {
+
+    }
+
+    @Override
+    public void mouseMoved(Point point, boolean b) {
+
+    }
+
+    @Override
+    public void mouseDragged(Point point, int i, boolean b) {
+
+    }
+
+    @Override
+    public void mouseClicked(Point point, int i, boolean b) {
+        if (Constants.START_SLAVESYSTEM.contains(point) && i == 1 && !b) {
+            if (variables.resetOresMined > 0) {
+                variables.isSlaveSystemEnabled = true;
+            } else {
+                General.println("We cannot enable the slave system unless we've mined more ore!");
+            }
+
+        }
+        if (Constants.CLOSE_PAINT.contains(point) && i == 1 && !b) {
+            variables.disablePaint = !variables.disablePaint;
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Ending">
+    @Override
+    public void onEnd() {
+        DyanmicSignature.sendSignatureData(variables.timeRan / 1000, variables.oresMined, variables.profit, variables.gainedXP, variables.gainedLevels, variables.masterTrades, variables.masterTrades);
+    }
+    //</editor-fold>
 
 }
 
