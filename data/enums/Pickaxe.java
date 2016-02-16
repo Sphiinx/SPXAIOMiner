@@ -1,5 +1,6 @@
 package scripts.SPXAIOMiner.data.enums;
 
+import org.tribot.api.General;
 import org.tribot.api2007.Skills;
 
 /**
@@ -48,23 +49,26 @@ public enum Pickaxe {
         int attack = Skills.getCurrentLevel(Skills.SKILLS.ATTACK);
         int mining = Skills.getCurrentLevel(Skills.SKILLS.MINING);
 
-        if (attack >= DRAGON.getAttackLevel() && mining >= DRAGON.getMiningLevel()) {
-            return DRAGON;
-        } else if (attack >= RUNE.getAttackLevel() && mining >= RUNE.getMiningLevel()) {
-            return RUNE;
-        } else if (attack >= ADAMANT.getAttackLevel() && mining >= ADAMANT.getMiningLevel()) {
-            return ADAMANT;
-        } else if (attack >= MITHRIL.getAttackLevel() && mining >= MITHRIL.getMiningLevel()) {
-            return MITHRIL;
-        } else if (attack >= BLACK.getAttackLevel() && mining >= BLACK.getMiningLevel()) {
-            return BLACK;
-        } else if (attack >= STEEL.getAttackLevel() && mining >= STEEL.getMiningLevel()) {
-            return STEEL;
-        } else if (attack >= IRON.getAttackLevel() && mining >= IRON.getMiningLevel()) {
-            return IRON;
-        } else {
-            return BRONZE;
+        if (attack > 0 && mining > 0) {
+            if (attack >= DRAGON.getAttackLevel() && mining >= DRAGON.getMiningLevel()) {
+                return DRAGON;
+            } else if (attack >= RUNE.getAttackLevel() && mining >= RUNE.getMiningLevel()) {
+                return RUNE;
+            } else if (attack >= ADAMANT.getAttackLevel() && mining >= ADAMANT.getMiningLevel()) {
+                return ADAMANT;
+            } else if (attack >= MITHRIL.getAttackLevel() && mining >= MITHRIL.getMiningLevel()) {
+                return MITHRIL;
+            } else if (attack >= BLACK.getAttackLevel() && mining >= BLACK.getMiningLevel()) {
+                return BLACK;
+            } else if (attack >= STEEL.getAttackLevel() && mining >= STEEL.getMiningLevel()) {
+                return STEEL;
+            } else if (attack >= IRON.getAttackLevel() && mining >= IRON.getMiningLevel()) {
+                return IRON;
+            } else {
+                return BRONZE;
+            }
         }
+        return null;
     }
 
 }

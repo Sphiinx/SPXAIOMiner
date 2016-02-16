@@ -26,6 +26,16 @@ public class Constants {
             "Uncut ruby",
             "Uncut diamond"
     };
+    public static final String[] PICKAXES = new String[] {
+            "Bronze pickaxe",
+            "Iron pickaxe",
+            "Steel pickaxe",
+            "Black pickaxe",
+            "Mithril pickaxe",
+            "Adamant pickaxe",
+            "Rune pickaxe",
+            "Dragon pickaxe",
+    };
     public static final RSTile[] SHILO_VILLAGE_PATH = new RSTile[] {
             new RSTile(2824, 2999, 0), new RSTile(2829, 2989, 0),
             new RSTile(2828, 2980, 0), new RSTile(2831, 2976, 0),

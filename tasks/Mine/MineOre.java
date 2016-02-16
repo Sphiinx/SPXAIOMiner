@@ -14,9 +14,11 @@ import org.tribot.api2007.ext.Filters;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
 import scripts.SPXAIOMiner.API.Framework.Task;
+import scripts.SPXAIOMiner.API.Game.Mouse.Mouse07;
 import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
+import scripts.SPXAIOMiner.API.Game.Walking.Walking07;
 import scripts.SPXAIOMiner.AntiBan;
-import scripts.SPXAIOMiner.data.Variables;
+import scripts.SPXAIOMiner.data.*;
 
 import java.awt.*;
 
@@ -39,6 +41,7 @@ public class MineOre extends Task {
     //<editor-fold defaultstate="collapsed" desc="Execution">
     @Override
     public void execute() {
+        Mouse07.fixSelected();
         if (!isMining()) {
             isOreStolen();
             mineOre();
@@ -68,9 +71,6 @@ public class MineOre extends Task {
         if (targetOre != null) {
             if (targetOre.isOnScreen()) {
                 if (DynamicClicking.clickRSObject(targetOre, "Mine")) {
-                    check_time = Timing.currentTimeMillis() + General.random(20000, 30000);
-                    createCache = Inventory.getAll().length;
-                    resourceCheck = true;
                     Timing.waitCondition(new Condition() {
                         @Override
                         public boolean active() {
@@ -78,11 +78,14 @@ public class MineOre extends Task {
                             return Player.getAnimation() != -1;
                         }
                     }, General.random(3000, 4000));
+                    check_time = Timing.currentTimeMillis() + General.random(20000, 30000);
+                    createCache = Inventory.getAll().length;
+                    resourceCheck = true;
                     AntiBan.resetShouldHover();
                     AntiBan.resetShouldOpenMenu();
                 }
             } else {
-                handleWalking(targetOre);
+                Walking07.sceenWalkToObject(targetOre);
             }
         }
     }
@@ -104,26 +107,6 @@ public class MineOre extends Task {
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="HandleWalking">
-    private void handleWalking(RSObject object) {
-        Point ore = Projection.tileToMinimap(object);
-        if (Projection.isInMinimap(ore)) {
-            RSTile[] path = Walking.generateStraightScreenPath(object.getPosition());
-            if (Walking.walkScreenPath(path)) {
-                Timing.waitCondition(new Condition() {
-                    @Override
-                    public boolean active() {
-                        General.sleep(100);
-                        return object.isOnScreen();
-                    }
-                }, General.random(1200, 1500));
-            }
-        } else {
-            WebWalking.walkTo(object);
-        }
-    }
-    //</editor-fold>
-
     //<editor-fold defaultstate="collapsed" desc="GetActualOre">
     private void getActualOre() {
         RSObject[] actualOres = getAllObjects();
@@ -138,21 +121,10 @@ public class MineOre extends Task {
             if (vars.oresHop) {
                 vars.shouldWeHop = true;
             }
-            AntiBan.getReactionTime();
-
-            AntiBan.goToAnticipated(actualOres[0].getPosition());
+            /*AntiBan.getReactionTime();
+            // Todo FIX THIS
+            AntiBan.goToAnticipated(actualOres[0].getPosition());*/
         }
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="OreFilter">
-    private Filter<RSObject> oreFilter() {
-        return new Filter<RSObject>() {
-            @Override
-            public boolean accept(RSObject rsObject) {
-                return colorCheck(rsObject);
-            }
-        }.combine(Filters.Objects.nameContains("Rock"), true);
     }
     //</editor-fold>
 
@@ -164,6 +136,17 @@ public class MineOre extends Task {
             }
         }
         return false;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="OreFilter">
+    private Filter<RSObject> oreFilter() {
+        return new Filter<RSObject>() {
+            @Override
+            public boolean accept(RSObject rsObject) {
+                return colorCheck(rsObject);
+            }
+        }.combine(Filters.Objects.nameContains("Rock"), true);
     }
     //</editor-fold>
 
@@ -182,7 +165,9 @@ public class MineOre extends Task {
 
     @Override
     public boolean validate() {
-        return !vars.isSlaveSystemEnabled && !Inventory.isFull() && vars.area.distanceTo(Player.getPosition()) <= vars.radius;
+        return !vars.isSlaveSystemIsRunning &&
+                !Inventory.isFull() && vars.area.distanceTo(Player.getPosition()) <= vars.radius &&
+                Equipment.getItem(Equipment.SLOTS.WEAPON) != null;
     }
 
 }

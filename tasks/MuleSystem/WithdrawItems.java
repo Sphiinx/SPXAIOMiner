@@ -6,7 +6,6 @@ import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.*;
 import scripts.SPXAIOMiner.API.Framework.Task;
 import scripts.SPXAIOMiner.API.Game.Banking.Banking07;
-import scripts.SPXAIOMiner.API.Game.Inventory.Inventory07;
 import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
 import scripts.SPXAIOMiner.data.*;
 import scripts.SPXAIOMiner.data.enums.Location;
@@ -22,33 +21,19 @@ public class WithdrawItems extends Task {
 
     @Override
     public void execute() {
-        if (Banking07.isInBank()) {
-            if (Banking.isBankScreenOpen()) {
-                withdrawItems();
-            } else {
-                openBank();
-            }
+        if (Banking.isBankScreenOpen()) {
+            withdrawItems();
         } else {
             if (vars.area.equals(Location.SHILO_VILLAGE.getArea())) {
                 Walking.walkPath(Walking.randomizePath(scripts.SPXAIOMiner.data.Constants.SHILO_VILLAGE_PATH, 2, 2));
             } else {
-                walkToBank();
+                Banking07.openBank();
             }
         }
     }
 
     public void withdrawItems() {
-        if (Inventory07.getAmountOfSpace() != 28) {
-            if (Banking.depositAll() > 0) {
-                Timing.waitCondition(new Condition() {
-                    @Override
-                    public boolean active() {
-                        General.sleep(100);
-                        return Inventory07.getAmountOfSpace() == 28;
-                    }
-                }, General.random(1000, 1200));
-            }
-        }
+        Banking07.depositInventory();
         if (Banking07.isBankItemsLoaded()) {
             if (Banking07.isNotedSelected()) {
                 if (Banking.find(vars.oreType.getItemIDs()).length > 0) {
@@ -76,30 +61,6 @@ public class WithdrawItems extends Task {
         }
     }
 
-    public void openBank() {
-        if (Banking.openBank()) {
-            Timing.waitCondition(new Condition() {
-                @Override
-                public boolean active() {
-                    General.sleep(100);
-                    return Banking.isBankScreenOpen();
-                }
-            }, General.random(750, 1000));
-        }
-    }
-
-    private void walkToBank() {
-        if (WebWalking.walkToBank()) {
-            Timing.waitCondition(new Condition() {
-                @Override
-                public boolean active() {
-                    General.sleep(100);
-                    return Banking.isInBank();
-                }
-            }, General.random(750, 1000));
-        }
-    }
-
     @Override
     public String toString() {
         return "Withdrawing items" + Utility07.loadingPeriods();
@@ -111,10 +72,10 @@ public class WithdrawItems extends Task {
         vars.orePriceTotal = (vars.orePrice * vars.resetOresMined) + General.random(0, vars.variation);
         if (Trading.getWindowState() != Trading.WINDOW_STATE.FIRST_WINDOW && Trading.getWindowState() != Trading.WINDOW_STATE.SECOND_WINDOW) {
             if (Inventory.getCount(vars.oreType.getNotedItemIDs()) < vars.resetOresMined && (vars.timeRanMinutes >= vars.transferMinutes || vars.orePriceTotal >= vars.transferMade)) {
-                if (vars.isSlaveSystemEnabled) {
+                if (vars.isSlaveSystemIsRunning) {
                     return true;
                 } else {
-                    vars.isSlaveSystemEnabled = true;
+                    vars.isSlaveSystemIsRunning = true;
                     return true;
                 }
             }

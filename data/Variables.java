@@ -32,7 +32,7 @@ public class Variables {
     public boolean upgradePickaxe;
     public boolean drawRadius = true;
     public boolean isUpgradingPickaxe;
-    public boolean isSlaveSystemEnabled;
+    public boolean isSlaveSystemIsRunning;
 
     public double version;
 

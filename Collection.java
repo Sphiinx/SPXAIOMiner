@@ -9,7 +9,8 @@ import scripts.SPXAIOMiner.tasks.MuleSystem.TradeMaster;
 import scripts.SPXAIOMiner.tasks.MuleSystem.WalkToMaster;
 import scripts.SPXAIOMiner.tasks.MuleSystem.WithdrawItems;
 import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.EquipPickaxe;
-import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.WithdrawPickaxe;
+import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.GetPickaxe;
+import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.UpgradePickaxe;
 import scripts.SPXAIOMiner.tasks.RunFromCombat;
 import scripts.SPXAIOMiner.tasks.WalkToQuarry;
 import scripts.SPXAIOMiner.tasks.WorldHop;
@@ -43,10 +44,13 @@ public class Collection {
         if (variables.slaveSystem) {
             Collections.addAll(tasks, new TradeMaster(variables), new WalkToMaster(variables), new WithdrawItems(variables));
         }
+        if (variables.upgradePickaxe) {
+            Collections.addAll(tasks, new UpgradePickaxe(variables));
+        }
         if (variables.masterSystem) {
             Collections.addAll(tasks, new MasterSystem(variables));
         } else {
-            Collections.addAll(tasks, new EquipPickaxe(variables), new WithdrawPickaxe(variables), new WalkToQuarry(variables), new MineOre(variables));
+            Collections.addAll(tasks, new GetPickaxe(variables), new EquipPickaxe(variables), new WalkToQuarry(variables), new MineOre(variables));
         }
         switch (variables.mode) {
             case BANKING:

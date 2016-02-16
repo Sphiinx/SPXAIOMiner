@@ -7,6 +7,7 @@ import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSPlayer;
 import scripts.SPXAIOMiner.API.Framework.Task;
+import scripts.SPXAIOMiner.API.Game.Banking.Banking07;
 import scripts.SPXAIOMiner.API.Game.Game.Game07;
 import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
 import scripts.SPXAIOMiner.data.Variables;
@@ -23,10 +24,10 @@ public class MasterSystem extends Task {
     @Override
     public void execute() {
         if (Inventory.isFull()) {
-            if (Banking.isInBank()) {
-                openBank();
+            if (Banking.isBankScreenOpen()) {
+                Banking07.depositInventory();
             } else {
-                walkToBank();
+                Banking07.openBank();
             }
         } else if (!vars.currentMasterPosition.isOnScreen()) {
             WebWalking.walkTo(vars.currentMasterPosition);
@@ -34,42 +35,6 @@ public class MasterSystem extends Task {
             tradeSlave();
         }
 
-    }
-
-    private void openBank() {
-        if (Banking.isBankScreenOpen()) {
-            if (Banking.depositAll() > 0) {
-                Timing.waitCondition(new Condition() {
-                    @Override
-                    public boolean active() {
-                        General.sleep(100);
-                        return !Inventory.isFull();
-                    }
-                }, General.random(750, 1000));
-            }
-        } else {
-            if (Banking.openBank()) {
-                Timing.waitCondition(new Condition() {
-                    @Override
-                    public boolean active() {
-                        General.sleep(100);
-                        return Banking.isBankScreenOpen();
-                    }
-                }, General.random(750, 1000));
-            }
-        }
-    }
-
-    private void walkToBank() {
-        if (WebWalking.walkToBank()) {
-            Timing.waitCondition(new Condition() {
-                @Override
-                public boolean active() {
-                    General.sleep(100);
-                    return Banking.isInBank();
-                }
-            }, General.random(750, 1000));
-        }
     }
 
     public void tradeSlave() {

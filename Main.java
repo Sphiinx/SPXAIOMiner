@@ -63,7 +63,20 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     }
 
     private void tribotUserCheck() {
-        if (General.getTRiBotUsername().equals("Sphiinx") || General.getTRiBotUsername().equals("xSlapppz")) {
+        if (General.getTRiBotUsername().equals("Sphiinx") ||
+                General.getTRiBotUsername().equals("xSlapppz") ||
+                General.getTRiBotUsername().equals("silver8787") ||
+                General.getTRiBotUsername().equals("sibbernski") ||
+                General.getTRiBotUsername().equals("Netami") ||
+                General.getTRiBotUsername().equals("Duvy") ||
+                General.getTRiBotUsername().equals("plasmaftw") ||
+                General.getTRiBotUsername().equals("ohParadox") ||
+                General.getTRiBotUsername().equals("jakerules13") ||
+                General.getTRiBotUsername().equals("kokon") ||
+                General.getTRiBotUsername().equals("jake miler") ||
+                General.getTRiBotUsername().equals("YoHoJo") ||
+                General.getTRiBotUsername().equals("jack351") ||
+                General.getTRiBotUsername().equals("Doomed")) {
             General.println("Your Tribot profile has been accepted.");
             General.println("Username: " + General.getTRiBotUsername());
 
@@ -154,7 +167,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
             if (variables.slaveSystem) {
                 variables.resetOresMined = 0;
                 variables.resetTimeRan = System.currentTimeMillis();
-                variables.isSlaveSystemEnabled = false;
+                variables.isSlaveSystemIsRunning = false;
             }
         }
         if (s.contains("You manage to mine some") || s.contains("You just mined")) {
@@ -206,7 +219,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     public void mouseClicked(Point point, int i, boolean b) {
         if (Constants.START_SLAVESYSTEM.contains(point) && i == 1 && !b) {
             if (variables.resetOresMined > 0) {
-                variables.isSlaveSystemEnabled = true;
+                variables.isSlaveSystemIsRunning = true;
             } else {
                 General.println("We cannot enable the slave system unless we've mined more ore!");
             }

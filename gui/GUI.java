@@ -840,7 +840,7 @@ public class GUI extends JFrame {
 
         if (slaveSystem.isSelected()) {
             variables.slaveSystem = true;
-            variables.isSlaveSystemEnabled = false;
+            variables.isSlaveSystemIsRunning = false;
             variables.masterWorld = Integer.parseInt(masterWorld.getValue().toString());
             variables.masterName = masterUsername.getText();
             variables.masterPositon = masterLocation.getText();

@@ -133,7 +133,7 @@ public class TradeMaster extends Task {
         if (Trading.getWindowState() == Trading.WINDOW_STATE.FIRST_WINDOW || Trading.getWindowState() == Trading.WINDOW_STATE.SECOND_WINDOW) {
             return true;
         }
-        return vars.isSlaveSystemEnabled && vars.master.length > 0 && Inventory.getCount(vars.oreType.getNotedItemIDs()) >= vars.resetOresMined;
+        return vars.isSlaveSystemIsRunning && vars.master.length > 0 && Inventory.getCount(vars.oreType.getNotedItemIDs()) >= vars.resetOresMined;
     }
 
 }
