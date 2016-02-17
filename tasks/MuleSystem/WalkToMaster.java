@@ -33,13 +33,14 @@ public class WalkToMaster extends Task {
                         General.sleep(100);
                         return Utility07.getCurrentWorld() == vars.masterWorld;
                     }
-                }, General.random(1500, 2000));
+                }, General.random(2000, 2500));
             }
         } else {
             WebWalking.walkTo(getPos());
         }
     }
 
+    //<editor-fold defaultstate="collapsed" desc="GetPosition">
     public RSTile getPos() {
         String tileString = vars.masterPositon.replaceAll("[()]", "");
         String[] tileStringArr = tileString.split(",");
@@ -48,6 +49,7 @@ public class WalkToMaster extends Task {
         int plane = Integer.parseInt(tileStringArr[2].trim());
         return new RSTile(x, y, plane);
     }
+    //</editor-fold>
 
     @Override
     public String toString() {

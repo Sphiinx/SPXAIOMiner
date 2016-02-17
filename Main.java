@@ -3,6 +3,7 @@ package scripts.SPXAIOMiner;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api2007.*;
+import org.tribot.api2007.util.ThreadSettings;
 import org.tribot.script.Script;
 import org.tribot.script.ScriptManifest;
 import org.tribot.script.interfaces.*;
@@ -11,10 +12,13 @@ import org.tribot.util.Util;
 import scripts.SPXAIOMiner.API.Framework.Task;
 import scripts.SPXAIOMiner.API.Game.PriceChecking.PriceChecking07;
 import scripts.SPXAIOMiner.API.Paint;
+import scripts.SPXAIOMiner.API.Printing;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Variables;
 
 import scripts.SPXAIOMiner.gui.GUI;
+import scripts.SPXAIOMiner.messagerecieved.Server;
+import scripts.SPXAIOMiner.messagerecieved.Trade;
 import scripts.SPXAIOMiner.paint.Global;
 import scripts.SPXAIOMiner.paint.Master;
 import scripts.SPXAIOMiner.paint.Normal;
@@ -37,10 +41,14 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     private Normal normal = new Normal(variables);
     private Slave slave = new Slave(variables);
     private Collection collection = new Collection(variables);
+    private Trade trade = new Trade(variables);
+    private Server server = new Server(variables);
 
     @Override
     public void run() {
         General.useAntiBanCompliance(true);
+        ThreadSettings.get().setClickingAPIUseDynamic(true);
+        setDebugging();
         tribotUserCheck();
         General.println("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
         variables.path = new File(Util.getWorkingDirectory().getAbsolutePath(), "[SPX]AIOMiner_" + General.getTRiBotUsername() + "_settings" + ".ini");
@@ -52,6 +60,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
         loop(100, 150);
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Loop">
     private void loop(int min, int max) {
         while (!variables.stopScript) {
             collection.tasks.stream().filter(Task::validate).forEach(task -> {
@@ -61,7 +70,9 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
             });
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="UsernameCheck">
     private void tribotUserCheck() {
         if (General.getTRiBotUsername().equals("Sphiinx") ||
                 General.getTRiBotUsername().equals("xSlapppz") ||
@@ -87,6 +98,13 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
             stopScript();
         }
     }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="SetDebugging">
+    private void setDebugging() {
+        Printing.isDebugging = this.getRepoID() == -1;
+    }
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="InitializeGUI">
     public void initializeGui() {
@@ -139,7 +157,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
                     master.systemInfo(g);
                 } else {
                     normal.systemInfo(g);
-                    slave.systemInfo(g);
+                    slave.systemInfo();
                 }
             } else {
                 global.drawCloseButton(g);
@@ -162,26 +180,21 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     //<editor-fold defaultstate="collapsed" desc="MessageListening07">
     @Override
     public void tradeRequestReceived(String s) {
-        if (variables.masterSystem) {
-            variables.playerTrading = s;
-        }
+        trade.getPlayerTrading(s);
     }
 
     @Override
     public void serverMessageReceived(String s) {
-        if (s.contains("Accepted trade.")) {
-            variables.masterTrades++;
-            if (variables.slaveSystem) {
-                variables.resetOresMined = 0;
-                variables.resetTimeRan = System.currentTimeMillis();
-                variables.isSlaveSystemIsRunning = false;
-            }
-        }
         if (s.contains("You manage to mine some") || s.contains("You just mined")) {
-            AntiBan.sleepReactionTime();
-            AntiBan.incrementResourcesWon();
-            variables.oresMined++;
-            variables.resetOresMined++;
+            server.performAntiban();
+            server.incrementOre(s);
+        }
+        if (s.contains("Accepted trade.")) {
+            if (variables.slaveSystem) {
+                server.incrementTrades();
+                server.setSlaveSettings();
+                server.switchWorldBack();
+            }
         }
     }
 
@@ -241,7 +254,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     //<editor-fold defaultstate="collapsed" desc="Ending">
     @Override
     public void onEnd() {
-        DyanmicSignature.sendSignatureData(variables.timeRan / 1000, variables.oresMined, variables.profit, variables.gainedXP, variables.gainedLevels, variables.masterTrades, variables.masterTrades);
+        DynamicSignature.sendSignatureData(variables.timeRan / 1000, variables.oresMined, variables.profit, variables.gainedXP, variables.gainedLevels, variables.masterTrades, variables.masterTrades);
     }
     //</editor-fold>
 

@@ -32,6 +32,7 @@ public class TradeMaster extends Task {
         }
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Trade Master">
     public void tradeMaster() {
         if (Trading.getWindowState() == Trading.WINDOW_STATE.FIRST_WINDOW || Trading.getWindowState() == Trading.WINDOW_STATE.SECOND_WINDOW) {
             if (Trading.getOpponentName().equals(vars.masterName)) {
@@ -67,7 +68,9 @@ public class TradeMaster extends Task {
             }
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="AcceptTrade">
     public void acceptTrade() {
         if (Trading.accept()) {
             Timing.waitCondition(new Condition() {
@@ -79,7 +82,9 @@ public class TradeMaster extends Task {
             }, General.random(1000, 1200));
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="OfferItems">
     public void offerItems() {
         if (Trading.offer(0, vars.oreType.getNotedItemIDs())) {
             Timing.waitCondition(new Condition() {
@@ -91,7 +96,9 @@ public class TradeMaster extends Task {
             }, General.random(1000, 1200));
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="ScamPrevention">
     public void scamPrevention() {
         if (Trading.close()) {
             Timing.waitCondition(new Condition() {
@@ -103,7 +110,9 @@ public class TradeMaster extends Task {
             }, General.random(1000, 1200));
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="WalkToMaster">
     public void walkToMaster() {
         Point p = Projection.tileToMinimap(vars.master[0].getPosition());
         if (Projection.isInMinimap(p)) {
@@ -121,6 +130,7 @@ public class TradeMaster extends Task {
             WebWalking.walkTo(vars.master[0]);
         }
     }
+    //</editor-fold>
 
     @Override
     public String toString() {

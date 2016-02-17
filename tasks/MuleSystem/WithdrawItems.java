@@ -4,10 +4,12 @@ import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.*;
+import org.tribot.api2007.types.RSItem;
 import scripts.SPXAIOMiner.API.Framework.Task;
 import scripts.SPXAIOMiner.API.Game.Banking.Banking07;
 import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
 import scripts.SPXAIOMiner.data.*;
+import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.enums.Location;
 
 /**
@@ -21,6 +23,7 @@ public class WithdrawItems extends Task {
 
     @Override
     public void execute() {
+        vars.originalWorld = Utility07.getCurrentWorld();
         if (Banking.isBankScreenOpen()) {
             withdrawItems();
         } else {
@@ -32,8 +35,17 @@ public class WithdrawItems extends Task {
         }
     }
 
+    public boolean depositInventory() {
+        if (vars.pickaxeInInventory) {
+            RSItem[] pick = Inventory.find(Constants.PICKAXES);
+            return Banking07.depositAllExcept(pick[0].getID());
+        } else {
+            return Banking07.depositInventory();
+        }
+    }
+
     public void withdrawItems() {
-        Banking07.depositInventory();
+        depositInventory();
         if (Banking07.isBankItemsLoaded()) {
             if (Banking07.isNotedSelected()) {
                 if (Banking.find(vars.oreType.getItemIDs()).length > 0) {

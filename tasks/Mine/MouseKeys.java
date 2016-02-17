@@ -7,6 +7,7 @@ import org.tribot.api2007.Inventory;
 import scripts.SPXAIOMiner.API.Framework.Task;
 import scripts.SPXAIOMiner.API.Game.Inventory.Inventory07;
 import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
+import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Variables;
 
 /**
@@ -20,7 +21,7 @@ public class MouseKeys extends Task {
 
     @Override
     public void execute() {
-        if (Inventory07.mouseKeysDropAllExcept()) {
+        if (Inventory07.mouseKeysDropAllExcept(Constants.PICKAXES)) {
             Timing.waitCondition(new Condition() {
                 @Override
                 public boolean active() {

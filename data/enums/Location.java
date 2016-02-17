@@ -22,7 +22,7 @@ public enum Location {
     EAST_ARDOUGNE(new RSTile(2701, 3332, 0), OreType.IRON, OreType.COAL),
     SOUTH_ARDOUGNE(new RSTile(2604, 3221, 0), OreType.IRON, OreType.COAL),
     YANILLE(new RSTile(2630, 3140, 0), OreType.CLAY, OreType.COPPER, OreType.TIN, OreType.IRON, OreType.COAL, OreType.MITHRIL),
-    PORT_KHAZARD(new RSTile(2654, 3170, 0), OreType.TIN, OreType.COPPER, OreType.MITHRIL),
+    PORT_KHAZARD(new RSTile(2653, 3169, 0), OreType.TIN, OreType.COPPER, OreType.MITHRIL),
     SILVAREA(new RSTile(3372, 3500), OreType.LIMESTONE),
     COAL_TRUCKS(new RSTile(2581, 3481, 0), OreType.COAL),
     WILDERNESS_SOUTHW(new RSTile(3017, 3592, 0), OreType.COAL),

@@ -2,6 +2,7 @@ package scripts.SPXAIOMiner.paint;
 
 
 import org.tribot.api.Timing;
+import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSArea;
 import org.tribot.api2007.types.RSTile;
 import scripts.SPXAIOMiner.API.Game.Projection.Projection07;
@@ -24,12 +25,7 @@ public class Global {
     public void drawRadius(Graphics g) {
         if (variables.drawRadius && variables.radiusMine) {
             if (variables.area != null) {
-                RSArea radiusArea = new RSArea(new RSTile[]{
-                        new RSTile(variables.area.getX() - variables.radius, variables.area.getY() + variables.radius, variables.area.getPlane()),
-                        new RSTile(variables.area.getX() + variables.radius, variables.area.getY() + variables.radius, variables.area.getPlane()),
-                        new RSTile(variables.area.getX() + variables.radius, variables.area.getY() - variables.radius, variables.area.getPlane()),
-                        new RSTile(variables.area.getX() - variables.radius, variables.area.getY() - variables.radius, variables.area.getPlane()),
-                });
+                RSArea radiusArea = new RSArea(Player.getPosition(), variables.radius);
                 Projection07.drawArea(radiusArea, g);
                 Projection07.drawMinimapArea(radiusArea, g);
             }

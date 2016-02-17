@@ -16,7 +16,7 @@ public class Powermine extends Task {
 
     @Override
     public void execute() {
-        Inventory.drop(Inventory.getAll());
+        Inventory.drop(vars.oreType.getItemIDs());
     }
 
     @Override

@@ -45,6 +45,12 @@ public class Settings {
 
             gui.variables.properties.put("disablePaint", String.valueOf(gui.disablePaint.isSelected()));
 
+            gui.variables.properties.put("pickaxeInInventory", String.valueOf(gui.pickaxeInInventory.isSelected()));
+
+            gui.variables.properties.put("runFromCombat", String.valueOf(gui.runFromCombat.isSelected()));
+
+            gui.variables.properties.put("switchSlaveBack", String.valueOf(gui.switchSlaveBack.isSelected()));
+
             gui.variables.properties.put("worldHopPlayersNear", String.valueOf(gui.worldHopPlayersNear.getValue()));
 
             gui.variables.properties.put("radiusAmount", String.valueOf(gui.radiusAmount.getValue()));
@@ -54,6 +60,10 @@ public class Settings {
             gui.variables.properties.put("transferMinutes", String.valueOf(gui.transferMinutes.getValue()));
 
             gui.variables.properties.put("transferMade", String.valueOf(gui.transferMade.getValue()));
+
+            gui.variables.properties.put("variation", String.valueOf(gui.variation.getValue()));
+
+            gui.variables.properties.put("levelToStop", String.valueOf(gui.levelToStop.getValue()));
 
             gui.variables.properties.put("quarryLocation", String.valueOf(gui.quarryLocation.getSelectedIndex()));
 
@@ -113,6 +123,7 @@ public class Settings {
 
             gui.slaveSystem.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("slaveSystem")));
             gui.disableMasterTab(gui.slaveSystem.isSelected());
+            gui.switchSlaveBack.setEnabled(gui.slaveSystem.isSelected());
 
             gui.upgradePickaxe.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("upgradePickaxe")));
 
@@ -121,6 +132,12 @@ public class Settings {
             gui.drawTiles.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("drawTiles")));
 
             gui.disablePaint.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("disablePaint")));
+
+            gui.pickaxeInInventory.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("pickaxeInInventory")));
+
+            gui.runFromCombat.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("runFromCombat")));
+
+            gui.switchSlaveBack.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("switchSlaveBack")));
 
             gui.worldHopPlayersNear.setValue(Integer.parseInt(gui.variables.properties.getProperty("worldHopPlayersNear")));
 
@@ -131,6 +148,10 @@ public class Settings {
             gui.transferMinutes.setValue(Integer.parseInt(gui.variables.properties.getProperty("transferMinutes")));
 
             gui.transferMade.setValue(Integer.parseInt(gui.variables.properties.getProperty("transferMade")));
+
+            gui.variation.setValue(Integer.parseInt(gui.variables.properties.getProperty("variation")));
+
+            gui.levelToStop.setValue(Integer.parseInt(gui.variables.properties.getProperty("levelToStop")));
 
             gui.quarryLocation.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("quarryLocation", "0")));
 

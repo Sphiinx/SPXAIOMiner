@@ -96,13 +96,13 @@ public class Banking07 {
     /**
      * Checks if the RSPlayer is in a bank.
      *
-     * @return True if the RSplayer is in a bank; false otherwise.
+     * @return True if the RSPlayer is in a bank; false otherwise.
      */
     public static boolean isInBank() {
         final String[] banks = new String[]{
                 "Bank booth",
                 "Banker",
-                "Bank chest"
+                "Bank chest",
         };
         RSObject[] bank = Objects.findNearest(15, banks);
         return bank.length > 0 && bank[0].isOnScreen() && bank[0].isClickable();
@@ -178,13 +178,33 @@ public class Banking07 {
     }
 
     /**
-     * Deposits your entire inventory if there is an item in it.
+     * Deposits your entire inventory if there is an item(s) in it.
      *
      * @return True if successful; false otherwise.
      * */
     public static boolean depositInventory() {
         if (Inventory07.getAmountOfSpace() != 28) {
             if (Banking.depositAll() > 0) {
+                Timing.waitCondition(new Condition() {
+                    @Override
+                    public boolean active() {
+                        General.sleep(100);
+                        return Inventory07.getAmountOfSpace() == 28;
+                    }
+                }, General.random(1000, 1200));
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Deposits your entire inventory except the itemID specified if there is an item(s) in it.
+     *
+     * @return True if successful; false otherwise.
+     * */
+    public static boolean depositAllExcept(int itemID) {
+        if (Inventory07.getAmountOfSpace() != 28) {
+            if (Banking.depositAllExcept(itemID) > 0) {
                 Timing.waitCondition(new Condition() {
                     @Override
                     public boolean active() {

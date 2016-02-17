@@ -13,29 +13,14 @@ import java.net.URL;
 public class Constants {
 
     public static final long START_TIME = System.currentTimeMillis();
-    public static Image getImage(String url) {
-        try {
-            return ImageIO.read(new URL(url));
-        } catch (IOException e) {
-            return null;
-        }
-    }
     public static final String[] GEMS = new String[] {
-            "Uncut sapphire",
-            "Uncut emerald",
-            "Uncut ruby",
-            "Uncut diamond"
+            "Uncut sapphire", "Uncut emerald", "Uncut ruby", "Uncut diamond"
     };
-    public static final String[] PICKAXES = new String[] {
-            "Bronze pickaxe",
-            "Iron pickaxe",
-            "Steel pickaxe",
-            "Black pickaxe",
-            "Mithril pickaxe",
-            "Adamant pickaxe",
-            "Rune pickaxe",
-            "Dragon pickaxe",
+    public static final int[] PICKAXES = new int[] {
+            1265, 1267, 1269, 12297, 1273, 1271, 1275, 15259,
     };
+    public static final RSTile RIMMINGTON_DEPOSIT_BOX = new RSTile(3045, 3235, 0);
+    public static final RSTile PORTKHAZARD_DEPOSIT_BOX = new RSTile(2663, 3160, 0);
     public static final RSTile[] SHILO_VILLAGE_PATH = new RSTile[] {
             new RSTile(2824, 2999, 0), new RSTile(2829, 2989, 0),
             new RSTile(2828, 2980, 0), new RSTile(2831, 2976, 0),
@@ -43,6 +28,13 @@ public class Constants {
             new RSTile(2853, 2955, 0)
     };
     public static final RSTile SAFE_ZONE = new RSTile(3222, 3217, 0);
+    public static Image getImage(String url) {
+        try {
+            return ImageIO.read(new URL(url));
+        } catch (IOException e) {
+            return null;
+        }
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Paint Info">
     public static final Image PAINT = getImage("http://i.imgur.com/qNbS3Yp.png");

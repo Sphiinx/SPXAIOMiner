@@ -9,6 +9,7 @@ import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSInterface;
 import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSInterfaceComponent;
+import org.tribot.api2007.types.RSItem;
 import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
 
 import java.awt.*;
@@ -98,8 +99,10 @@ public class WorldHopper07 {
     }
 
     private static boolean configureWorldSettings() {
-        Mouse.click(301 + General.random(-1, 1), 9 + General.random(-1, 1), 1);
-        return Timing.waitCondition(new Condition() {
+        final Rectangle rectangle = new Rectangle(301, 9, 4, 4);
+        final RSItem tmp = new RSItem(0, 0, 0, RSItem.TYPE.OTHER);
+        tmp.setArea(rectangle);
+        return Clicking.click(tmp) && Timing.waitCondition(new Condition() {
             @Override
             public boolean active() {
                 General.sleep(100);

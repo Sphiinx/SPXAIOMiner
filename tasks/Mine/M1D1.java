@@ -3,6 +3,7 @@ package scripts.SPXAIOMiner.tasks.Mine;
 import org.tribot.api2007.Inventory;
 import scripts.SPXAIOMiner.API.Framework.Task;
 import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
+import scripts.SPXAIOMiner.AntiBan;
 import scripts.SPXAIOMiner.data.Variables;
 
 /**
@@ -17,6 +18,7 @@ public class M1D1 extends Task {
     @Override
     public void execute() {
         Inventory.drop(vars.oreType.getItemIDs());
+        AntiBan.waitItemInteractionDelay();
     }
 
     @Override

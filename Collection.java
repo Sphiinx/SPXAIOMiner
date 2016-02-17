@@ -2,7 +2,7 @@ package scripts.SPXAIOMiner;
 
 import scripts.SPXAIOMiner.API.Framework.Task;
 import scripts.SPXAIOMiner.data.Variables;
-import scripts.SPXAIOMiner.tasks.DepositItems;
+import scripts.SPXAIOMiner.tasks.*;
 import scripts.SPXAIOMiner.tasks.Mine.*;
 import scripts.SPXAIOMiner.tasks.MuleSystem.MasterSystem;
 import scripts.SPXAIOMiner.tasks.MuleSystem.TradeMaster;
@@ -11,9 +11,6 @@ import scripts.SPXAIOMiner.tasks.MuleSystem.WithdrawItems;
 import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.EquipPickaxe;
 import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.GetPickaxe;
 import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.UpgradePickaxe;
-import scripts.SPXAIOMiner.tasks.RunFromCombat;
-import scripts.SPXAIOMiner.tasks.WalkToQuarry;
-import scripts.SPXAIOMiner.tasks.WorldHop;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,6 +43,9 @@ public class Collection {
         }
         if (variables.upgradePickaxe) {
             Collections.addAll(tasks, new UpgradePickaxe(variables));
+        }
+        if (variables.levelToStop > 0) {
+            Collections.addAll(tasks, new StopSettings(variables));
         }
         if (variables.masterSystem) {
             Collections.addAll(tasks, new MasterSystem(variables));

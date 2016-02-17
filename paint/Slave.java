@@ -15,7 +15,7 @@ public class Slave {
         this.variables = variables;
     }
 
-    public void systemInfo(Graphics g) {
+    public void systemInfo() {
         if (variables.slaveSystem) {
             if (variables.transferMade <= variables.transferMinutes) {
                 variables.timeUntilTrade = (variables.oreHR * variables.orePrice) / variables.moneyLeftUntilTrade;

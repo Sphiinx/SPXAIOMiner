@@ -42,7 +42,9 @@ public class GUI extends JFrame {
     public JCheckBox disableRadius;
     public JCheckBox runFromCombat;
     public JCheckBox upgradePickaxe;
+    public JCheckBox switchSlaveBack;
     public JCheckBox worldHopOresAval;
+    public JCheckBox pickaxeInInventory;
 
     public JComboBox<OreType> oreType;
     public JComboBox<Mode> droppingMode;
@@ -52,6 +54,7 @@ public class GUI extends JFrame {
 
     public JSpinner variation;
     public JSpinner masterWorld;
+    public JSpinner levelToStop;
     public JSpinner radiusAmount;
     public JSpinner transferMade;
     public JSpinner transferMinutes;
@@ -99,6 +102,9 @@ public class GUI extends JFrame {
         JLabel jLabel24 = new JLabel();
         JLabel jLabel25 = new JLabel();
         JLabel jLabel26 = new JLabel();
+        JLabel jLabel27 = new JLabel();
+        JLabel jLabel28 = new JLabel();
+        JLabel jLabel29 = new JLabel();
         JPanel jPanel1 = new JPanel();
         JPanel jPanel2 = new JPanel();
         JPanel jPanel3 = new JPanel();
@@ -119,6 +125,7 @@ public class GUI extends JFrame {
         drawTiles = new JCheckBox();
         oreType = new JComboBox<>();
         loadSettings = new JButton();
+        levelToStop = new JSpinner();
         masterWorld = new JSpinner();
         radiusMine = new JCheckBox();
         saveSettings = new JButton();
@@ -134,12 +141,15 @@ public class GUI extends JFrame {
         transferMinutes = new JSpinner();
         upgradePickaxe = new JCheckBox();
         worldHopMode = new JComboBox<>();
+        switchSlaveBack = new JCheckBox();
         masterLocation = new JTextField();
         masterUsername = new JTextField();
         radiusOreType = new JComboBox<>();
         quarryLocation = new JComboBox<>();
         worldHopOresAval = new JCheckBox();
         worldHopPlayersNear = new JSpinner();
+        pickaxeInInventory = new JCheckBox();
+
         JTabbedPane jTabbedPane2 = new JTabbedPane();
 
         jPanel3.setBorder(BorderFactory.createTitledBorder(null, "Location", TitledBorder.DEFAULT_JUSTIFICATION, TitledBorder.DEFAULT_POSITION, new Font("Ubuntu", 0, 14)));
@@ -461,18 +471,21 @@ public class GUI extends JFrame {
         jLabel18.setText("Master Username:");
 
         masterUsername.setFont(new Font("Ubuntu", 0, 12));
+        masterUsername.setEnabled(false);
 
         jLabel19.setFont(new Font("Ubuntu", 0, 12));
         jLabel19.setText("Master World:");
 
         masterWorld.setFont(new Font("Ubuntu", 0, 12));
-        masterWorld.setModel(new SpinnerNumberModel(300, 300, 399, 1));
+        masterWorld.setModel(new SpinnerNumberModel(1, 1, 99, 1));
+        masterWorld.setEnabled(false);
 
         jLabel20.setFont(new Font("Ubuntu", 0, 12));
         jLabel20.setText("Master Location:");
 
         masterLocation.setFont(new Font("Ubuntu", 0, 12));
         masterLocation.setText("(0000, 0000, 0)");
+        masterLocation.setEnabled(false);
 
         GroupLayout jPanel11Layout = new GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -529,15 +542,18 @@ public class GUI extends JFrame {
 
         variation.setFont(new Font("Ubuntu", 0, 12));
         variation.setModel(new SpinnerNumberModel(0, 0, 999999999, 1));
+        variation.setEnabled(false);
 
         transferMinutes.setFont(new Font("Ubuntu", 0, 12));
         transferMinutes.setModel(new SpinnerNumberModel(1, 1, 999999999, 1));
         transferMinutes.setMinimumSize(new Dimension(29, 22));
         transferMinutes.setName("");
         transferMinutes.setPreferredSize(new Dimension(29, 22));
+        transferMinutes.setEnabled(false);
 
         transferMade.setFont(new Font("Ubuntu", 0, 12));
         transferMade.setModel(new SpinnerNumberModel(1, 1, 999999999, 1));
+        transferMade.setEnabled(false);
 
         GroupLayout jPanel12Layout = new GroupLayout(jPanel12);
         jPanel12.setLayout(jPanel12Layout);
@@ -643,7 +659,28 @@ public class GUI extends JFrame {
         jLabel25.setFont(new java.awt.Font("Ubuntu", 0, 12));
         jLabel25.setText("Draw Radius:");
 
+        drawRadius.setFont(new java.awt.Font("Ubuntu", 0, 12));
         drawRadius.setText("Yes");
+        drawRadius.setEnabled(false);
+
+        jLabel27.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        jLabel27.setText("Switch slave back to original world:");
+
+        switchSlaveBack.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        switchSlaveBack.setText("Yes");
+        switchSlaveBack.setEnabled(false);
+
+        jLabel28.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        jLabel28.setText("Mine with pickaxe in inventory:");
+
+        pickaxeInInventory.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        pickaxeInInventory.setText("Yes");
+
+        jLabel29.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        jLabel29.setText("Level to stop:");
+
+        levelToStop.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        levelToStop.setModel(new javax.swing.SpinnerNumberModel(0, 0, 99, 1));
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -655,27 +692,41 @@ public class GUI extends JFrame {
                                         .addGroup(jPanel6Layout.createSequentialGroup()
                                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                                         .addComponent(jLabel12)
-                                                        .addComponent(jLabel26))
-                                                .addGap(127, 127, 127)
+                                                        .addComponent(jLabel28))
+                                                .addGap(60, 60, 60)
                                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(upgradePickaxe, javax.swing.GroupLayout.DEFAULT_SIZE, 124, Short.MAX_VALUE)
-                                                        .addComponent(runFromCombat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                                        .addComponent(upgradePickaxe, javax.swing.GroupLayout.DEFAULT_SIZE, 137, Short.MAX_VALUE)
+                                                        .addComponent(pickaxeInInventory, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                                         .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(jLabel13)
-                                                        .addComponent(jLabel25))
+                                                .addComponent(jLabel27)
+                                                .addGap(38, 38, 38)
+                                                .addComponent(switchSlaveBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                                .addComponent(jLabel26)
+                                                .addGap(127, 127, 127)
+                                                .addComponent(runFromCombat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                                .addComponent(jLabel13)
                                                 .addGap(152, 152, 152)
-                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                                        .addComponent(drawObjects, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                                        .addComponent(drawRadius, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                                .addComponent(drawObjects, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                                .addComponent(jLabel25)
+                                                .addGap(160, 160, 160)
+                                                .addComponent(drawRadius, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(jPanel6Layout.createSequentialGroup()
                                                 .addComponent(jLabel23)
                                                 .addGap(171, 171, 171)
                                                 .addComponent(drawTiles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addComponent(jLabel15)
+                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(jLabel15)
+                                                        .addComponent(jLabel29))
                                                 .addGap(156, 156, 156)
-                                                .addComponent(disablePaint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addComponent(disablePaint, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                        .addGroup(jPanel6Layout.createSequentialGroup()
+                                                                .addComponent(levelToStop, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                                .addGap(0, 0, Short.MAX_VALUE)))))
                                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
@@ -687,13 +738,21 @@ public class GUI extends JFrame {
                                         .addComponent(upgradePickaxe))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(runFromCombat)
-                                        .addComponent(jLabel26))
+                                        .addComponent(jLabel28)
+                                        .addComponent(pickaxeInInventory))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel27)
+                                        .addComponent(switchSlaveBack))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel26)
+                                        .addComponent(runFromCombat))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel13)
                                         .addComponent(drawObjects))
-                                .addGap(19, 19, 19)
+                                .addGap(18, 18, 18)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel25)
                                         .addComponent(drawRadius))
@@ -705,6 +764,10 @@ public class GUI extends JFrame {
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel15)
                                         .addComponent(disablePaint))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel29)
+                                        .addComponent(levelToStop, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -714,15 +777,15 @@ public class GUI extends JFrame {
                 jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(23, Short.MAX_VALUE))
+                                .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 397, Short.MAX_VALUE)
+                                .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
                 jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 269, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(184, Short.MAX_VALUE))
+                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(59, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab("Settings", jPanel2);
@@ -854,6 +917,14 @@ public class GUI extends JFrame {
             variables.upgradePickaxe = true;
         }
 
+        if (pickaxeInInventory.isSelected()) {
+            variables.pickaxeInInventory = true;
+        }
+
+        if (switchSlaveBack.isSelected()) {
+            variables.switchSlaveBack = true;
+        }
+
         if (runFromCombat.isSelected()) {
             variables.runFromCombat = true;
         }
@@ -876,6 +947,7 @@ public class GUI extends JFrame {
 
         variables.pickaxe = Pickaxe.BRONZE;
         variables.mode = ((Mode) droppingMode.getSelectedItem());
+        variables.levelToStop = Integer.parseInt(levelToStop.getValue().toString());
         variables.guiComplete = true;
         setVisible(false);
     }
@@ -913,22 +985,33 @@ public class GUI extends JFrame {
     }
 
     private void radiusMineActionPerformed() {
+        drawRadius.setEnabled(true);
         variables.radiusMine = radiusMine.isSelected();
         setRadiusMineTab(radiusMine.isSelected());
         disableLocationTab(radiusMine.isSelected());
     }
 
     private void masterSystemActionPerformed() {
-        disableLocationTab(masterSystem.isSelected());
-        disableDroppingTab(masterSystem.isSelected());
-        disableWorldHopTab(masterSystem.isSelected());
-        disableRadiusTab(masterSystem.isSelected());
-        disableSlaveTab(masterSystem.isSelected());
-        disableTransferringTab(masterSystem.isSelected());
-        disableSettingsTab(masterSystem.isSelected());
+        if (masterSystem.isSelected()) {
+            disableLocationTab(masterSystem.isSelected());
+            disableDroppingTab(masterSystem.isSelected());
+            disableWorldHopTab(masterSystem.isSelected());
+            disableRadiusTab(masterSystem.isSelected());
+            disableSlaveTab(masterSystem.isSelected());
+            disableTransferringTab(masterSystem.isSelected());
+            disableSettingsTab(masterSystem.isSelected());
+        } else {
+            disableLocationTab(masterSystem.isSelected());
+            disableDroppingTab(masterSystem.isSelected());
+            worldHop.setEnabled(true);
+            disableRadiusTab(masterSystem.isSelected());
+            slaveSystem.setEnabled(true);
+            disableSettingsTab(masterSystem.isSelected());
+        }
     }
 
     private void slaveSystemActionPerformed() {
+        switchSlaveBack.setEnabled(true);
         disableMasterTab(slaveSystem.isSelected());
         setSlaveSystemTab(slaveSystem.isSelected());
     }
@@ -968,11 +1051,16 @@ public class GUI extends JFrame {
     }
 
     public void disableTransferringTab(boolean isSelected) {
+        variation.setEnabled(!isSelected);
         transferMinutes.setEnabled(!isSelected);
         transferMade.setEnabled(!isSelected);
     }
 
     public void disableSettingsTab(boolean isSelected) {
+        pickaxeInInventory.setEnabled(!isSelected);
+        runFromCombat.setEnabled(!isSelected);
+        disablePaint.setEnabled(!isSelected);
+        levelToStop.setEnabled(!isSelected);
         upgradePickaxe.setEnabled(!isSelected);
         drawObjects.setEnabled(!isSelected);
         drawTiles.setEnabled(!isSelected);
@@ -984,6 +1072,7 @@ public class GUI extends JFrame {
         masterLocation.setEnabled(isSelected);
         transferMinutes.setEnabled(isSelected);
         transferMade.setEnabled(isSelected);
+        variation.setEnabled(isSelected);
     }
 
     public void setRadiusMineTab(boolean isSelected) {

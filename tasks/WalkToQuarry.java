@@ -40,9 +40,11 @@ public class WalkToQuarry extends Task {
 
     @Override
     public boolean validate() {
-        return !vars.isSlaveSystemIsRunning && !vars.isUpgradingPickaxe &&
-                !Inventory.isFull() && vars.area.distanceTo(Player.getPosition()) >= vars.radius &&
-                Equipment.getItem(Equipment.SLOTS.WEAPON) != null;
+        return !vars.isSlaveSystemIsRunning &&
+                !vars.isUpgradingPickaxe &&
+                !Inventory.isFull() &&
+                vars.area.distanceTo(Player.getPosition()) >= vars.radius &&
+                (Inventory.getCount(Constants.PICKAXES) > 0 || Equipment.getItem(Equipment.SLOTS.WEAPON) != null);
     }
 
 }

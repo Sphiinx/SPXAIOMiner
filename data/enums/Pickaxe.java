@@ -45,11 +45,29 @@ public enum Pickaxe {
         return previousPickaxe;
     }
 
-    public Pickaxe getBestPickaxe() {
+    public Pickaxe getBestPickaxe(boolean pickaxeInInventory) {
         int attack = Skills.getCurrentLevel(Skills.SKILLS.ATTACK);
         int mining = Skills.getCurrentLevel(Skills.SKILLS.MINING);
 
-        if (attack > 0 && mining > 0) {
+        if (pickaxeInInventory) {
+            if (mining >= DRAGON.getMiningLevel()) {
+                return DRAGON;
+            } else if (mining >= RUNE.getMiningLevel()) {
+                return RUNE;
+            } else if (mining >= ADAMANT.getMiningLevel()) {
+                return ADAMANT;
+            } else if (mining >= MITHRIL.getMiningLevel()) {
+                return MITHRIL;
+            } else if (mining >= BLACK.getMiningLevel()) {
+                return BLACK;
+            } else if (mining >= STEEL.getMiningLevel()) {
+                return STEEL;
+            } else if (mining >= IRON.getMiningLevel()) {
+                return IRON;
+            } else {
+                return BRONZE;
+            }
+        } else {
             if (attack >= DRAGON.getAttackLevel() && mining >= DRAGON.getMiningLevel()) {
                 return DRAGON;
             } else if (attack >= RUNE.getAttackLevel() && mining >= RUNE.getMiningLevel()) {
@@ -68,7 +86,6 @@ public enum Pickaxe {
                 return BRONZE;
             }
         }
-        return null;
     }
 
 }

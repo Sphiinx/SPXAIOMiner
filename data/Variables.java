@@ -30,8 +30,10 @@ public class Variables {
     public boolean masterSystem;
     public boolean runFromCombat;
     public boolean upgradePickaxe;
+    public boolean switchSlaveBack;
     public boolean drawRadius = true;
     public boolean isUpgradingPickaxe;
+    public boolean pickaxeInInventory;
     public boolean isSlaveSystemIsRunning;
 
     public double version;
@@ -52,6 +54,7 @@ public class Variables {
     public int oresMined;
     public int variation;
     public int startLevel;
+    public int levelToStop;
     public int profitReset;
     public int radius = 30;
     public int masterWorld;
@@ -60,6 +63,7 @@ public class Variables {
     public int playersToHop;
     public int masterTrades;
     public int orePriceTotal;
+    public int originalWorld;
     public int resetOresMined;
     public int transferMinutes;
 

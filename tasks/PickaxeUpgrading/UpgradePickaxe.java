@@ -8,12 +8,11 @@ import org.tribot.api2007.types.RSItem;
 import scripts.SPXAIOMiner.API.Framework.Task;
 import scripts.SPXAIOMiner.API.Game.Banking.Banking07;
 import scripts.SPXAIOMiner.API.Game.Game.Game07;
-import scripts.SPXAIOMiner.API.Game.Inventory.Inventory07;
 import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
+import scripts.SPXAIOMiner.API.Printing;
 import scripts.SPXAIOMiner.AntiBan;
 import scripts.SPXAIOMiner.data.*;
 import scripts.SPXAIOMiner.data.Constants;
-import scripts.SPXAIOMiner.data.enums.Location;
 import scripts.SPXAIOMiner.data.enums.Pickaxe;
 
 import java.util.ArrayList;
@@ -39,13 +38,13 @@ public class UpgradePickaxe extends Task {
     //<editor-fold defaultstate="collapsed" desc="GetBestPickaxe">
     private void getBestPickaxe() {
         if (pickaxeToGet == null) {
-            pickaxeToGet = vars.pickaxe.getBestPickaxe();
+            pickaxeToGet = vars.pickaxe.getBestPickaxe(vars.pickaxeInInventory);
             vars.pickaxe = pickaxeToGet;
         }
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="WithdrawPickax">
+    //<editor-fold defaultstate="collapsed" desc="WithdrawPickaxe">
     public void withdrawItems() {
         Banking07.depositInventory();
         if (Banking07.isBankItemsLoaded()) {
@@ -61,6 +60,9 @@ public class UpgradePickaxe extends Task {
                                 return Inventory.getCount(pickaxeToGet.getPickaxeID()) >= 1;
                             }
                         }, General.random(750, 1000));
+                        if (vars.pickaxeInInventory) {
+                            vars.isUpgradingPickaxe = false;
+                        }
                     }
                 } else {
                     getNextPickaxe();
@@ -73,8 +75,8 @@ public class UpgradePickaxe extends Task {
     //<editor-fold defaultstate="collapsed" desc="GetNextPickaxe">
     private void getNextPickaxe() {
         if (pickaxeToGet == Pickaxe.BRONZE) {
-            General.println("We could not find a pickaxe in the bank...");
-            General.println("Stopping script...");
+            Printing.status("We could not find a pickaxe in the bank...");
+            Printing.status("Stopping script...");
             AntiBan.destroy();
             vars.stopScript = true;
         } else {
@@ -90,9 +92,9 @@ public class UpgradePickaxe extends Task {
     //<editor-fold defaultstate="collapsed" desc="NeedsUpgrade">
     private boolean needsUpgrade() {
         RSItem pickaxe = Equipment.getItem(Equipment.SLOTS.WEAPON);
-        if (pickaxe != null) {
+        if (pickaxe != null || Inventory.getCount(Constants.PICKAXES) > 0) {
             if (Banking.isBankScreenOpen()) {
-                if (Equipment.getItem(Equipment.SLOTS.WEAPON).getID() != vars.pickaxe.getBestPickaxe().getPickaxeID()) {
+                if (Equipment.getItem(Equipment.SLOTS.WEAPON).getID() != vars.pickaxe.getBestPickaxe(vars.pickaxeInInventory).getPickaxeID() || (Inventory.find(Constants.PICKAXES)[0].getID() != vars.pickaxe.getBestPickaxe(vars.pickaxeInInventory).getPickaxeID())) {
                     if (unaval_list.size() > 0) {
                         for (Pickaxe pick : unaval_list) {
                             if (pickaxeToGet == pick) {

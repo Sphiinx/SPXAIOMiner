@@ -34,9 +34,9 @@ public class MasterSystem extends Task {
         } else {
             tradeSlave();
         }
-
     }
 
+    //<editor-fold defaultstate="collapsed" desc="TradeSlave">
     public void tradeSlave() {
         if (Trading.getWindowState() == Trading.WINDOW_STATE.FIRST_WINDOW || Trading.getWindowState() == Trading.WINDOW_STATE.SECOND_WINDOW) {
             if (Trading.getOfferedItems(true).length > 0) {
@@ -59,7 +59,9 @@ public class MasterSystem extends Task {
             }
         }
     }
+    //</editor-fold-
 
+    //<editor-fold defaultstate="collapsed" desc="AcceptTrade">
     public void acceptTrade() {
         if (Trading.getWindowState() == Trading.WINDOW_STATE.FIRST_WINDOW) {
             if (Trading.accept()) {
@@ -86,6 +88,7 @@ public class MasterSystem extends Task {
             }
         }
     }
+    //</editor-fold>
 
     @Override
     public String toString() {

@@ -4,7 +4,6 @@ import org.tribot.api.Clicking;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
-import org.tribot.api2007.Banking;
 import org.tribot.api2007.Equipment;
 import org.tribot.api2007.Inventory;
 import org.tribot.api2007.types.RSItem;
@@ -47,7 +46,7 @@ public class EquipPickaxe extends Task {
 
     @Override
     public boolean validate() {
-        return Equipment.getItem(Equipment.SLOTS.WEAPON) == null && Inventory.getCount(Constants.PICKAXES) > 0;
+        return !vars.pickaxeInInventory && Equipment.getItem(Equipment.SLOTS.WEAPON) == null && Inventory.getCount(Constants.PICKAXES) > 0;
     }
 
 }
