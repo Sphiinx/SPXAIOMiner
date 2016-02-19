@@ -48,17 +48,12 @@ public class Server {
         }
     }
 
-    public void incrementOre(String string) {
+    public void incrementOre() {
         variables.oresMined++;
         variables.resetOresMined++;
-    }
-
-    public void performAntiban() {
-        int sleep = AntiBan.getReactionTime();
-        Printing.dev("Reaction Time: " + sleep);
-        AntiBan.sleepReactionTime();
         AntiBan.incrementResourcesWon();
     }
+
 
 }
 

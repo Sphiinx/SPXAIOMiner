@@ -30,18 +30,30 @@ public class DepositItems extends Task {
     }
 
     private void handleBanking() {
-        if (Banking.isBankScreenOpen()) {
-            if (vars.pickaxeInInventory) {
-                RSItem[] pick = Inventory.find(Constants.PICKAXES);
-                Banking07.depositAllExcept(pick[0].getID());
+        if (isUsingCustomPath()) {
+            if (DepositBox07.isAtDepositBox()) {
+                handleDepositBox();
             } else {
-                Banking07.depositInventory();
+                useCustomPaths();
             }
-        } else if (Banking07.isInBank()) {
-            walkToBank();
-        } else if (DepositBox07.isAtDepositBox()) {
-            handleDepositBox();
+        } else {
+            if (Banking.isBankScreenOpen()) {
+                if (vars.pickaxeInInventory) {
+                    RSItem[] pick = Inventory.find(Constants.PICKAXES);
+                    Banking07.depositAllExcept(pick[0].getID());
+                } else {
+                    Banking07.depositInventory();
+                }
+            } else {
+                Banking07.openBank();
+            }
         }
+    }
+
+    private boolean isUsingCustomPath() {
+        return vars.area.equals(Location.RIMMINGTON.getArea()) ||
+                vars.area.equals(Location.PORT_KHAZARD.getArea()) ||
+                vars.area.equals(Location.SHILO_VILLAGE.getArea());
     }
 
     private void handleDepositBox() {
@@ -56,15 +68,15 @@ public class DepositItems extends Task {
         }
     }
 
-    private void walkToBank() {
+    private void useCustomPaths() {
         if (vars.area.equals(Location.RIMMINGTON.getArea())) {
             WebWalking.walkTo(Constants.RIMMINGTON_DEPOSIT_BOX);
         } else if (vars.area.equals(Location.PORT_KHAZARD.getArea())) {
             WebWalking.walkTo(Constants.PORTKHAZARD_DEPOSIT_BOX);
-        } else if (vars.area.equals(Location.SHILO_VILLAGE.getArea())) {
-            Walking.walkPath(Walking.randomizePath(Constants.SHILO_VILLAGE_PATH, 2, 2));
         } else {
-            Banking07.openBank();
+            if (vars.area.equals(Location.SHILO_VILLAGE.getArea())) {
+                Walking.walkPath(Walking.randomizePath(Constants.SHILO_VILLAGE_PATH, 2, 2));
+            }
         }
     }
 

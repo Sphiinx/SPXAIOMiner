@@ -37,7 +37,7 @@ public class Utility07 {
     public static int getCurrentWorld() {
         RSInterface friendsList = Interfaces.get(FRIENDS_LIST_INTERFACE, FRIENDS_LIST_INTERFACE_CHILD);
         if (friendsList != null) {
-            return Integer.parseInt(friendsList.getText().substring(21));
+            return Integer.parseInt(friendsList.getText().substring(22));
         } else {
             return -1;
         }

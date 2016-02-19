@@ -24,7 +24,7 @@ public class WorldHop extends Task {
 
     @Override
     public void execute() {
-        if (Area07.getPlayersInArea(vars.radius) >= vars.playersToHop || vars.shouldWeHop) {
+        if (Area07.getPlayersInArea(vars.radius) > vars.playersToHop || vars.shouldWeHop) {
             int world = vars.worlds.getRandomWorld();
             if (WorldHopper07.switchWorld(world)) {
                 Timing.waitCondition(new Condition() {
@@ -32,7 +32,7 @@ public class WorldHop extends Task {
                     public boolean active() {
                         return Utility07.getCurrentWorld() == world;
                     }
-                }, General.random(4500, 6500));
+                }, General.random(5500, 6500));
             }
         }
     }

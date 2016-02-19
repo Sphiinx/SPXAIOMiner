@@ -83,13 +83,9 @@ public class WithdrawItems extends Task {
         vars.timeRanMinutes = (Timing.timeFromMark(vars.resetTimeRan) / 60000) + General.random(0, vars.variation);
         vars.orePriceTotal = (vars.orePrice * vars.resetOresMined) + General.random(0, vars.variation);
         if (Trading.getWindowState() != Trading.WINDOW_STATE.FIRST_WINDOW && Trading.getWindowState() != Trading.WINDOW_STATE.SECOND_WINDOW) {
-            if (Inventory.getCount(vars.oreType.getNotedItemIDs()) < vars.resetOresMined && (vars.timeRanMinutes >= vars.transferMinutes || vars.orePriceTotal >= vars.transferMade)) {
-                if (vars.isSlaveSystemIsRunning) {
-                    return true;
-                } else {
-                    vars.isSlaveSystemIsRunning = true;
-                    return true;
-                }
+            if (Inventory.getCount(vars.oreType.getNotedItemIDs()) < vars.resetOresMined && (vars.timeRanMinutes >= vars.transferMinutes || vars.orePriceTotal >= vars.transferMade || vars.isSlaveSystemIsRunning)) {
+                vars.isSlaveSystemIsRunning = true;
+                return true;
             }
         }
         return false;

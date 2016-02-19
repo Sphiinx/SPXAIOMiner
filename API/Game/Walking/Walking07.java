@@ -42,8 +42,8 @@ public class Walking07 {
      * @return True if the object is on the screen; false otherwise.
      * */
     public static void sceenWalkToObject(RSObject object) {
-        Point ore = Projection.tileToMinimap(object);
-        if (Projection.isInMinimap(ore)) {
+        Point obj = Projection.tileToMinimap(object);
+        if (Projection.isInMinimap(obj)) {
             RSTile[] path = Walking.generateStraightScreenPath(object.getPosition());
             if (Walking.walkScreenPath(path)) {
                 Timing.waitCondition(new Condition() {
@@ -54,8 +54,6 @@ public class Walking07 {
                     }
                 }, General.random(1200, 1500));
             }
-        } else {
-            WebWalking.walkTo(object);
         }
     }
 

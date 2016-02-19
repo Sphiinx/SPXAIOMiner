@@ -107,11 +107,9 @@ public class Settings {
             gui.worldHopOresAval.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("worldHopOresAval")));
 
             gui.radiusMine.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("radiusMine")));
-            if (gui.radiusMine.isSelected()) {
-                gui.variables.radiusMine = true;
-            }
             gui.setRadiusMineTab(gui.radiusMine.isSelected());
             gui.disableLocationTab(gui.radiusMine.isSelected());
+            gui.variables.radiusMine = gui.radiusMine.isSelected();
 
             gui.masterSystem.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("masterSystem")));
             gui.disableLocationTab(gui.masterSystem.isSelected());

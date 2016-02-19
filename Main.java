@@ -31,7 +31,7 @@ import java.util.ArrayList;
 /**
  * Created by Sphiinx on 12/21/2015.
  */
-@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.2)
+@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.5)
 public class Main extends Script implements MessageListening07, Painting, MouseSplinePainting, MousePainting, MouseActions, Ending {
 
     private Variables variables = new Variables();
@@ -46,6 +46,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
 
     @Override
     public void run() {
+        AntiBan.setPrintDebug(true);
         General.useAntiBanCompliance(true);
         ThreadSettings.get().setClickingAPIUseDynamic(true);
         setDebugging();
@@ -132,13 +133,8 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     }
 
     private void getItemPrice() {
-        variables.orePrice = PriceChecking07.getGEPrice(variables.oreType.getItemIDs()[0]);
-        if (variables.orePrice == 0) {
-            General.println("We were unable to get the current prices for the Ore...");
-            General.println("Runescapes website may be having issues...");
-            General.println("Stopping script...");
-            AntiBan.destroy();
-            variables.stopScript = true;
+        if (variables.oreType != null) {
+            variables.orePrice = PriceChecking07.getOSbuddyPrice(variables.oreType.getItemIDs()[0]);
         }
     }
     //</editor-fold>
@@ -186,8 +182,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     @Override
     public void serverMessageReceived(String s) {
         if (s.contains("You manage to mine some") || s.contains("You just mined")) {
-            server.performAntiban();
-            server.incrementOre(s);
+            server.incrementOre();
         }
         if (s.contains("Accepted trade.")) {
             if (variables.slaveSystem) {
@@ -239,6 +234,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     public void mouseClicked(Point point, int i, boolean b) {
         if (Constants.START_SLAVESYSTEM.contains(point) && i == 1 && !b) {
             if (variables.resetOresMined > 0) {
+                General.println("Enabling slave system.");
                 variables.isSlaveSystemIsRunning = true;
             } else {
                 General.println("We cannot enable the slave system unless we've mined more ore!");
