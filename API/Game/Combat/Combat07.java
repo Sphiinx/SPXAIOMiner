@@ -183,6 +183,7 @@ public class Combat07 {
 
     /**
      * Checks if the player is in combat.
+     *
      * @return True if in combat; false otherwise.
      * */
     public static boolean isInCombat() {

@@ -20,7 +20,7 @@ public class WalkToQuarry extends Task {
 
     @Override
     public void execute() {
-        if (vars.area.equals(Location.SHILO_VILLAGE.getArea())) {
+        if (vars.area.equals(Location.SHILO_VILLAGE.getLocation())) {
             Walking.walkPath(Walking.invertPath(Walking.randomizePath(Constants.SHILO_VILLAGE_PATH, 2, 2)));
             } else {
             WebWalking.walkTo(vars.area, new Condition() {

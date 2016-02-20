@@ -27,7 +27,7 @@ public class WithdrawItems extends Task {
         if (Banking.isBankScreenOpen()) {
             withdrawItems();
         } else {
-            if (vars.area.equals(Location.SHILO_VILLAGE.getArea())) {
+            if (vars.area.equals(Location.SHILO_VILLAGE.getLocation())) {
                 Walking.walkPath(Walking.randomizePath(scripts.SPXAIOMiner.data.Constants.SHILO_VILLAGE_PATH, 2, 2));
             } else {
                 Banking07.openBank();

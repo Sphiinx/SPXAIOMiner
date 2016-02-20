@@ -7,7 +7,6 @@ import scripts.SPXAIOMiner.API.Framework.Task;
 import scripts.SPXAIOMiner.API.Game.Combat.Combat07;
 import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
 import scripts.SPXAIOMiner.AntiBan;
-import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Variables;
 
 
@@ -22,11 +21,13 @@ public class RunFromCombat extends Task {
 
     @Override
     public void execute() {
+        General.println("Attempting to run!");
         AntiBan.activateRun();
-        WebWalking.walkTo(Constants.SAFE_ZONE, new Condition() {
+        WebWalking.walkTo(vars.safePosition, new Condition() {
             @Override
             public boolean active() {
                 General.sleep(100);
+                General.println("Running");
                 return !Combat07.isInCombat();
             }
         }, General.random(100, 150));
@@ -39,6 +40,7 @@ public class RunFromCombat extends Task {
 
     @Override
     public boolean validate() {
+        General.println("Checking");
         return Combat07.isInCombat();
     }
 

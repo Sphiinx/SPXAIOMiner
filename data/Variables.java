@@ -3,10 +3,7 @@ package scripts.SPXAIOMiner.data;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
-import scripts.SPXAIOMiner.data.enums.Mode;
-import scripts.SPXAIOMiner.data.enums.OreType;
-import scripts.SPXAIOMiner.data.enums.Pickaxe;
-import scripts.SPXAIOMiner.data.enums.Worlds;
+import scripts.SPXAIOMiner.data.enums.*;
 
 import java.io.File;
 import java.util.Properties;
@@ -75,6 +72,7 @@ public class Variables {
     public Pickaxe pickaxe;
 
     public RSTile area;
+    public RSTile safePosition;
     public RSTile currentMasterPosition;
 
     public String status;

@@ -51,9 +51,9 @@ public class DepositItems extends Task {
     }
 
     private boolean isUsingCustomPath() {
-        return vars.area.equals(Location.RIMMINGTON.getArea()) ||
-                vars.area.equals(Location.PORT_KHAZARD.getArea()) ||
-                vars.area.equals(Location.SHILO_VILLAGE.getArea());
+        return vars.area.equals(Location.RIMMINGTON.getLocation()) ||
+                vars.area.equals(Location.PORT_KHAZARD.getLocation()) ||
+                vars.area.equals(Location.SHILO_VILLAGE.getLocation());
     }
 
     private void handleDepositBox() {
@@ -69,12 +69,12 @@ public class DepositItems extends Task {
     }
 
     private void useCustomPaths() {
-        if (vars.area.equals(Location.RIMMINGTON.getArea())) {
+        if (vars.area.equals(Location.RIMMINGTON.getLocation())) {
             WebWalking.walkTo(Constants.RIMMINGTON_DEPOSIT_BOX);
-        } else if (vars.area.equals(Location.PORT_KHAZARD.getArea())) {
+        } else if (vars.area.equals(Location.PORT_KHAZARD.getLocation())) {
             WebWalking.walkTo(Constants.PORTKHAZARD_DEPOSIT_BOX);
         } else {
-            if (vars.area.equals(Location.SHILO_VILLAGE.getArea())) {
+            if (vars.area.equals(Location.SHILO_VILLAGE.getLocation())) {
                 Walking.walkPath(Walking.randomizePath(Constants.SHILO_VILLAGE_PATH, 2, 2));
             }
         }

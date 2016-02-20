@@ -31,7 +31,7 @@ import java.util.ArrayList;
 /**
  * Created by Sphiinx on 12/21/2015.
  */
-@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.5)
+@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.3)
 public class Main extends Script implements MessageListening07, Painting, MouseSplinePainting, MousePainting, MouseActions, Ending {
 
     private Variables variables = new Variables();
@@ -250,6 +250,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     //<editor-fold defaultstate="collapsed" desc="Ending">
     @Override
     public void onEnd() {
+        General.println("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
         DynamicSignature.sendSignatureData(variables.timeRan / 1000, variables.oresMined, variables.profit, variables.gainedXP, variables.gainedLevels, variables.masterTrades, variables.masterTrades);
     }
     //</editor-fold>

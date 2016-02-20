@@ -21,22 +21,15 @@ public class Constants {
     };
     public static final RSTile RIMMINGTON_DEPOSIT_BOX = new RSTile(3045, 3235, 0);
     public static final RSTile PORTKHAZARD_DEPOSIT_BOX = new RSTile(2663, 3160, 0);
+    public static final RSTile DEFAULT_SAFE_ZONE = new RSTile(3222, 3217, 0);
     public static final RSTile[] SHILO_VILLAGE_PATH = new RSTile[] {
             new RSTile(2824, 2999, 0), new RSTile(2829, 2989, 0),
             new RSTile(2828, 2980, 0), new RSTile(2831, 2976, 0),
             new RSTile(2831, 2966, 0), new RSTile(2846, 2960, 0),
             new RSTile(2853, 2955, 0)
     };
-    public static final RSTile SAFE_ZONE = new RSTile(3222, 3217, 0);
-    public static Image getImage(String url) {
-        try {
-            return ImageIO.read(new URL(url));
-        } catch (IOException e) {
-            return null;
-        }
-    }
 
-    //<editor-fold defaultstate="collapsed" desc="Paint Info">
+    //<editor-fold defaultstate="collapsed" desc="Paint Stats">
     public static final Image PAINT = getImage("http://i.imgur.com/qNbS3Yp.png");
     public static final Color BLUE_COLOR = new Color(4, 49, 73, 240);
     public static final Color TEXT_COLOR = new Color(249, 196, 70, 250);
@@ -47,6 +40,13 @@ public class Constants {
             RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     public static final Rectangle CLOSE_PAINT = new Rectangle(494, 312, 21, 21);
     public static final Rectangle START_SLAVESYSTEM = new Rectangle(560, 205, 165, 20);
+    public static Image getImage(String url) {
+        try {
+            return ImageIO.read(new URL(url));
+        } catch (IOException e) {
+            return null;
+        }
+    }
     //</editor-fold>
 
 }

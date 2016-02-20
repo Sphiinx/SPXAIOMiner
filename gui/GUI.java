@@ -4,6 +4,7 @@ import org.tribot.api.General;
 import org.tribot.api2007.Player;
 import scripts.SPXAIOMiner.API.Game.Game.Game07;
 import scripts.SPXAIOMiner.AntiBan;
+import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Variables;
 import scripts.SPXAIOMiner.data.enums.*;
 
@@ -866,6 +867,7 @@ public class GUI extends JFrame {
                 variables.oreType = ((OreType) radiusOreType.getSelectedItem());
                 variables.radius = Integer.parseInt(radiusAmount.getValue().toString());
                 variables.area = Player.getPosition();
+                variables.safePosition = Constants.DEFAULT_SAFE_ZONE;
             } else {
                 General.println("For radius mining, please start the script logged in...");
                 General.println("Stopping script...");
@@ -874,7 +876,8 @@ public class GUI extends JFrame {
             }
         } else {
             variables.oreType = ((OreType) oreType.getSelectedItem());
-            variables.area = ((Location) quarryLocation.getSelectedItem()).getArea();
+            variables.area = ((Location) quarryLocation.getSelectedItem()).getLocation();
+            variables.safePosition = ((Location) quarryLocation.getSelectedItem()).getSafePosition();
         }
 
         if (dropGems.isSelected()) {

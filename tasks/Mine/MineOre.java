@@ -12,6 +12,7 @@ import org.tribot.api.util.Sorting;
 import org.tribot.api.util.abc.preferences.WalkingPreference;
 import org.tribot.api2007.*;
 import org.tribot.api2007.ChooseOption;
+import org.tribot.api2007.Combat;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.ext.Filters;
@@ -26,6 +27,7 @@ import scripts.SPXAIOMiner.AntiBan;
 import scripts.SPXAIOMiner.data.*;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.enums.OreType;
+import scripts.SPXCowKiller.API.Game.Combat.Combat07;
 
 import java.awt.*;
 import java.awt.geom.Area;
@@ -37,19 +39,21 @@ import java.util.ArrayList;
  */
 public class MineOre extends Task {
 
-    //    private RSObject currentOre;
-    private RSObject oreToHover;
-    private int rockID;
-    private RSTile anticipatedLocation;
     private final Filter<RSObject> ORE_FILTER = oreFilter();
     private ArrayList<RSTile> depletedOres = new ArrayList<>();
-    int createCache;
-    int cacheToCheck;
-    long check_time;
+    private RSObject oreToHover;
     private RSObject miningRock;
+    private int rockID;
+    private int createCache;
+    private long check_time;
     private long totalWaitTime = 0;
-    RSMenuNode hoverNode = null;
-    RSItem tempItem = null;
+    private RSTile anticipatedLocation;
+    private RSMenuNode hoverNode = null;
+    private RSItem tempItem = null;
+    private boolean shouldHover;
+    private boolean shouldOpenMenu;
+    private boolean clickingResult;
+
 
     public MineOre(Variables v) {
         super(v);
@@ -76,8 +80,9 @@ public class MineOre extends Task {
 
     //<editor-fold defaultstate="collapsed" desc="HoverMenuNode">
     private boolean hoverMenuNode() {
-        if (hoverNode == null || !ChooseOption.isOpen() || isOreDepleted(oreToHover))
+        if (hoverNode == null || !ChooseOption.isOpen()) {
             return false;
+        }
 
         Rectangle rectangle = hoverNode.getArea();
         if (rectangle != null) {
@@ -92,112 +97,155 @@ public class MineOre extends Task {
     }
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="SleepReactionTime">
+    private void sleepReactionTime() {
+        int sleep = AntiBan.getReactionTime();
+        Printing.status("Reaction Time: " + sleep);
+        AntiBan.sleepReactionTime();
+    }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="GenerateCheckTime">
+    private void generateCheckTime() {
+        if (Timing.currentTimeMillis() > check_time) {
+            check_time = Timing.currentTimeMillis() + General.random(20000, 30000);
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="HandleHoverCheck">
+    private void handleHoverCheck() {
+        shouldHover = AntiBan.should_hover;
+        shouldOpenMenu = AntiBan.should_open_menu;
+        Printing.status("Should Hover: " + shouldHover);
+        Printing.status("Should Open Menu: " + shouldOpenMenu);
+        if (shouldHover) {
+            RSObject[] potentialTargets = getAllObjects();
+            oreToHover = AntiBan.selectNextTarget(potentialTargets);
+        } else {
+            oreToHover = null;
+            tempItem = null;
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="HandleHovering">
+    private boolean handleHovering() {
+        if (!AntiBan.leaveGame()) {
+            if (shouldHover && Mouse.isInBounds() && oreToHover != null) {
+                if (shouldOpenMenu) {
+                    if (!hoverMenuNode() && !ChooseOption.isOpen() && DynamicClicking.clickRSObject(oreToHover, 3)) {
+                        if (Timing.waitCondition(new Condition() {
+                            @Override
+                            public boolean active() {
+                                return ChooseOption.isOpen();
+                            }
+                        }, General.random(750, 1000))) {
+
+                            RSMenuNode[] nodes = ChooseOption.getMenuNodes();
+                            for (RSMenuNode node : nodes) {
+                                if (!node.correlatesTo(oreToHover)) {
+                                    return false;
+                                }
+
+                                if (node.getAction().contains("Mine")) {
+                                    hoverNode = node;
+                                    hoverMenuNode();
+
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    Clicking.hover(oreToHover);
+                }
+            }
+        }
+        return false;
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="GenerateTrackers">
+    private void generateTrackers(long startTime) {
+        long waitTime = Timing.timeFromMark(startTime);
+        totalWaitTime += waitTime;
+
+        if (vars.oresMined > 0) {
+            waitTime = (int) (totalWaitTime / vars.oresMined);
+        } else {
+            waitTime = 6000;
+        }
+        AntiBan.generateTrackers((int) waitTime);
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="SwitchResources">
+    private void switchResources() {
+        if (AntiBan.getResourcesWon() > 0 && AntiBan.getResourcesLost() > 0) {
+            double winPercentage = (AntiBan.getResourcesWon() + AntiBan.getResourcesLost()) / AntiBan.getResourcesWon();
+
+            if (winPercentage < 50.0 && Timing.currentTimeMillis() >= check_time) {
+                if (AntiBan.shouldSwitchResources(Area07.getPlayersInArea(vars.radius))) {
+                    if (vars.worldHop) {
+                        vars.shouldWeHop = true;
+                    }
+                }
+            }
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="GenerateWalkingPreference">
+    private void generateWalkingPreference(RSObject currentOre) {
+        if (AntiBan.getABCUtil().generateWalkingPreference(Player.getPosition().distanceTo(currentOre)) == WalkingPreference.SCREEN) {
+            Walking07.sceenWalkToObject(currentOre);
+        } else {
+            WebWalking.walkTo(currentOre);
+        }
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="HandleClicking">
+    private void handleClicking(RSObject currentOre) {
+        if (tempItem != null && ChooseOption.isOpen())
+            clickingResult = Clicking.click(tempItem);
+        else
+            clickingResult = Clicking.click("Mine", currentOre);
+    }
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="MineOre">
     private void mineOre(RSObject currentOre) {
         rockID = currentOre.getID();
         miningRock = currentOre;
+
         if (Inventory.isFull()) {
             return;
         }
-
         if (currentOre.isOnScreen()) {
-
-            int sleep = AntiBan.getReactionTime();
-            Printing.status("Reaction Time: " + sleep);
-            AntiBan.sleepReactionTime();
-
-            boolean clickingResult;
-
-            if (tempItem != null && ChooseOption.isOpen())
-                clickingResult = Clicking.click(tempItem);
-            else
-                clickingResult = Clicking.click("Mine", currentOre);
-
-
+            sleepReactionTime();
+            handleClicking(currentOre);
             if (clickingResult) {
                 long startTime = System.currentTimeMillis();
-                if (Timing.currentTimeMillis() > check_time) {
-                    check_time = Timing.currentTimeMillis() + General.random(20000, 30000);
-                }
-                boolean shouldHover = AntiBan.should_hover;
-                boolean shouldOpenMenu = AntiBan.should_open_menu;
-                Printing.status("Should Hover: " + shouldHover);
-                Printing.status("Should Open Menu: " + shouldOpenMenu);
-
-                if (shouldHover) {
-                    RSObject[] potentialTargets = getAllObjects();
-                    oreToHover = AntiBan.selectNextTarget(potentialTargets);
-                } else {
-                    oreToHover = null;
-                    tempItem = null;
-                }
-
-                long timeout = totalWaitTime > 10000 && vars.oresMined > 0 ? (totalWaitTime / vars.oresMined) * 2 : 40000;
+                generateCheckTime();
+                handleHoverCheck();
+                long timeout = totalWaitTime > 10000 && vars.oresMined > 0 ? (totalWaitTime / vars.oresMined) * 2 : 6500;
 
                 if (Timing.waitCondition(new Condition() {
                     @Override
                     public boolean active() {
                         General.sleep(100);
-
-                        if (!AntiBan.leaveGame()) {
-                            if (shouldHover && Mouse.isInBounds() && oreToHover != null) {
-                                if (shouldOpenMenu) {
-                                    if (!hoverMenuNode() && !ChooseOption.isOpen() && DynamicClicking.clickRSObject(oreToHover, 3)) {
-                                        if (Timing.waitCondition(new Condition() {
-                                            @Override
-                                            public boolean active() {
-                                                return ChooseOption.isOpen();
-                                            }
-                                        }, General.random(750, 1000))) {
-
-                                            RSMenuNode[] nodes = ChooseOption.getMenuNodes();
-                                            for (RSMenuNode node : nodes) {
-                                                if (!node.correlatesTo(oreToHover))
-                                                    return false;
-
-                                                if (node.getAction().contains("Mine")) {
-                                                    hoverNode = node;
-                                                    hoverMenuNode();
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else {
-                                    Clicking.hover(oreToHover);
-                                }
-                            }
-                        }
-
+                        handleHovering();
                         return isOreDepleted(currentOre);
                     }
                 }, timeout)) {
-                    long waitTime = Timing.timeFromMark(startTime);
-
-                    totalWaitTime += waitTime;
-                    if (vars.oresMined > 0) {
-                        waitTime = (int) (totalWaitTime / vars.oresMined);
-                    } else {
-                        waitTime = 6000;
-                    }
-                    AntiBan.generateTrackers((int) waitTime);
+                    generateTrackers(startTime);
                     depletedOres.add(currentOre.getPosition());
-                    AntiBan.incrementResourcesWon();
                     createCache = Inventory.getAll().length;
                     isOreStolen();
-
-                    double winPercentage = (AntiBan.getResourcesWon() + AntiBan.getResourcesLost()) / AntiBan.getResourcesWon();
-                    if (winPercentage < 50.0 && Timing.currentTimeMillis() >= check_time) {
-                        if (AntiBan.shouldSwitchResources(Area07.getPlayersInArea(vars.radius))) {
-                            if (vars.worldHop) {
-                                vars.shouldWeHop = true;
-                            }
-                        }
-                    }
+                    switchResources();
                     AntiBan.resetShouldHover();
                     AntiBan.resetShouldOpenMenu();
-
                     if (shouldHover && oreToHover != null) {
                         mineOre(oreToHover);
                     }
@@ -205,11 +253,7 @@ public class MineOre extends Task {
 
             }
         } else {
-            if (AntiBan.getABCUtil().generateWalkingPreference(Player.getPosition().distanceTo(currentOre)) == WalkingPreference.SCREEN) {
-                Walking07.sceenWalkToObject(currentOre);
-            } else {
-                WebWalking.walkTo(currentOre);
-            }
+            generateWalkingPreference(currentOre);
         }
     }
     //</editor-fold>
@@ -235,7 +279,7 @@ public class MineOre extends Task {
 
     //<editor-fold defaultstate="collapsed" desc="IsOreStolen">
     private void isOreStolen() {
-        cacheToCheck = Inventory.getAll().length;
+        int cacheToCheck = Inventory.getAll().length;
         if (createCache != 0 && cacheToCheck != 0) {
             if (createCache == cacheToCheck) {
                 AntiBan.incrementResourcesLost();
