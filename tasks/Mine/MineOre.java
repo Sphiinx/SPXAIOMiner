@@ -5,32 +5,27 @@ import org.tribot.api.DynamicClicking;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.input.Mouse;
-import org.tribot.api.rs3.*;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api.types.generic.Filter;
 import org.tribot.api.util.Sorting;
 import org.tribot.api.util.abc.preferences.WalkingPreference;
 import org.tribot.api2007.*;
 import org.tribot.api2007.ChooseOption;
-import org.tribot.api2007.Combat;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.ext.Filters;
 import org.tribot.api2007.types.*;
-import scripts.SPXAIOMiner.API.Framework.Task;
-import scripts.SPXAIOMiner.API.Game.Area.Area07;
-import scripts.SPXAIOMiner.API.Game.Mouse.Mouse07;
-import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
-import scripts.SPXAIOMiner.API.Game.Walking.Walking07;
-import scripts.SPXAIOMiner.API.Printing;
-import scripts.SPXAIOMiner.AntiBan;
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.area.Area07;
+import scripts.SPXAIOMiner.api.game.mouse.Mouse07;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
+import scripts.SPXAIOMiner.api.game.walking.Walking07;
+import scripts.SPXAIOMiner.api.Printing;
+import scripts.SPXAIOMiner.antiban.AntiBan;
 import scripts.SPXAIOMiner.data.*;
 import scripts.SPXAIOMiner.data.Constants;
-import scripts.SPXAIOMiner.data.enums.OreType;
-import scripts.SPXCowKiller.API.Game.Combat.Combat07;
 
 import java.awt.*;
-import java.awt.geom.Area;
 import java.util.ArrayList;
 
 
@@ -99,9 +94,11 @@ public class MineOre extends Task {
 
     //<editor-fold defaultstate="collapsed" desc="SleepReactionTime">
     private void sleepReactionTime() {
-        int sleep = AntiBan.getReactionTime();
-        Printing.status("Reaction Time: " + sleep);
-        AntiBan.sleepReactionTime();
+        if (!vars.disableSleeps) {
+            int sleep = AntiBan.getReactionTime();
+            Printing.status("Reaction Time: " + sleep);
+            AntiBan.sleepReactionTime();
+        }
     }
     //</editor-fold>
 
@@ -197,6 +194,7 @@ public class MineOre extends Task {
 
     //<editor-fold defaultstate="collapsed" desc="GenerateWalkingPreference">
     private void generateWalkingPreference(RSObject currentOre) {
+        Printing.dev("Walking to ore");
         if (AntiBan.getABCUtil().generateWalkingPreference(Player.getPosition().distanceTo(currentOre)) == WalkingPreference.SCREEN) {
             Walking07.sceenWalkToObject(currentOre);
         } else {
@@ -222,7 +220,10 @@ public class MineOre extends Task {
         if (Inventory.isFull()) {
             return;
         }
-        if (currentOre.isOnScreen()) {
+
+        if (!currentOre.isOnScreen()) {
+            generateWalkingPreference(currentOre);
+        } else {
             sleepReactionTime();
             handleClicking(currentOre);
             if (clickingResult) {
@@ -236,6 +237,7 @@ public class MineOre extends Task {
                     public boolean active() {
                         General.sleep(100);
                         handleHovering();
+                        AntiBan.timedActions();
                         return isOreDepleted(currentOre);
                     }
                 }, timeout)) {
@@ -252,28 +254,22 @@ public class MineOre extends Task {
                 }
 
             }
-        } else {
-            generateWalkingPreference(currentOre);
         }
     }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="IsOreDepleted">
     private boolean isOreDepleted(RSObject object) {
-        RSObjectDefinition def = object.getDefinition();
-
-        if (def != null) {
-
+        if (object != null) {
             RSObject[] chk = Objects.getAt(object);
 
             if (chk.length > 0) {
                 int id = chk[0].getID();
                 return rockID != id;
             }
-
-
+            return true;
         }
-        return true;
+        return false;
     }
     //</editor-fold>
 
@@ -286,7 +282,6 @@ public class MineOre extends Task {
             }
         }
         createCache = 0;
-        cacheToCheck = 0;
     }
     //</editor-fold>
 

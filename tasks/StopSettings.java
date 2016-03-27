@@ -1,10 +1,10 @@
 package scripts.SPXAIOMiner.tasks;
 
 import org.tribot.api2007.Skills;
-import scripts.SPXAIOMiner.API.Framework.Task;
-import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
-import scripts.SPXAIOMiner.API.Printing;
-import scripts.SPXAIOMiner.AntiBan;
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
+import scripts.SPXAIOMiner.api.Printing;
+import scripts.SPXAIOMiner.antiban.AntiBan;
 import scripts.SPXAIOMiner.data.Variables;
 
 /**
@@ -36,4 +36,3 @@ public class StopSettings extends Task{
         return vars.levelToStop > 0 && level >= vars.levelToStop;
     }
 }
-

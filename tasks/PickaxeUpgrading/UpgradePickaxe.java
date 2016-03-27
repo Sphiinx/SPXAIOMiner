@@ -5,12 +5,12 @@ import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSItem;
-import scripts.SPXAIOMiner.API.Framework.Task;
-import scripts.SPXAIOMiner.API.Game.Banking.Banking07;
-import scripts.SPXAIOMiner.API.Game.Game.Game07;
-import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
-import scripts.SPXAIOMiner.API.Printing;
-import scripts.SPXAIOMiner.AntiBan;
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.banking.Banking07;
+import scripts.SPXAIOMiner.api.game.game.Game07;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
+import scripts.SPXAIOMiner.api.Printing;
+import scripts.SPXAIOMiner.antiban.AntiBan;
 import scripts.SPXAIOMiner.data.*;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.enums.Pickaxe;
@@ -129,4 +129,3 @@ public class UpgradePickaxe extends Task {
     }
 
 }
-

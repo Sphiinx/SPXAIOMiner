@@ -1,11 +1,11 @@
-package scripts.SPXAIOMiner.API.Game.GroundItems;
+package scripts.SPXAIOMiner.api.game.grounditems;
 
 import org.tribot.api2007.Camera;
 import org.tribot.api2007.Inventory;
 import org.tribot.api2007.Walking;
 import org.tribot.api2007.types.RSGroundItem;
 import org.tribot.api2007.types.RSItemDefinition;
-import scripts.SPXAIOMiner.API.Game.Inventory.Inventory07;
+import scripts.SPXAIOMiner.api.game.inventory.Inventory07;
 
 
 /**

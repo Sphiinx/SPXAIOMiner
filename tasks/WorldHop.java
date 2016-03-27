@@ -4,10 +4,10 @@ import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Player;
-import scripts.SPXAIOMiner.API.Framework.Task;
-import scripts.SPXAIOMiner.API.Game.Area.Area07;
-import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
-import scripts.SPXAIOMiner.API.Game.WorldHopper.WorldHopper07;
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.area.Area07;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
+import scripts.SPXAIOMiner.api.game.worldhopper.WorldHopper07;
 import scripts.SPXAIOMiner.data.Variables;
 
 
@@ -16,12 +16,11 @@ import scripts.SPXAIOMiner.data.Variables;
  */
 public class WorldHop extends Task {
 
-
-
     public WorldHop(Variables v) {
         super(v);
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Execution">
     @Override
     public void execute() {
         if (Area07.getPlayersInArea(vars.radius) > vars.playersToHop || vars.shouldWeHop) {
@@ -36,6 +35,7 @@ public class WorldHop extends Task {
             }
         }
     }
+    //</editor-fold>
 
     @Override
     public String toString() {
@@ -48,4 +48,3 @@ public class WorldHop extends Task {
     }
 
 }
-

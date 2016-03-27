@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.Items;
+package scripts.SPXAIOMiner.api.game.items;
 
 import org.tribot.api2007.types.RSItem;
 import org.tribot.api2007.types.RSItemDefinition;

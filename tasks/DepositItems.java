@@ -6,14 +6,15 @@ import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.*;
 
 import org.tribot.api2007.types.RSItem;
-import scripts.SPXAIOMiner.API.Framework.Task;
-import scripts.SPXAIOMiner.API.Game.Banking.Banking07;
-import scripts.SPXAIOMiner.API.Game.Banking.DepositBox07;
-import scripts.SPXAIOMiner.API.Game.Inventory.Inventory07;
-import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.banking.Banking07;
+import scripts.SPXAIOMiner.api.game.inventory.Inventory07;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
+import scripts.SPXAIOMiner.api.game.banking.DepositBox07;
 import scripts.SPXAIOMiner.data.*;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.enums.Location;
+
 
 /**
  * Created by Sphiinx on 1/16/2016.
@@ -29,6 +30,7 @@ public class DepositItems extends Task {
         handleBanking();
     }
 
+    //<editor-fold defaultstate="collapsed" desc="HandleBanking">
     private void handleBanking() {
         if (isUsingCustomPath()) {
             if (DepositBox07.isAtDepositBox()) {
@@ -49,15 +51,18 @@ public class DepositItems extends Task {
             }
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Check Custom Path">
     private boolean isUsingCustomPath() {
         return vars.area.equals(Location.RIMMINGTON.getLocation()) ||
-                vars.area.equals(Location.PORT_KHAZARD.getLocation()) ||
-                vars.area.equals(Location.SHILO_VILLAGE.getLocation());
+                vars.area.equals(Location.PORT_KHAZARD.getLocation());
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Handle Deposit Box">
     private void handleDepositBox() {
-        RSItem[] ore = Inventory.find(vars.oreType.getItemIDs());
+        RSItem[] ore = Inventory.find(vars.oreType.getItemID());
         if (DepositBox07.deposit(0, ore[0])) {
             Timing.waitCondition(new Condition() {
                 @Override
@@ -67,18 +72,19 @@ public class DepositItems extends Task {
             }, General.random(2000, 3000));
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Use Custom Path">
     private void useCustomPaths() {
         if (vars.area.equals(Location.RIMMINGTON.getLocation())) {
             WebWalking.walkTo(Constants.RIMMINGTON_DEPOSIT_BOX);
-        } else if (vars.area.equals(Location.PORT_KHAZARD.getLocation())) {
-            WebWalking.walkTo(Constants.PORTKHAZARD_DEPOSIT_BOX);
-        } else {
-            if (vars.area.equals(Location.SHILO_VILLAGE.getLocation())) {
-                Walking.walkPath(Walking.randomizePath(Constants.SHILO_VILLAGE_PATH, 2, 2));
+        } else{
+            if (vars.area.equals(Location.PORT_KHAZARD.getLocation())) {
+                WebWalking.walkTo(Constants.PORTKHAZARD_DEPOSIT_BOX);
             }
         }
     }
+    //</editor-fold>
 
     @Override
     public String toString() {
@@ -91,4 +97,3 @@ public class DepositItems extends Task {
     }
 
 }
-

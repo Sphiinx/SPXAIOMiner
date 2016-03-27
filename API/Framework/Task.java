@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Framework;
+package scripts.SPXAIOMiner.api.framework;
 
 import scripts.SPXAIOMiner.data.Variables;
 
@@ -11,6 +11,8 @@ public abstract class Task {
     }
 
     public abstract void execute();
+
+    public abstract String toString();
 
     public abstract boolean validate();
 

@@ -7,10 +7,10 @@ import org.tribot.api2007.Inventory;
 import org.tribot.api2007.Players;
 import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.types.RSTile;
-import scripts.SPXAIOMiner.API.Framework.Task;
-import scripts.SPXAIOMiner.API.Game.Banking.Banking07;
-import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
-import scripts.SPXAIOMiner.API.Game.WorldHopper.WorldHopper07;
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.banking.Banking07;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
+import scripts.SPXAIOMiner.api.game.worldhopper.WorldHopper07;
 import scripts.SPXAIOMiner.data.Variables;
 
 /**
@@ -22,6 +22,7 @@ public class WalkToMaster extends Task {
         super(v);
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Execution">
     @Override
     public void execute() {
         if (Utility07.getCurrentWorld() != vars.masterWorld) {
@@ -39,6 +40,7 @@ public class WalkToMaster extends Task {
             WebWalking.walkTo(getPos());
         }
     }
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="GetPosition">
     public RSTile getPos() {
@@ -59,8 +61,7 @@ public class WalkToMaster extends Task {
     @Override
     public boolean validate() {
         vars.master = Players.find(vars.masterName);
-        return vars.isSlaveSystemIsRunning && vars.master.length <= 0 && Inventory.getCount(vars.oreType.getNotedItemIDs()) >= vars.resetOresMined;
+        return vars.isSlaveSystemIsRunning && vars.master.length <= 0 && Inventory.getCount(vars.oreType.getNotedItemID()) >= vars.resetOresMined;
     }
 
 }
-

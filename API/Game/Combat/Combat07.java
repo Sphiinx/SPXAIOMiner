@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.Combat;
+package scripts.SPXAIOMiner.api.game.combat;
 
 import org.tribot.api.Clicking;
 import org.tribot.api.General;

@@ -3,10 +3,9 @@ package scripts.SPXAIOMiner.messagerecieved;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
-import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
-import scripts.SPXAIOMiner.API.Game.WorldHopper.WorldHopper07;
-import scripts.SPXAIOMiner.API.Printing;
-import scripts.SPXAIOMiner.AntiBan;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
+import scripts.SPXAIOMiner.api.game.worldhopper.WorldHopper07;
+import scripts.SPXAIOMiner.antiban.AntiBan;
 import scripts.SPXAIOMiner.data.Variables;
 
 /**
@@ -20,15 +19,20 @@ public class Server {
         this.variables = variables;
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Increment Trades">
     public void incrementTrades() {
-        variables.masterTrades++;
+        variables.muleTrades++;
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Set Slave Settings">
     public void setSlaveSettings() {
         variables.resetOresMined = 0;
         variables.resetTimeRan = System.currentTimeMillis();
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Switch World">
     public void switchWorldBack() {
         if (Utility07.getCurrentWorld() != variables.originalWorld) {
             if (variables.switchSlaveBack) {
@@ -47,13 +51,14 @@ public class Server {
             variables.isSlaveSystemIsRunning = false;
         }
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Increment Ore">
     public void incrementOre() {
         variables.oresMined++;
         variables.resetOresMined++;
         AntiBan.incrementResourcesWon();
     }
-
+    //</editor-fold>
 
 }
-

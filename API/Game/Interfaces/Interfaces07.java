@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.Interfaces;
+package scripts.SPXAIOMiner.api.game.interfaces;
 
 import org.tribot.api.General;
 import org.tribot.api.input.Keyboard;
@@ -8,7 +8,7 @@ import org.tribot.api2007.types.RSInterface;
 import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSInterfaceComponent;
 import org.tribot.api2007.types.RSInterfaceMaster;
-import scripts.SPXAIOMiner.API.util.ArrayUtil;
+import scripts.SPXAIOMiner.api.util.ArrayUtil;
 
 
 import java.awt.event.KeyEvent;

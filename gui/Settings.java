@@ -1,6 +1,6 @@
 package scripts.SPXAIOMiner.gui;
 
-import org.tribot.api.General;
+import scripts.SPXAIOMiner.api.Printing;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -47,9 +47,11 @@ public class Settings {
 
             gui.variables.properties.put("pickaxeInInventory", String.valueOf(gui.pickaxeInInventory.isSelected()));
 
-            gui.variables.properties.put("runFromCombat", String.valueOf(gui.runFromCombat.isSelected()));
-
             gui.variables.properties.put("switchSlaveBack", String.valueOf(gui.switchSlaveBack.isSelected()));
+
+            gui.variables.properties.put("disableSleeps", String.valueOf(gui.disableSleeps.isSelected()));
+
+            gui.variables.properties.put("useProgressive", String.valueOf(gui.useProgressive.isSelected()));
 
             gui.variables.properties.put("worldHopPlayersNear", String.valueOf(gui.worldHopPlayersNear.getValue()));
 
@@ -75,6 +77,18 @@ public class Settings {
 
             gui.variables.properties.put("radiusOreType", String.valueOf(gui.radiusOreType.getSelectedIndex()));
 
+            gui.variables.properties.put("ore1", String.valueOf(gui.ore1.getSelectedIndex()));
+
+            gui.variables.properties.put("ore2", String.valueOf(gui.ore2.getSelectedIndex()));
+
+            gui.variables.properties.put("ore3", String.valueOf(gui.ore3.getSelectedIndex()));
+
+            gui.variables.properties.put("location1", String.valueOf(gui.location1.getSelectedIndex()));
+
+            gui.variables.properties.put("location2", String.valueOf(gui.location2.getSelectedIndex()));
+
+            gui.variables.properties.put("location3", String.valueOf(gui.location3.getSelectedIndex()));
+
             gui.variables.properties.put("masterUsername", String.valueOf(gui.masterUsername.getText()));
 
             gui.variables.properties.put("masterLocation", String.valueOf(gui.masterLocation.getText()));
@@ -83,7 +97,7 @@ public class Settings {
 
             return true;
         } catch (Exception e1) {
-            General.println("Sorry, unable to save settings.");
+            Printing.status("Sorry, unable to save settings.");
             e1.printStackTrace();
         }
         return false;
@@ -133,9 +147,13 @@ public class Settings {
 
             gui.pickaxeInInventory.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("pickaxeInInventory")));
 
-            gui.runFromCombat.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("runFromCombat")));
-
             gui.switchSlaveBack.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("switchSlaveBack")));
+
+            gui.disableSleeps.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("disableSleeps")));
+
+            gui.useProgressive.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("useProgressive")));
+            gui.disableLocationTab(gui.useProgressive.isSelected());
+            gui.setProgressiveTab(gui.useProgressive.isSelected());
 
             gui.worldHopPlayersNear.setValue(Integer.parseInt(gui.variables.properties.getProperty("worldHopPlayersNear")));
 
@@ -161,13 +179,25 @@ public class Settings {
 
             gui.radiusOreType.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("radiusOreType", "0")));
 
+            gui.ore1.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("ore1", "0")));
+
+            gui.ore2.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("ore2", "0")));
+
+            gui.ore3.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("ore3", "0")));
+
+            gui.location1.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("location1", "0")));
+
+            gui.location2.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("location2", "0")));
+
+            gui.location3.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("location3", "0")));
+
             gui.masterUsername.setText(String.valueOf(gui.variables.properties.getProperty("masterUsername")));
 
             gui.masterLocation.setText(String.valueOf(gui.variables.properties.getProperty("masterLocation")));
 
             return true;
         } catch (Exception e2) {
-            General.println("Sorry, unable to load settings.");
+            Printing.status("Sorry, unable to load settings.");
             e2.printStackTrace();
         }
         return false;
@@ -175,4 +205,3 @@ public class Settings {
     //</editor-fold>
 
 }
-

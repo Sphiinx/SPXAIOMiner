@@ -1,7 +1,6 @@
-package scripts.SPXAIOMiner.API;
+package scripts.SPXAIOMiner.api;
 
 import org.tribot.api.input.Mouse;
-import scripts.SPXAIOMiner.data.Constants;
 
 import java.awt.*;
 

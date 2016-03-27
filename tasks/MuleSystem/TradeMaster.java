@@ -7,8 +7,8 @@ import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
-import scripts.SPXAIOMiner.API.Framework.Task;
-import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
 import scripts.SPXAIOMiner.data.Variables;
 
 import java.awt.*;
@@ -22,6 +22,7 @@ public class TradeMaster extends Task {
         super(v);
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Execution">
     @Override
     public void execute() {
         RSPlayer[] master = Players.find(vars.masterName);
@@ -31,6 +32,7 @@ public class TradeMaster extends Task {
             walkToMaster();
         }
     }
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Trade Master">
     public void tradeMaster() {
@@ -86,7 +88,7 @@ public class TradeMaster extends Task {
 
     //<editor-fold defaultstate="collapsed" desc="OfferItems">
     public void offerItems() {
-        if (Trading.offer(0, vars.oreType.getNotedItemIDs())) {
+        if (Trading.offer(0, vars.oreType.getNotedItemID())) {
             Timing.waitCondition(new Condition() {
                 @Override
                 public boolean active() {
@@ -137,14 +139,15 @@ public class TradeMaster extends Task {
         return "Trading master" + Utility07.loadingPeriods();
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Validation">
     @Override
     public boolean validate() {
         vars.master = Players.find(vars.masterName);
         if (Trading.getWindowState() == Trading.WINDOW_STATE.FIRST_WINDOW || Trading.getWindowState() == Trading.WINDOW_STATE.SECOND_WINDOW) {
             return true;
         }
-        return vars.isSlaveSystemIsRunning && vars.master.length > 0 && Inventory.getCount(vars.oreType.getNotedItemIDs()) >= vars.resetOresMined;
+        return vars.isSlaveSystemIsRunning && vars.master.length > 0 && Inventory.getCount(vars.oreType.getNotedItemID()) >= vars.resetOresMined;
     }
+    //</editor-fold>
 
 }
-

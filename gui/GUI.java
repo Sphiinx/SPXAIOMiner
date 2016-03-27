@@ -2,8 +2,9 @@ package scripts.SPXAIOMiner.gui;
 
 import org.tribot.api.General;
 import org.tribot.api2007.Player;
-import scripts.SPXAIOMiner.API.Game.Game.Game07;
-import scripts.SPXAIOMiner.AntiBan;
+import scripts.SPXAIOMiner.api.game.game.Game07;
+import scripts.SPXAIOMiner.api.Printing;
+import scripts.SPXAIOMiner.antiban.AntiBan;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Variables;
 import scripts.SPXAIOMiner.data.enums.*;
@@ -41,14 +42,22 @@ public class GUI extends JFrame {
     public JCheckBox slaveSystem;
     public JCheckBox masterSystem;
     public JCheckBox disableRadius;
+    public JCheckBox disableSleeps;
     public JCheckBox runFromCombat;
     public JCheckBox upgradePickaxe;
+    public JCheckBox useProgressive;
     public JCheckBox switchSlaveBack;
     public JCheckBox worldHopOresAval;
     public JCheckBox pickaxeInInventory;
 
+    public JComboBox<OreType> ore1;
+    public JComboBox<OreType> ore2;
+    public JComboBox<OreType> ore3;
     public JComboBox<OreType> oreType;
     public JComboBox<Mode> droppingMode;
+    public JComboBox<Location> location1;
+    public JComboBox<Location> location2;
+    public JComboBox<Location> location3;
     public JComboBox<Worlds> worldHopMode;
     public JComboBox<OreType> radiusOreType;
     public JComboBox<Location> quarryLocation;
@@ -106,6 +115,13 @@ public class GUI extends JFrame {
         JLabel jLabel27 = new JLabel();
         JLabel jLabel28 = new JLabel();
         JLabel jLabel29 = new JLabel();
+        JLabel jLabel30 = new JLabel();
+        JLabel jLabel31 = new JLabel();
+        JLabel jLabel32 = new JLabel();
+        JLabel jLabel33 = new JLabel();
+        JLabel jLabel34 = new JLabel();
+        JLabel jLabel35 = new JLabel();
+        JLabel jLabel36 = new JLabel();
         JPanel jPanel1 = new JPanel();
         JPanel jPanel2 = new JPanel();
         JPanel jPanel3 = new JPanel();
@@ -118,8 +134,17 @@ public class GUI extends JFrame {
         JPanel jPanel10 = new JPanel();
         JPanel jPanel11 = new JPanel();
         JPanel jPanel12 = new JPanel();
+        JPanel jPanel13 = new JPanel();
+        JPanel jPanel14 = new JPanel();
+        JPanel jPanel15 = new JPanel();
+        JPanel jPanel16 = new JPanel();
+        JPanel jPanel17 = new JPanel();
+        JPanel jPanel18 = new JPanel();
+
         start = new JButton();
-        disablePaint = new JCheckBox();
+        ore1 = new JComboBox<>();
+        ore2 = new JComboBox<>();
+        ore3 = new JComboBox<>();
         dropGems = new JCheckBox();
         variation = new JSpinner();
         worldHop = new JCheckBox();
@@ -131,17 +156,23 @@ public class GUI extends JFrame {
         radiusMine = new JCheckBox();
         saveSettings = new JButton();
         drawRadius = new JCheckBox();
+        location1 = new JComboBox<>();
+        location2 = new JComboBox<>();
+        location3 = new JComboBox<>();
         drawObjects = new JCheckBox();
         radiusAmount = new JSpinner();
         slaveSystem = new JCheckBox();
         transferMade = new JSpinner();
         masterSystem = new JCheckBox();
+        disablePaint = new JCheckBox();
+        disableSleeps = new JCheckBox();
         disableRadius = new JCheckBox();
         runFromCombat = new JCheckBox();
         droppingMode = new JComboBox<>();
         transferMinutes = new JSpinner();
         upgradePickaxe = new JCheckBox();
         worldHopMode = new JComboBox<>();
+        useProgressive = new JCheckBox();
         switchSlaveBack = new JCheckBox();
         masterLocation = new JTextField();
         masterUsername = new JTextField();
@@ -546,14 +577,14 @@ public class GUI extends JFrame {
         variation.setEnabled(false);
 
         transferMinutes.setFont(new Font("Ubuntu", 0, 12));
-        transferMinutes.setModel(new SpinnerNumberModel(1, 1, 999999999, 1));
+        transferMinutes.setModel(new SpinnerNumberModel(0, 0, 999999999, 1));
         transferMinutes.setMinimumSize(new Dimension(29, 22));
         transferMinutes.setName("");
         transferMinutes.setPreferredSize(new Dimension(29, 22));
         transferMinutes.setEnabled(false);
 
         transferMade.setFont(new Font("Ubuntu", 0, 12));
-        transferMade.setModel(new SpinnerNumberModel(1, 1, 999999999, 1));
+        transferMade.setModel(new SpinnerNumberModel(0, 0, 999999999, 1));
         transferMade.setEnabled(false);
 
         GroupLayout jPanel12Layout = new GroupLayout(jPanel12);
@@ -651,25 +682,17 @@ public class GUI extends JFrame {
         drawTiles.setFont(new java.awt.Font("Ubuntu", 0, 12));
         drawTiles.setText("Yes");
 
-        jLabel26.setFont(new java.awt.Font("Ubuntu", 0, 12));
-        jLabel26.setText("Run From Combat:");
-
-        runFromCombat.setFont(new java.awt.Font("Ubuntu", 0, 12));
-        runFromCombat.setText("Yes");
-
         jLabel25.setFont(new java.awt.Font("Ubuntu", 0, 12));
         jLabel25.setText("Draw Radius:");
 
         drawRadius.setFont(new java.awt.Font("Ubuntu", 0, 12));
         drawRadius.setText("Yes");
-        drawRadius.setEnabled(false);
 
         jLabel27.setFont(new java.awt.Font("Ubuntu", 0, 12));
         jLabel27.setText("Switch slave back to original world:");
 
         switchSlaveBack.setFont(new java.awt.Font("Ubuntu", 0, 12));
         switchSlaveBack.setText("Yes");
-        switchSlaveBack.setEnabled(false);
 
         jLabel28.setFont(new java.awt.Font("Ubuntu", 0, 12));
         jLabel28.setText("Mine with pickaxe in inventory:");
@@ -702,10 +725,6 @@ public class GUI extends JFrame {
                                                 .addComponent(jLabel27)
                                                 .addGap(38, 38, 38)
                                                 .addComponent(switchSlaveBack, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGroup(jPanel6Layout.createSequentialGroup()
-                                                .addComponent(jLabel26)
-                                                .addGap(127, 127, 127)
-                                                .addComponent(runFromCombat, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGroup(jPanel6Layout.createSequentialGroup()
                                                 .addComponent(jLabel13)
                                                 .addGap(152, 152, 152)
@@ -747,10 +766,6 @@ public class GUI extends JFrame {
                                         .addComponent(switchSlaveBack))
                                 .addGap(18, 18, 18)
                                 .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel26)
-                                        .addComponent(runFromCombat))
-                                .addGap(18, 18, 18)
-                                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                         .addComponent(jLabel13)
                                         .addComponent(drawObjects))
                                 .addGap(18, 18, 18)
@@ -785,9 +800,243 @@ public class GUI extends JFrame {
                 jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addContainerGap()
-                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 394, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 353, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(100, Short.MAX_VALUE))
+        );
+
+        jTabbedPane2.addTab("Settings", jPanel2);
+
+        jPanel14.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Level", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 0, 14)));
+
+        jLabel30.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        jLabel30.setText("Level 1-15:");
+
+        jLabel26.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        jLabel26.setText("Level 15-30:");
+
+        jLabel31.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        jLabel31.setText("Level 30+:");
+
+        ore1.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        ore1.setModel(new DefaultComboBoxModel<>(OreType.ore1));
+        ore1.addActionListener(evt -> ore1ActionPerformed());
+        ore1.setEnabled(false);
+
+        ore2.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        ore2.setModel(new DefaultComboBoxModel<>(OreType.ore2));
+        ore2.addActionListener(evt -> ore2ActionPerformed());
+        ore2.setEnabled(false);
+
+        ore3.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        ore3.setModel(new DefaultComboBoxModel<>(OreType.ore3));
+        ore3.addActionListener(evt -> ore3ActionPerformed());
+        ore3.setEnabled(false);
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+                jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel14Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel30)
+                                        .addComponent(jLabel26)
+                                        .addComponent(jLabel31))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(ore1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(ore2, 0, 124, Short.MAX_VALUE)
+                                        .addComponent(ore3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
+        );
+        jPanel14Layout.setVerticalGroup(
+                jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel14Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel30)
+                                        .addComponent(ore1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel26)
+                                        .addComponent(ore2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel31)
+                                        .addComponent(ore3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel15.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Location", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 0, 14)));
+
+        jLabel32.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        jLabel32.setText("Level 1-15 Location:");
+
+        jLabel33.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        jLabel33.setText("Level 15-30 Location:");
+
+        jLabel34.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        jLabel34.setText("Level 30+ Location:");
+
+        location1.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        OreType o1 = ((OreType) ore1.getSelectedItem());
+        for (Location loc : o1.getLocations()) {
+            General.println("GUI: " + loc);
+        }
+        location1.setModel(new DefaultComboBoxModel<>(o1.getLocations()));
+        location1.setEnabled(false);
+
+        location2.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        OreType o2 = ((OreType) ore2.getSelectedItem());
+        General.println(o2.getLocations());
+        location2.setModel(new DefaultComboBoxModel<>(o2.getLocations()));
+        location2.setEnabled(false);
+
+        location3.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        OreType o3 = ((OreType) ore3.getSelectedItem());
+        General.println(o3.getLocations());
+        location3.setModel(new DefaultComboBoxModel<>(o3.getLocations()));
+        location3.setEnabled(false);
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+                jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel15Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jLabel32)
+                                        .addComponent(jLabel33)
+                                        .addComponent(jLabel34))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addComponent(location1, 0, 124, Short.MAX_VALUE)
+                                        .addComponent(location2, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(location3, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
+        );
+        jPanel15Layout.setVerticalGroup(
+                jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel15Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel32)
+                                        .addComponent(location1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel33)
+                                        .addComponent(location2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel34)
+                                        .addComponent(location3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jPanel16.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Options", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 0, 14)));
+
+        jLabel35.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        jLabel35.setText("Use Progressive Mode:");
+
+        useProgressive.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        useProgressive.setText("Temp Disabled");
+        useProgressive.setEnabled(false);
+        useProgressive.addActionListener(evt -> useProgressiveActionPerformed());
+
+        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
+        jPanel16.setLayout(jPanel16Layout);
+        jPanel16Layout.setHorizontalGroup(
+                jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel16Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel35)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 118, Short.MAX_VALUE)
+                                .addComponent(useProgressive, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+        );
+        jPanel16Layout.setVerticalGroup(
+                jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel16Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel35)
+                                        .addComponent(useProgressive))
+                                .addContainerGap(8, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel13Layout = new javax.swing.GroupLayout(jPanel13);
+        jPanel13.setLayout(jPanel13Layout);
+        jPanel13Layout.setHorizontalGroup(
+                jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jPanel16, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                        .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addContainerGap())
+        );
+        jPanel13Layout.setVerticalGroup(
+                jPanel13Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel13Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel14, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jPanel15, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(59, Short.MAX_VALUE))
         );
+
+        jTabbedPane2.addTab("Progressive", jPanel13);
+
+        jPanel18.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Options", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Ubuntu", 0, 14)));
+
+        jLabel36.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        jLabel36.setText("Disable ABC2 sleeps:");
+
+        disableSleeps.setFont(new java.awt.Font("Ubuntu", 0, 12));
+        disableSleeps.setText("Yes");
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+                jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel18Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jLabel36)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 129, Short.MAX_VALUE)
+                                .addComponent(disableSleeps, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
+        );
+        jPanel18Layout.setVerticalGroup(
+                jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel18Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel36)
+                                        .addComponent(disableSleeps))
+                                .addContainerGap(8, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+                jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel17Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addContainerGap())
+        );
+        jPanel17Layout.setVerticalGroup(
+                jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(jPanel17Layout.createSequentialGroup()
+                                .addContainerGap()
+                                .addComponent(jPanel18, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(389, Short.MAX_VALUE))
+        );
+
+        jTabbedPane2.addTab("ABC", jPanel17);
 
         jTabbedPane2.addTab("Settings", jPanel2);
 
@@ -857,6 +1106,7 @@ public class GUI extends JFrame {
 
         pack();
     }
+
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Setting Variables">
@@ -869,15 +1119,27 @@ public class GUI extends JFrame {
                 variables.area = Player.getPosition();
                 variables.safePosition = Constants.DEFAULT_SAFE_ZONE;
             } else {
-                General.println("For radius mining, please start the script logged in...");
-                General.println("Stopping script...");
+                Printing.status("For radius mining, please start the script logged in...");
+                Printing.status("Stopping script...");
                 AntiBan.destroy();
                 variables.stopScript = true;
             }
         } else {
-            variables.oreType = ((OreType) oreType.getSelectedItem());
-            variables.area = ((Location) quarryLocation.getSelectedItem()).getLocation();
-            variables.safePosition = ((Location) quarryLocation.getSelectedItem()).getSafePosition();
+            if (useProgressive.isSelected()) {
+                variables.progressiveMode = true;
+                variables.oreType = ((OreType) ore1.getSelectedItem());
+                variables.ore1 = ((OreType) ore1.getSelectedItem());
+                variables.ore2 = ((OreType) ore2.getSelectedItem());
+                variables.ore3 = ((OreType) ore3.getSelectedItem());
+                variables.area = ((Location) location1.getSelectedItem()).getLocation();
+                variables.location1 = ((Location) location1.getSelectedItem()).getLocation();
+                variables.location2 = ((Location) location2.getSelectedItem()).getLocation();
+                variables.location3 = ((Location) location3.getSelectedItem()).getLocation();
+            } else {
+                variables.oreType = ((OreType) oreType.getSelectedItem());
+                variables.area = ((Location) quarryLocation.getSelectedItem()).getLocation();
+                variables.safePosition = ((Location) quarryLocation.getSelectedItem()).getSafePosition();
+            }
         }
 
         if (dropGems.isSelected()) {
@@ -898,8 +1160,8 @@ public class GUI extends JFrame {
                 variables.masterSystem = true;
                 variables.currentMasterPosition = Player.getPosition();
             } else {
-                General.println("For the Master System, please start the script logged in...");
-                General.println("Stopping script...");
+                Printing.status("For the Master System, please start the script logged in...");
+                Printing.status("Stopping script...");
                 AntiBan.destroy();
                 variables.stopScript = true;
             }
@@ -916,6 +1178,10 @@ public class GUI extends JFrame {
             variables.variation = Integer.parseInt(variation.getValue().toString());
         }
 
+        if (disableSleeps.isSelected()) {
+            variables.disableSleeps = true;
+        }
+
         if (upgradePickaxe.isSelected()) {
             variables.upgradePickaxe = true;
         }
@@ -926,10 +1192,6 @@ public class GUI extends JFrame {
 
         if (switchSlaveBack.isSelected()) {
             variables.switchSlaveBack = true;
-        }
-
-        if (runFromCombat.isSelected()) {
-            variables.runFromCombat = true;
         }
 
         if (drawObjects.isSelected()) {
@@ -966,21 +1228,41 @@ public class GUI extends JFrame {
         }
     }
 
+    private void useProgressiveActionPerformed() {
+        disableLocationTab(useProgressive.isSelected());
+        setProgressiveTab(useProgressive.isSelected());
+    }
+
     private void saveSettingsActionPerformed() {
         if (settings.saveSettings()) {
-            General.println("Successfully saved settings.");
+            Printing.status("Successfully saved settings.");
         }
     }
 
     private void loadSettingsActionPerformed() {
         if (settings.loadSettings()) {
-            General.println("Successfully loaded settings.");
+            Printing.status("Successfully loaded settings.");
         }
     }
 
     private void quarryLocationActionPerformed() {
         Location selectedLoc = ((Location) quarryLocation.getSelectedItem());
         oreType.setModel(new DefaultComboBoxModel<>(selectedLoc.getOreType()));
+    }
+
+    private void ore1ActionPerformed() {
+        OreType o1 = ((OreType) ore1.getSelectedItem());
+        location1.setModel(new DefaultComboBoxModel<>(o1.getLocations()));
+    }
+
+    private void ore2ActionPerformed() {
+        OreType o2 = ((OreType) ore2.getSelectedItem());
+        location2.setModel(new DefaultComboBoxModel<>(o2.getLocations()));
+    }
+
+    private void ore3ActionPerformed() {
+        OreType o3 = ((OreType) ore3.getSelectedItem());
+        location3.setModel(new DefaultComboBoxModel<>(o3.getLocations()));
     }
 
     private void worldHopActionPerformed() {
@@ -1081,6 +1363,15 @@ public class GUI extends JFrame {
     public void setRadiusMineTab(boolean isSelected) {
         radiusAmount.setEnabled(isSelected);
         radiusOreType.setEnabled(isSelected);
+    }
+
+    public void setProgressiveTab(boolean isSelected) {
+        ore1.setEnabled(isSelected);
+        ore2.setEnabled(isSelected);
+        ore3.setEnabled(isSelected);
+        location1.setEnabled(isSelected);
+        location2.setEnabled(isSelected);
+        location3.setEnabled(isSelected);
     }
 
     public void setWorldHopTab(boolean isSelected) {

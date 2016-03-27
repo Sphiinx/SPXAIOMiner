@@ -1,8 +1,8 @@
 package scripts.SPXAIOMiner.tasks.Mine;
 
 import org.tribot.api2007.Inventory;
-import scripts.SPXAIOMiner.API.Framework.Task;
-import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
 import scripts.SPXAIOMiner.data.Variables;
 
 /**
@@ -16,7 +16,7 @@ public class Powermine extends Task {
 
     @Override
     public void execute() {
-        Inventory.drop(vars.oreType.getItemIDs());
+        Inventory.drop(vars.oreType.getItemID());
     }
 
     @Override
@@ -30,4 +30,3 @@ public class Powermine extends Task {
     }
 
 }
-

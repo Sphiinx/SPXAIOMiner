@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.Banking;
+package scripts.SPXAIOMiner.api.game.banking;
 
 import org.tribot.api.Clicking;
 import org.tribot.api.General;
@@ -6,7 +6,7 @@ import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.*;
-import scripts.SPXAIOMiner.API.Game.Inventory.Inventory07;
+import scripts.SPXAIOMiner.api.game.inventory.Inventory07;
 
 /**
  * Created by Sphiinx on 1/10/2016.

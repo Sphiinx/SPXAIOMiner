@@ -13,6 +13,7 @@ import java.util.Properties;
  */
 public class Variables {
 
+    //<editor-fold defaultstate="collapsed" desc="Booleans">
     public boolean oresHop;
     public boolean worldHop;
     public boolean dropGems;
@@ -25,25 +26,28 @@ public class Variables {
     public boolean slaveSystem;
     public boolean disablePaint;
     public boolean masterSystem;
-    public boolean runFromCombat;
+    public boolean disableSleeps;
     public boolean upgradePickaxe;
+    public boolean progressiveMode;
     public boolean switchSlaveBack;
     public boolean drawRadius = true;
     public boolean isUpgradingPickaxe;
     public boolean pickaxeInInventory;
     public boolean isSlaveSystemIsRunning;
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Doubles">
     public double version;
+    //</editor-fold>
 
-    public long oreHR;
-    public long timeRan;
-    public long profitHR;
-    public long xpPerHour;
+    //<editor-fold defaultstate="collapsed" desc="Longs">
     public long resetTimeRan;
     public long timeRanMinutes;
     public long timeUntilTrade;
     public long moneyLeftUntilTrade;
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Integers">
     public int profit;
     public int startXP;
     public int gainedXP;
@@ -52,26 +56,33 @@ public class Variables {
     public int variation;
     public int startLevel;
     public int levelToStop;
-    public int profitReset;
-    public int radius = 30;
+    public int radius = 25;
     public int masterWorld;
     public int transferMade;
     public int gainedLevels;
     public int playersToHop;
-    public int masterTrades;
+    public int muleTrades;
     public int orePriceTotal;
     public int originalWorld;
     public int resetOresMined;
     public int transferMinutes;
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Other">
     public File path;
 
     public Mode mode;
     public Worlds worlds;
     public OreType oreType;
+    public OreType ore1;
+    public OreType ore2;
+    public OreType ore3;
     public Pickaxe pickaxe;
 
     public RSTile area;
+    public RSTile location1;
+    public RSTile location2;
+    public RSTile location3;
     public RSTile safePosition;
     public RSTile currentMasterPosition;
 
@@ -84,6 +95,6 @@ public class Variables {
     public RSObject[] oreToDraw;
 
     public Properties properties = new Properties();
+    //</editor-fold>
 
 }
-

@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API;
+package scripts.SPXAIOMiner.api;
 
 import java.util.HashMap;
 

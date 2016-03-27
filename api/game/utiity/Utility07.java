@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.Utility;
+package scripts.SPXAIOMiner.api.game.utiity;
 
 import org.tribot.api.General;
 import org.tribot.api2007.Interfaces;

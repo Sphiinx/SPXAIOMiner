@@ -6,17 +6,15 @@ import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Banking;
 import org.tribot.api2007.Equipment;
 import org.tribot.api2007.Inventory;
-import org.tribot.api2007.Walking;
 import org.tribot.api2007.types.RSItem;
-import scripts.SPXAIOMiner.API.Framework.Task;
-import scripts.SPXAIOMiner.API.Game.Banking.Banking07;
-import scripts.SPXAIOMiner.API.Game.Game.Game07;
-import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
-import scripts.SPXAIOMiner.API.Printing;
-import scripts.SPXAIOMiner.AntiBan;
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.banking.Banking07;
+import scripts.SPXAIOMiner.api.game.game.Game07;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
+import scripts.SPXAIOMiner.api.Printing;
+import scripts.SPXAIOMiner.antiban.AntiBan;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Variables;
-import scripts.SPXAIOMiner.data.enums.Location;
 import scripts.SPXAIOMiner.data.enums.Pickaxe;
 
 import java.util.ArrayList;
@@ -38,11 +36,7 @@ public class GetPickaxe extends Task {
         if (Banking.isBankScreenOpen()) {
             withdrawItems();
         } else {
-            if (vars.area.equals(Location.SHILO_VILLAGE.getLocation())) {
-                Walking.walkPath(Walking.randomizePath(scripts.SPXAIOMiner.data.Constants.SHILO_VILLAGE_PATH, 2, 2));
-            } else {
-                Banking07.openBank();
-            }
+            Banking07.openBank();
         }
     }
 
@@ -121,4 +115,3 @@ public class GetPickaxe extends Task {
         return Game07.isInGame() && needsPickaxe();
     }
 }
-

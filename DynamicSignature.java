@@ -15,7 +15,6 @@ public class DynamicSignature {
 
     //<editor-fold defaultstate="collapsed" desc="SendData">
     public static boolean sendSignatureData(long runtimeInSeconds, int oresMined, int profit, int xpgained, int levelgained, int muletrades, int mastertrades) {
-        String privateKey = "C5A1B33F62AC2D81";
         String initVector = "E6135CCC2FE8BE8C";
         try {
             String data = initVector + "," + General.getTRiBotUsername() + "," + runtimeInSeconds + "," + oresMined + "," + profit + "," + xpgained + "," + levelgained + "," + muletrades + "," + mastertrades;
@@ -39,4 +38,3 @@ public class DynamicSignature {
     //</editor-fold>
 
 }
-

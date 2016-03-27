@@ -1,6 +1,7 @@
 package scripts.SPXAIOMiner;
 
-import scripts.SPXAIOMiner.API.Framework.Task;
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.antiban.TimedActions;
 import scripts.SPXAIOMiner.data.Variables;
 import scripts.SPXAIOMiner.tasks.*;
 import scripts.SPXAIOMiner.tasks.Mine.*;
@@ -29,8 +30,8 @@ public class Collection {
 
     //<editor-fold defaultstate="collapsed" desc="Collection">
     public void addCollection() {
-        if (variables.runFromCombat) {
-            Collections.addAll(tasks, new RunFromCombat(variables));
+        if (variables.progressiveMode) {
+            Collections.addAll(tasks, new Progressive(variables));
         }
         if (variables.worldHop) {
             Collections.addAll(tasks, new WorldHop(variables));
@@ -52,6 +53,7 @@ public class Collection {
         } else {
             Collections.addAll(tasks, new GetPickaxe(variables), new EquipPickaxe(variables), new WalkToQuarry(variables), new MineOre(variables));
         }
+        Collections.addAll(tasks, new TimedActions(variables));
         switch (variables.mode) {
             case BANKING:
                 Collections.addAll(tasks, new DepositItems(variables));
@@ -70,4 +72,3 @@ public class Collection {
     //</editor-fold>
 
 }
-

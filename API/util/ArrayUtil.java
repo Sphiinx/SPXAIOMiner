@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.util;
+package scripts.SPXAIOMiner.api.util;
 
 /**
  * Created by Sphiinx on 2/16/2016.

@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.Area;
+package scripts.SPXAIOMiner.api.game.area;
 
 import org.tribot.api2007.Player;
 import org.tribot.api2007.Players;

@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.Entities;
+package scripts.SPXAIOMiner.api.game.entities;
 
 import org.tribot.api.input.Mouse;
 import org.tribot.api2007.types.RSModel;

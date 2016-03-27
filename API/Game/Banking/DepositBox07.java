@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.Banking;
+package scripts.SPXAIOMiner.api.game.banking;
 
 import org.tribot.api.Clicking;
 import org.tribot.api.General;
@@ -11,10 +11,10 @@ import org.tribot.api2007.NPCChat;
 import org.tribot.api2007.Objects;
 import org.tribot.api2007.types.RSItem;
 import org.tribot.api2007.types.RSObject;
-import scripts.SPXAIOMiner.API.Game.Interfaces.Interfaces07;
-import scripts.SPXAIOMiner.API.Game.Objects.Objects07;
-import scripts.SPXAIOMiner.API.Waiting;
-import scripts.SPXAIOMiner.AntiBan;
+import scripts.SPXAIOMiner.api.game.interfaces.Interfaces07;
+import scripts.SPXAIOMiner.api.game.objects.Objects07;
+import scripts.SPXAIOMiner.api.Waiting;
+import scripts.SPXAIOMiner.antiban.AntiBan;
 
 
 /**

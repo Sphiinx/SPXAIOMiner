@@ -9,20 +9,18 @@ import org.tribot.script.ScriptManifest;
 import org.tribot.script.interfaces.*;
 import org.tribot.script.interfaces.Painting;
 import org.tribot.util.Util;
-import scripts.SPXAIOMiner.API.Framework.Task;
-import scripts.SPXAIOMiner.API.Game.PriceChecking.PriceChecking07;
-import scripts.SPXAIOMiner.API.Paint;
-import scripts.SPXAIOMiner.API.Printing;
+
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.pricechecking.PriceChecking07;
+import scripts.SPXAIOMiner.api.Paint;
+import scripts.SPXAIOMiner.api.Printing;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Variables;
 
 import scripts.SPXAIOMiner.gui.GUI;
 import scripts.SPXAIOMiner.messagerecieved.Server;
 import scripts.SPXAIOMiner.messagerecieved.Trade;
-import scripts.SPXAIOMiner.paint.Global;
-import scripts.SPXAIOMiner.paint.Master;
-import scripts.SPXAIOMiner.paint.Normal;
-import scripts.SPXAIOMiner.paint.Slave;
+import scripts.SPXAIOMiner.paint.*;
 
 import java.awt.*;
 import java.io.File;
@@ -36,22 +34,18 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
 
     private Variables variables = new Variables();
     private GUI gui = new GUI(variables);
-    private Global global = new Global(variables);
-    private Master master = new Master(variables);
-    private Normal normal = new Normal(variables);
-    private Slave slave = new Slave(variables);
+    private PaintManager spxpaint = new PaintManager(variables);
+    private Slave slave = new Slave(variables, spxpaint);
     private Collection collection = new Collection(variables);
     private Trade trade = new Trade(variables);
     private Server server = new Server(variables);
 
     @Override
     public void run() {
-        AntiBan.setPrintDebug(true);
         General.useAntiBanCompliance(true);
         ThreadSettings.get().setClickingAPIUseDynamic(true);
         setDebugging();
-        tribotUserCheck();
-        General.println("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
+        Printing.status("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
         variables.path = new File(Util.getWorkingDirectory().getAbsolutePath(), "[SPX]AIOMiner_" + General.getTRiBotUsername() + "_settings" + ".ini");
         variables.version = getClass().getAnnotation(ScriptManifest.class).version();
         getStartInformation();
@@ -69,34 +63,6 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
                 task.execute();
                 General.sleep(min, max);
             });
-        }
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="UsernameCheck">
-    private void tribotUserCheck() {
-        if (General.getTRiBotUsername().equals("Sphiinx") ||
-                General.getTRiBotUsername().equals("xSlapppz") ||
-                General.getTRiBotUsername().equals("silver8787") ||
-                General.getTRiBotUsername().equals("sibbernski") ||
-                General.getTRiBotUsername().equals("Netami") ||
-                General.getTRiBotUsername().equals("Duvy") ||
-                General.getTRiBotUsername().equals("plasmaftw") ||
-                General.getTRiBotUsername().equals("ohParadox") ||
-                General.getTRiBotUsername().equals("jakerules13") ||
-                General.getTRiBotUsername().equals("kokon") ||
-                General.getTRiBotUsername().equals("jake miler") ||
-                General.getTRiBotUsername().equals("YoHoJo") ||
-                General.getTRiBotUsername().equals("jack351") ||
-                General.getTRiBotUsername().equals("Doomed")) {
-            General.println("Your Tribot profile has been accepted.");
-            General.println("Username: " + General.getTRiBotUsername());
-
-        } else {
-            General.println("You're not currently one of the beta testers!");
-            General.println("Username: " + General.getTRiBotUsername());
-            General.println("Stopping Script...");
-            stopScript();
         }
     }
     //</editor-fold>
@@ -126,7 +92,6 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
 
     //<editor-fold defaultstate="collapsed" desc="StartInformation">
     private void getStartInformation() {
-        variables.resetTimeRan = System.currentTimeMillis();
         variables.startLevel = Skills.getActualLevel(Skills.SKILLS.MINING);
         variables.startXP = Skills.getXP(Skills.SKILLS.MINING);
         variables.resetTimeRan = Timing.currentTimeMillis();
@@ -134,7 +99,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
 
     private void getItemPrice() {
         if (variables.oreType != null) {
-            variables.orePrice = PriceChecking07.getOSbuddyPrice(variables.oreType.getItemIDs()[0]);
+            variables.orePrice = PriceChecking07.getOSbuddyPrice(variables.oreType.getItemID());
         }
     }
     //</editor-fold>
@@ -145,18 +110,18 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
         g.setRenderingHints(Constants.ANTIALIASING);
         if (Login.getLoginState() == Login.STATE.INGAME) {
             if (!variables.disablePaint) {
-                global.drawRadius(g);
-                global.drawObjects(g);
-                global.drawTiles(g);
-                global.generalInfo(g);
+                spxpaint.drawRadius(g);
+                spxpaint.drawObjects(g);
+                spxpaint.drawTiles(g);
+                spxpaint.drawGeneralInfo(g);
                 if (variables.masterSystem) {
-                    master.systemInfo(g);
+                    spxpaint.drawMasterInfo(g);
                 } else {
-                    normal.systemInfo(g);
-                    slave.systemInfo();
+                    spxpaint.drawNormalInfo(g);
+                    slave.getSlaveInfo();
                 }
             } else {
-                global.drawCloseButton(g);
+                spxpaint.drawCloseButton(g);
             }
         }
     }
@@ -234,12 +199,11 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     public void mouseClicked(Point point, int i, boolean b) {
         if (Constants.START_SLAVESYSTEM.contains(point) && i == 1 && !b) {
             if (variables.resetOresMined > 0) {
-                General.println("Enabling slave system.");
+                Printing.status("Enabling slave system...");
                 variables.isSlaveSystemIsRunning = true;
             } else {
-                General.println("We cannot enable the slave system unless we've mined more ore!");
+                Printing.status("We cannot enable the slave system unless we've mined more ore!");
             }
-
         }
         if (Constants.CLOSE_PAINT.contains(point) && i == 1 && !b) {
             variables.disablePaint = !variables.disablePaint;
@@ -250,10 +214,9 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     //<editor-fold defaultstate="collapsed" desc="Ending">
     @Override
     public void onEnd() {
-        General.println("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
-        DynamicSignature.sendSignatureData(variables.timeRan / 1000, variables.oresMined, variables.profit, variables.gainedXP, variables.gainedLevels, variables.masterTrades, variables.masterTrades);
+        Printing.status("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
+        DynamicSignature.sendSignatureData(variables.timeRanMinutes, variables.oresMined, variables.profit, variables.gainedXP, variables.gainedLevels, variables.muleTrades, variables.muleTrades);
     }
     //</editor-fold>
 
 }
-

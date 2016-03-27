@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.PriceChecking;
+package scripts.SPXAIOMiner.api.game.pricechecking;
 
 import org.tribot.api.General;
 

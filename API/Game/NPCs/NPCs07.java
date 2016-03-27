@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.NPCs;
+package scripts.SPXAIOMiner.api.game.npcs;
 
 import org.tribot.api.types.generic.Filter;
 import org.tribot.api.util.Sorting;

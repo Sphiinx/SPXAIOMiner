@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API;
+package scripts.SPXAIOMiner.api;
 
 import org.tribot.api.General;
 

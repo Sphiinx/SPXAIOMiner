@@ -6,10 +6,10 @@ import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSPlayer;
-import scripts.SPXAIOMiner.API.Framework.Task;
-import scripts.SPXAIOMiner.API.Game.Banking.Banking07;
-import scripts.SPXAIOMiner.API.Game.Game.Game07;
-import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.banking.Banking07;
+import scripts.SPXAIOMiner.api.game.game.Game07;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
 import scripts.SPXAIOMiner.data.Variables;
 
 /**
@@ -21,6 +21,7 @@ public class MasterSystem extends Task {
         super(v);
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Execution">
     @Override
     public void execute() {
         if (Inventory.isFull()) {
@@ -35,6 +36,7 @@ public class MasterSystem extends Task {
             tradeSlave();
         }
     }
+    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="TradeSlave">
     public void tradeSlave() {
@@ -101,4 +103,3 @@ public class MasterSystem extends Task {
     }
 
 }
-

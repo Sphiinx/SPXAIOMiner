@@ -7,9 +7,9 @@ import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Equipment;
 import org.tribot.api2007.Inventory;
 import org.tribot.api2007.types.RSItem;
-import scripts.SPXAIOMiner.API.Framework.Task;
-import scripts.SPXAIOMiner.API.Game.Banking.Banking07;
-import scripts.SPXAIOMiner.API.Game.Utility.Utility07;
+import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.banking.Banking07;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Variables;
 
@@ -22,6 +22,7 @@ public class EquipPickaxe extends Task {
         super(v);
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Execution">
     @Override
     public void execute() {
         Banking07.closeBank();
@@ -38,6 +39,7 @@ public class EquipPickaxe extends Task {
         }
 
     }
+    //</editor-fold>
 
     @Override
     public String toString() {
@@ -50,4 +52,3 @@ public class EquipPickaxe extends Task {
     }
 
 }
-

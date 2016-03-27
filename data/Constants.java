@@ -50,4 +50,3 @@ public class Constants {
     //</editor-fold>
 
 }
-

@@ -1,11 +1,10 @@
-package scripts.SPXAIOMiner.API;
+package scripts.SPXAIOMiner.api;
 
 import org.tribot.api.General;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSTile;
-import org.tribot.natives.Client;
-import scripts.SPXAIOMiner.API.util.Timer;
+import scripts.SPXAIOMiner.api.util.Timer;
 
 /**
  * Created by Sphiinx on 2/16/2016.

@@ -1,7 +1,5 @@
 package scripts.SPXAIOMiner.paint;
 
-import scripts.SPXAIOMiner.data.Constants;
-import scripts.SPXAIOMiner.data.Variables;
 
 import java.awt.*;
 
@@ -10,19 +8,18 @@ import java.awt.*;
  */
 public class Master {
 
-    public Variables variables;
+    public PaintManager paintManager;
 
-    public Master(Variables variables) {
-        this.variables = variables;
+    public Master(PaintManager paintManager) {
+        this.paintManager = paintManager;
     }
 
-    public void systemInfo(Graphics g) {
-        long tradesHR = (long) (variables.masterTrades * 3600000D / (System.currentTimeMillis() - Constants.START_TIME));
-
-        g.drawString("Master Trades: " + variables.masterTrades, 282, 348);
-        g.drawString("Master Trades P/H: " + tradesHR, 282, 374);
+    //<editor-fold defaultstate="collapsed" desc="Draw Master Info">
+    public void drawMasterInfo(Graphics g) {
+        g.drawString("Master Trades: " + paintManager.getMuleTrades(), 282, 348);
+        g.drawString("Master Trades P/H: " + paintManager.getMasterTradesHr(), 282, 374);
         g.drawString(" ", 282, 450);
     }
+    //</editor-fold>
 
 }
-

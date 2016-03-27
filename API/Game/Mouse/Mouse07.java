@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.Mouse;
+package scripts.SPXAIOMiner.api.game.mouse;
 
 import org.tribot.api.General;
 import org.tribot.api.Timing;

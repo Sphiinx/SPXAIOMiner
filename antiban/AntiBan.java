@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner;
+package scripts.SPXAIOMiner.antiban;
 
 import org.tribot.api.Clicking;
 import org.tribot.api.General;
@@ -10,11 +10,11 @@ import org.tribot.api.util.abc.ABCProperties;
 import org.tribot.api.util.abc.ABCUtil;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.*;
-import scripts.SPXAIOMiner.API.Game.Entities.Entities07;
-import scripts.SPXAIOMiner.API.Game.Items.Items07;
-import scripts.SPXAIOMiner.API.Game.Mouse.Mouse07;
-import scripts.SPXAIOMiner.API.Game.NPCs.NPCs07;
-import scripts.SPXAIOMiner.API.Game.Objects.Objects07;
+import scripts.SPXAIOMiner.api.game.entities.Entities07;
+import scripts.SPXAIOMiner.api.game.items.Items07;
+import scripts.SPXAIOMiner.api.game.mouse.Mouse07;
+import scripts.SPXAIOMiner.api.game.npcs.NPCs07;
+import scripts.SPXAIOMiner.api.game.objects.Objects07;
 
 /**
  * Created by Sphiinx on 2/14/2016.

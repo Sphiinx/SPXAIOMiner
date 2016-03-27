@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.Chat;
+package scripts.SPXAIOMiner.api.game.chat;
 
 import org.tribot.api.General;
 import org.tribot.api.Timing;

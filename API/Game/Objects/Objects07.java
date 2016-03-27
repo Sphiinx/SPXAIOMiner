@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.Objects;
+package scripts.SPXAIOMiner.api.game.objects;
 
 import org.tribot.api.types.generic.Filter;
 import org.tribot.api.util.Sorting;
@@ -7,7 +7,7 @@ import org.tribot.api2007.PathFinding;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSObjectDefinition;
-import scripts.SPXAIOMiner.AntiBan;
+import scripts.SPXAIOMiner.antiban.AntiBan;
 
 /**
  * Created by Sphiinx on 2/14/2016.

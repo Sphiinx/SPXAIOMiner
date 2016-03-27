@@ -8,7 +8,6 @@ public enum Mode {
     BANKING,
     POWERMINE,
     M1D1,
-    MOUSEKEYS;
+    MOUSEKEYS
 
 }
-

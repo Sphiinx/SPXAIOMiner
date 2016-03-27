@@ -1,4 +1,4 @@
-package scripts.SPXAIOMiner.API.Game.Inventory;
+package scripts.SPXAIOMiner.api.game.inventory;
 
 import org.tribot.api.General;
 import org.tribot.api.Timing;
