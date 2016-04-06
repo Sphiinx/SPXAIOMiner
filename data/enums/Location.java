@@ -27,8 +27,8 @@ public enum Location {
     WILDERNESS_SOUTHW(new RSTile(3017, 3592, 0), new RSTile(3222, 3217, 0), OreType.COAL),
     WILDERNESS_SOUTH(new RSTile(3106, 3567, 0), new RSTile(3222, 3217, 0), OreType.COAL, OreType.IRON),
     WILDERNESS_NORTH(new RSTile(3087, 3762, 0), new RSTile(3222, 3217, 0), OreType.IRON, OreType.COAL, OreType.MITHRIL, OreType.ADAMANTITE);
-    //**TBA** SHILO_VILLAGE(new RSTile(2824, 2999, 0), new RSTile(3222, 3217, 0), OreType.GEMS),
-    //**TBA** HEROS_GUILD(new RSTile(2937, 9884, 0), OreType.RUNITE),
+    //**TBA** SHILO_VILLAGE(new RSTile(2824, 2999, 0), new RSTile(3222, 3217, 0), LogType.GEMS),
+    //**TBA** HEROS_GUILD(new RSTile(2937, 9884, 0), LogType.RUNITE),
     //**TBA** QUARRY(new RSTile(3171, 2912, 0)),
 
     private final RSTile location;

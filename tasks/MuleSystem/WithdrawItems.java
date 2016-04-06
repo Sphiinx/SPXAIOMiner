@@ -34,7 +34,7 @@ public class WithdrawItems extends Task {
 
     //<editor-fold defaultstate="collapsed" desc="DepositInventory">
     public boolean depositInventory() {
-        if (vars.pickaxeInInventory) {
+        if (vars.pickaxeInInventory && Inventory.getCount(Constants.PICKAXES) > 0) {
             RSItem[] pick = Inventory.find(Constants.PICKAXES);
             return Banking07.depositAllExcept(pick[0].getID());
         } else {
@@ -86,13 +86,15 @@ public class WithdrawItems extends Task {
         vars.orePriceTotal = (vars.orePrice * vars.resetOresMined) + General.random(0, vars.variation);
         if (Trading.getWindowState() != Trading.WINDOW_STATE.FIRST_WINDOW && Trading.getWindowState() != Trading.WINDOW_STATE.SECOND_WINDOW) {
             if (Inventory.getCount(vars.oreType.getNotedItemID()) < vars.resetOresMined) {
-                if (vars.transferMinutes > 0) {
+                if (vars.transferMinutes > 0 && vars.timeRanMinutes >= vars.transferMinutes) {
+                    General.println("True 1");
                     vars.isSlaveSystemIsRunning = true;
-                    return vars.timeRanMinutes >= vars.transferMinutes;
+                    return true;
                 }
-                if (vars.transferMade > 0) {
+                if (vars.transferMade > 0 && vars.orePriceTotal >= vars.transferMade) {
+                    General.println("True 2");
                     vars.isSlaveSystemIsRunning = true;
-                    return vars.orePriceTotal >= vars.transferMade;
+                    return true;
                 }
                 return vars.isSlaveSystemIsRunning;
             }

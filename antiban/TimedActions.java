@@ -2,6 +2,7 @@ package scripts.SPXAIOMiner.antiban;
 
 import org.tribot.api2007.Player;
 import scripts.SPXAIOMiner.api.framework.Task;
+import scripts.SPXAIOMiner.api.game.utiity.Utility07;
 import scripts.SPXAIOMiner.data.Variables;
 
 /**
@@ -21,7 +22,7 @@ public class TimedActions extends Task{
 
     @Override
     public String toString() {
-        return "";
+        return "Mining ore" + Utility07.loadingPeriods();
     }
 
     @Override

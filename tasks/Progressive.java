@@ -19,7 +19,7 @@ public class Progressive extends Task {
 
     @Override
     public void execute() {
-        Printing.status("Setting progressive mode OreType...");
+        Printing.status("Setting progressive mode LogType...");
         vars.oreType = getBestOreType();
         vars.orePrice = PriceChecking07.getOSbuddyPrice(vars.oreType.getItemID());
     }

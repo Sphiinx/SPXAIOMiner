@@ -29,19 +29,19 @@ import java.util.ArrayList;
 /**
  * Created by Sphiinx on 12/21/2015.
  */
-@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.3)
+@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.1)
 public class Main extends Script implements MessageListening07, Painting, MouseSplinePainting, MousePainting, MouseActions, Ending {
 
     private Variables variables = new Variables();
     private GUI gui = new GUI(variables);
-    private PaintManager spxpaint = new PaintManager(variables);
-    private Slave slave = new Slave(variables, spxpaint);
+    private PaintManager paintManager = new PaintManager(variables);
     private Collection collection = new Collection(variables);
     private Trade trade = new Trade(variables);
     private Server server = new Server(variables);
 
     @Override
     public void run() {
+        checkUsername();
         General.useAntiBanCompliance(true);
         ThreadSettings.get().setClickingAPIUseDynamic(true);
         setDebugging();
@@ -53,6 +53,15 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
         getItemPrice();
         collection.addCollection();
         loop(100, 150);
+    }
+
+    private void checkUsername() {
+        if (General.getTRiBotUsername().equals("xSlapppz") || General.getTRiBotUsername().equals("Sphiinx")) {
+            General.println("You're an asshole. ;)");
+        } else {
+            General.println("You're not a member of the beta.");
+            stopScript();
+        }
     }
 
     //<editor-fold defaultstate="collapsed" desc="Loop">
@@ -110,18 +119,17 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
         g.setRenderingHints(Constants.ANTIALIASING);
         if (Login.getLoginState() == Login.STATE.INGAME) {
             if (!variables.disablePaint) {
-                spxpaint.drawRadius(g);
-                spxpaint.drawObjects(g);
-                spxpaint.drawTiles(g);
-                spxpaint.drawGeneralInfo(g);
+                paintManager.drawRadius(g);
+                paintManager.drawObjects(g);
+                paintManager.drawTiles(g);
+                paintManager.drawGeneralInfo(g);
                 if (variables.masterSystem) {
-                    spxpaint.drawMasterInfo(g);
+                    paintManager.drawMasterInfo(g);
                 } else {
-                    spxpaint.drawNormalInfo(g);
-                    slave.getSlaveInfo();
+                    paintManager.drawNormalInfo(g);
                 }
             } else {
-                spxpaint.drawCloseButton(g);
+                paintManager.drawCloseButton(g);
             }
         }
     }

@@ -98,8 +98,15 @@ public class GetPickaxe extends Task {
     private boolean needsPickaxe() {
         RSItem pickaxe = Equipment.getItem(Equipment.SLOTS.WEAPON);
         if (pickaxe == null && Inventory.getCount(Constants.PICKAXES) <= 0) {
-            vars.isUpgradingPickaxe = true;
-            return true;
+            if (!Timing.waitCondition(new Condition() {
+                @Override
+                public boolean active() {
+                    return Equipment.getItem(Equipment.SLOTS.WEAPON) != null || Inventory.getCount(Constants.PICKAXES) >  0;
+                }
+            }, General.random(5000, 6000))) {
+                vars.isUpgradingPickaxe = true;
+                return true;
+            }
         }
         return false;
     }

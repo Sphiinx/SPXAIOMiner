@@ -25,19 +25,19 @@ public class Settings {
 
             gui.variables.properties.clear();
 
-            gui.variables.properties.put("dropGems", String.valueOf(gui.dropGems.isSelected()));
+            gui.variables.properties.put("pickupBirdsNests", String.valueOf(gui.dropGems.isSelected()));
 
             gui.variables.properties.put("worldHop", String.valueOf(gui.worldHop.isSelected()));
 
-            gui.variables.properties.put("worldHopOresAval", String.valueOf(gui.worldHopOresAval.isSelected()));
+            gui.variables.properties.put("worldHopLogsAval", String.valueOf(gui.worldHopOresAval.isSelected()));
 
-            gui.variables.properties.put("radiusMine", String.valueOf(gui.radiusMine.isSelected()));
+            gui.variables.properties.put("radiusChop", String.valueOf(gui.radiusMine.isSelected()));
 
             gui.variables.properties.put("masterSystem", String.valueOf(gui.masterSystem.isSelected()));
 
             gui.variables.properties.put("slaveSystem", String.valueOf(gui.slaveSystem.isSelected()));
 
-            gui.variables.properties.put("upgradePickaxe", String.valueOf(gui.upgradePickaxe.isSelected()));
+            gui.variables.properties.put("upgradeAxe", String.valueOf(gui.upgradePickaxe.isSelected()));
 
             gui.variables.properties.put("drawObjects", String.valueOf(gui.drawObjects.isSelected()));
 
@@ -45,7 +45,7 @@ public class Settings {
 
             gui.variables.properties.put("disablePaint", String.valueOf(gui.disablePaint.isSelected()));
 
-            gui.variables.properties.put("pickaxeInInventory", String.valueOf(gui.pickaxeInInventory.isSelected()));
+            gui.variables.properties.put("axeInInventory", String.valueOf(gui.pickaxeInInventory.isSelected()));
 
             gui.variables.properties.put("switchSlaveBack", String.valueOf(gui.switchSlaveBack.isSelected()));
 
@@ -67,21 +67,21 @@ public class Settings {
 
             gui.variables.properties.put("levelToStop", String.valueOf(gui.levelToStop.getValue()));
 
-            gui.variables.properties.put("quarryLocation", String.valueOf(gui.quarryLocation.getSelectedIndex()));
+            gui.variables.properties.put("treesLocation", String.valueOf(gui.quarryLocation.getSelectedIndex()));
 
-            gui.variables.properties.put("oreType", String.valueOf(gui.oreType.getSelectedIndex()));
+            gui.variables.properties.put("logType", String.valueOf(gui.oreType.getSelectedIndex()));
 
             gui.variables.properties.put("droppingMode", String.valueOf(gui.droppingMode.getSelectedIndex()));
 
             gui.variables.properties.put("worldHopMode", String.valueOf(gui.worldHopMode.getSelectedIndex()));
 
-            gui.variables.properties.put("radiusOreType", String.valueOf(gui.radiusOreType.getSelectedIndex()));
+            gui.variables.properties.put("radiusLogType", String.valueOf(gui.radiusOreType.getSelectedIndex()));
 
-            gui.variables.properties.put("ore1", String.valueOf(gui.ore1.getSelectedIndex()));
+            gui.variables.properties.put("log1", String.valueOf(gui.ore1.getSelectedIndex()));
 
-            gui.variables.properties.put("ore2", String.valueOf(gui.ore2.getSelectedIndex()));
+            gui.variables.properties.put("log2", String.valueOf(gui.ore2.getSelectedIndex()));
 
-            gui.variables.properties.put("ore3", String.valueOf(gui.ore3.getSelectedIndex()));
+            gui.variables.properties.put("log3", String.valueOf(gui.ore3.getSelectedIndex()));
 
             gui.variables.properties.put("location1", String.valueOf(gui.location1.getSelectedIndex()));
 
@@ -113,14 +113,14 @@ public class Settings {
 
             gui.variables.properties.load(new FileInputStream(gui.variables.path));
 
-            gui.dropGems.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("dropGems")));
+            gui.dropGems.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("pickupBirdsNests")));
 
             gui.worldHop.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("worldHop")));
             gui.setWorldHopTab(gui.worldHop.isSelected());
 
-            gui.worldHopOresAval.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("worldHopOresAval")));
+            gui.worldHopOresAval.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("worldHopLogsAval")));
 
-            gui.radiusMine.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("radiusMine")));
+            gui.radiusMine.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("radiusChop")));
             gui.setRadiusMineTab(gui.radiusMine.isSelected());
             gui.disableLocationTab(gui.radiusMine.isSelected());
             gui.variables.radiusMine = gui.radiusMine.isSelected();
@@ -137,7 +137,7 @@ public class Settings {
             gui.disableMasterTab(gui.slaveSystem.isSelected());
             gui.switchSlaveBack.setEnabled(gui.slaveSystem.isSelected());
 
-            gui.upgradePickaxe.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("upgradePickaxe")));
+            gui.upgradePickaxe.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("upgradeAxe")));
 
             gui.drawObjects.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("drawObjects")));
 
@@ -145,7 +145,7 @@ public class Settings {
 
             gui.disablePaint.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("disablePaint")));
 
-            gui.pickaxeInInventory.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("pickaxeInInventory")));
+            gui.pickaxeInInventory.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("axeInInventory")));
 
             gui.switchSlaveBack.setSelected(Boolean.valueOf(gui.variables.properties.getProperty("switchSlaveBack")));
 
@@ -169,21 +169,21 @@ public class Settings {
 
             gui.levelToStop.setValue(Integer.parseInt(gui.variables.properties.getProperty("levelToStop")));
 
-            gui.quarryLocation.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("quarryLocation", "0")));
+            gui.quarryLocation.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("treesLocation", "0")));
 
-            gui.oreType.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("oreType", "0")));
+            gui.oreType.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("logType", "0")));
 
             gui.droppingMode.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("droppingMode", "0")));
 
             gui.worldHopMode.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("worldHopMode", "0")));
 
-            gui.radiusOreType.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("radiusOreType", "0")));
+            gui.radiusOreType.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("radiusLogType", "0")));
 
-            gui.ore1.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("ore1", "0")));
+            gui.ore1.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("log1", "0")));
 
-            gui.ore2.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("ore2", "0")));
+            gui.ore2.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("log2", "0")));
 
-            gui.ore3.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("ore3", "0")));
+            gui.ore3.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("log3", "0")));
 
             gui.location1.setSelectedIndex(Integer.parseInt(gui.variables.properties.getProperty("location1", "0")));
 

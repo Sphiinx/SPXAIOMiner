@@ -3,6 +3,7 @@ package scripts.SPXAIOMiner.data;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
+import scripts.SPXAIOMiner.api.game.utiity.enums.WorldType;
 import scripts.SPXAIOMiner.data.enums.*;
 
 import java.io.File;
@@ -29,6 +30,7 @@ public class Variables {
     public boolean disableSleeps;
     public boolean upgradePickaxe;
     public boolean progressiveMode;
+    public boolean isHoppingWorlds;
     public boolean switchSlaveBack;
     public boolean drawRadius = true;
     public boolean isUpgradingPickaxe;
@@ -43,8 +45,6 @@ public class Variables {
     //<editor-fold defaultstate="collapsed" desc="Longs">
     public long resetTimeRan;
     public long timeRanMinutes;
-    public long timeUntilTrade;
-    public long moneyLeftUntilTrade;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Integers">
@@ -72,7 +72,7 @@ public class Variables {
     public File path;
 
     public Mode mode;
-    public Worlds worlds;
+    public WorldType worldType;
     public OreType oreType;
     public OreType ore1;
     public OreType ore2;

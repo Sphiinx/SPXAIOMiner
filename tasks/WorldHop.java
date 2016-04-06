@@ -6,6 +6,8 @@ import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Player;
 import scripts.SPXAIOMiner.api.framework.Task;
 import scripts.SPXAIOMiner.api.game.area.Area07;
+
+import scripts.SPXAIOMiner.api.game.utiity.GetWorlds07;
 import scripts.SPXAIOMiner.api.game.utiity.Utility07;
 import scripts.SPXAIOMiner.api.game.worldhopper.WorldHopper07;
 import scripts.SPXAIOMiner.data.Variables;
@@ -16,6 +18,8 @@ import scripts.SPXAIOMiner.data.Variables;
  */
 public class WorldHop extends Task {
 
+    private int[] worlds;
+
     public WorldHop(Variables v) {
         super(v);
     }
@@ -23,15 +27,28 @@ public class WorldHop extends Task {
     //<editor-fold defaultstate="collapsed" desc="Execution">
     @Override
     public void execute() {
-        if (Area07.getPlayersInArea(vars.radius) > vars.playersToHop || vars.shouldWeHop) {
-            int world = vars.worlds.getRandomWorld();
-            if (WorldHopper07.switchWorld(world)) {
-                Timing.waitCondition(new Condition() {
-                    @Override
-                    public boolean active() {
-                        return Utility07.getCurrentWorld() == world;
+        vars.isHoppingWorlds = true;
+        if (worlds == null) {
+            if (GetWorlds07.isWorldSwitcherOpen()) {
+                worlds = GetWorlds07.getWorlds(vars.worldType.getTextureID());
+            } else {
+                GetWorlds07.openWorldSwitcher();
+            }
+        } else {
+            if (Area07.getPlayersInArea(vars.radius) > vars.playersToHop || vars.shouldWeHop) {
+                if (worlds != null) {
+                    int world = worlds[General.random(0, worlds.length - 1)];
+                    if (WorldHopper07.switchWorld(world)) {
+                        if (Timing.waitCondition(new Condition() {
+                            @Override
+                            public boolean active() {
+                                return Utility07.getCurrentWorld() == world;
+                            }
+                        }, General.random(5500, 6500))) {
+                            vars.isHoppingWorlds = false;
+                        }
                     }
-                }, General.random(5500, 6500));
+                }
             }
         }
     }
@@ -39,7 +56,7 @@ public class WorldHop extends Task {
 
     @Override
     public String toString() {
-        return "Hopping worlds" + Utility07.loadingPeriods();
+        return "Changing worlds" + Utility07.loadingPeriods();
     }
 
     @Override

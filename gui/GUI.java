@@ -1,10 +1,10 @@
 package scripts.SPXAIOMiner.gui;
 
-import org.tribot.api.General;
 import org.tribot.api2007.Player;
 import scripts.SPXAIOMiner.api.game.game.Game07;
 import scripts.SPXAIOMiner.api.Printing;
 import scripts.SPXAIOMiner.antiban.AntiBan;
+import scripts.SPXAIOMiner.api.game.utiity.enums.WorldType;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Variables;
 import scripts.SPXAIOMiner.data.enums.*;
@@ -43,7 +43,6 @@ public class GUI extends JFrame {
     public JCheckBox masterSystem;
     public JCheckBox disableRadius;
     public JCheckBox disableSleeps;
-    public JCheckBox runFromCombat;
     public JCheckBox upgradePickaxe;
     public JCheckBox useProgressive;
     public JCheckBox switchSlaveBack;
@@ -58,7 +57,7 @@ public class GUI extends JFrame {
     public JComboBox<Location> location1;
     public JComboBox<Location> location2;
     public JComboBox<Location> location3;
-    public JComboBox<Worlds> worldHopMode;
+    public JComboBox<WorldType> worldHopMode;
     public JComboBox<OreType> radiusOreType;
     public JComboBox<Location> quarryLocation;
 
@@ -167,7 +166,6 @@ public class GUI extends JFrame {
         disablePaint = new JCheckBox();
         disableSleeps = new JCheckBox();
         disableRadius = new JCheckBox();
-        runFromCombat = new JCheckBox();
         droppingMode = new JComboBox<>();
         transferMinutes = new JSpinner();
         upgradePickaxe = new JCheckBox();
@@ -282,7 +280,7 @@ public class GUI extends JFrame {
         jLabel8.setText("If players in area are greater than:");
 
         jLabel9.setFont(new Font("Ubuntu", 0, 12));
-        jLabel9.setText("If no ores are avalible:");
+        jLabel9.setText("If no ores are available:");
 
         jLabel10.setFont(new Font("Ubuntu", 0, 12));
         jLabel10.setText("World Hopping Mode:");
@@ -293,7 +291,7 @@ public class GUI extends JFrame {
         worldHop.addActionListener(evt -> worldHopActionPerformed());
 
         worldHopMode.setFont(new Font("Ubuntu", 0, 12));
-        worldHopMode.setModel(new DefaultComboBoxModel<>(Worlds.values()));
+        worldHopMode.setModel(new DefaultComboBoxModel<>(WorldType.values()));
         worldHopMode.setEnabled(false);
 
         worldHopPlayersNear.setFont(new Font("Ubuntu", 0, 12));
@@ -656,7 +654,7 @@ public class GUI extends JFrame {
         jPanel6.setPreferredSize(new java.awt.Dimension(384, 161));
 
         jLabel12.setFont(new java.awt.Font("Ubuntu", 0, 12));
-        jLabel12.setText("Upgrade Pickaxe:");
+        jLabel12.setText("Upgrade Axe:");
 
         jLabel13.setFont(new java.awt.Font("Ubuntu", 0, 12));
         jLabel13.setText("Draw Objects:");
@@ -880,21 +878,16 @@ public class GUI extends JFrame {
 
         location1.setFont(new java.awt.Font("Ubuntu", 0, 12));
         OreType o1 = ((OreType) ore1.getSelectedItem());
-        for (Location loc : o1.getLocations()) {
-            General.println("GUI: " + loc);
-        }
         location1.setModel(new DefaultComboBoxModel<>(o1.getLocations()));
         location1.setEnabled(false);
 
         location2.setFont(new java.awt.Font("Ubuntu", 0, 12));
         OreType o2 = ((OreType) ore2.getSelectedItem());
-        General.println(o2.getLocations());
         location2.setModel(new DefaultComboBoxModel<>(o2.getLocations()));
         location2.setEnabled(false);
 
         location3.setFont(new java.awt.Font("Ubuntu", 0, 12));
         OreType o3 = ((OreType) ore3.getSelectedItem());
-        General.println(o3.getLocations());
         location3.setModel(new DefaultComboBoxModel<>(o3.getLocations()));
         location3.setEnabled(false);
 
@@ -1149,7 +1142,7 @@ public class GUI extends JFrame {
         if (worldHop.isSelected()) {
             variables.worldHop = true;
             variables.playersToHop = Integer.parseInt(worldHopPlayersNear.getValue().toString());
-            variables.worlds = ((Worlds) worldHopMode.getSelectedItem());
+            variables.worldType = ((WorldType) worldHopMode.getSelectedItem());
             if (worldHopOresAval.isSelected()) {
                 variables.oresHop = true;
             }
@@ -1343,7 +1336,6 @@ public class GUI extends JFrame {
 
     public void disableSettingsTab(boolean isSelected) {
         pickaxeInInventory.setEnabled(!isSelected);
-        runFromCombat.setEnabled(!isSelected);
         disablePaint.setEnabled(!isSelected);
         levelToStop.setEnabled(!isSelected);
         upgradePickaxe.setEnabled(!isSelected);

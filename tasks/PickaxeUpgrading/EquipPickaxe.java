@@ -43,7 +43,7 @@ public class EquipPickaxe extends Task {
 
     @Override
     public String toString() {
-        return "Equipping Pickaxe" + Utility07.loadingPeriods();
+        return "Equipping Axe" + Utility07.loadingPeriods();
     }
 
     @Override

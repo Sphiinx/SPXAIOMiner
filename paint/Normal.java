@@ -21,7 +21,7 @@ public class Normal {
         g.drawString("Ore Mined: " + paintManager.getOresMined() + " [P/H: " + paintManager.getOrePerHour() + "] ", 282, 348);
         g.drawString("Exp P/H: " + paintManager.getXPPerHour() + " [Gained: " + paintManager.getGainedXP() + "] " + "(+" + paintManager.getGainedLevels() + ")", 282, 374);
         g.drawString("Profit P/H: " + Utility07.formatNumber(paintManager.getProfitPerHour()) + " [Profit: " + Utility07.formatNumber(paintManager.getProfit()) + "]", 282, 399);
-        g.drawString("Next Mule Trade: " + paintManager.getTimeLeftUntilTrade() + " Minutes" + Utility07.loadingPeriods(), 282, 424);
+        g.drawString("Next Mule Trade: " + paintManager.getTimeUntilTrade() + " Minutes" + Utility07.loadingPeriods(), 282, 424);
         g.drawString("Mule Trades: " + paintManager.getMuleTrades(), 282, 450);
 
         g.setColor(Constants.BLUE_COLOR);

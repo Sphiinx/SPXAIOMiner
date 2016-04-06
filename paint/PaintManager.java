@@ -1,5 +1,6 @@
 package scripts.SPXAIOMiner.paint;
 
+import org.tribot.api.General;
 import org.tribot.api2007.Skills;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
@@ -58,13 +59,6 @@ public class PaintManager {
 
     public long getProfitReset() {
         return variables.resetOresMined * variables.orePrice;
-    }
-
-    public long getTimeLeftUntilTrade() {
-        if (variables.slaveSystem) {
-            return variables.transferMade - getProfitReset();
-        }
-        return 0;
     }
 
     public int getOresMined() {
@@ -132,7 +126,7 @@ public class PaintManager {
     }
 
     public long getMoneyLeftUntilTrade() {
-        return variables.moneyLeftUntilTrade;
+        return variables.transferMade - getProfitReset();
     }
 
     public long getTimeRanMinutes() {
@@ -171,6 +165,23 @@ public class PaintManager {
     //<editor-fold defaultstate="collapsed" desc="Master">
     public void drawMasterInfo(Graphics g) {
         master.drawMasterInfo(g);
+    }
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Slave">
+    public long getTimeUntilTrade() {
+        if (slaveSystem()) {
+            if (!variables.isSlaveSystemIsRunning) {
+                if (getTransferMinutes() > 0 || getTransferMade() > 0) {
+                    if (getTransferMade() <= getTransferMinutes()) {
+                        return getTransferMinutes() - getTimeRanMinutes();
+                    } else {
+                        return (getMoneyLeftUntilTrade() / getProfitPerHour()) * 60;
+                    }
+                }
+            }
+        }
+        return 0;
     }
     //</editor-fold>
 

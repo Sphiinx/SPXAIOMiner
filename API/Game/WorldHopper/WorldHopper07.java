@@ -10,6 +10,7 @@ import org.tribot.api2007.types.RSInterface;
 import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSInterfaceComponent;
 import org.tribot.api2007.types.RSItem;
+import scripts.API.Printing;
 import scripts.SPXAIOMiner.api.game.utiity.Utility07;
 
 import java.awt.*;
@@ -47,7 +48,7 @@ public class WorldHopper07 {
         for (int i = 1; i <= WORLD_END; i++) {
             if (arrayContains(WORLDS_DO_NOT_EXIST, i)) diff++;
             if (i == world) {
-                worldNum = i - diff;  //finds the world sequentially skipping all the worlds that d.n.e.
+                worldNum = i - diff;  //finds the world sequentially skipping all the worldType that d.n.e.
                 break;
             }
         }
@@ -135,7 +136,7 @@ public class WorldHopper07 {
         }
 
         if (Login.getLoginState() == Login.STATE.LOGINSCREEN) {
-            General.println("Login Screen Hopping to world: " + world);
+            Printing.status("Login Screen Hopping to world: " + world);
             if (!isAtWorldHopScreen()) {
                 openWorldHopScreen();
             } else if (hasMisconfiguredWorldSettings()) {
@@ -146,7 +147,7 @@ public class WorldHopper07 {
             return WorldHopper.getWorld() == world;
         }
 
-        General.println("Ingame Hopping to world: " + world);
+        Printing.status("Ingame Hopping to world: " + world);
         if (!GameTab.open(GameTab.TABS.LOGOUT) || !openWorldSwitchInterface() || !moveMouseInsideWorldSwitchInterface()) {
             return false;
         }
@@ -203,7 +204,6 @@ public class WorldHopper07 {
                         String text = components[i].getText();
                         try {
                             if (text != null && Integer.parseInt(text) == world) {
-                                General.println(i);
                                 CACHE.put(world, i - 2);
                                 return components[i - 2];
                             }
@@ -242,7 +242,7 @@ public class WorldHopper07 {
             }
 
             if (isDMM) {
-                General.println("Waiting DMM additional hop time");
+                Printing.status("Waiting DMM additional hop time");
                 General.sleep(11000, 13000);
             }
 
@@ -264,7 +264,7 @@ public class WorldHopper07 {
             public boolean active() {
                 General.sleep(100);
                 if (WorldHopper.getWorld() == world && (Login.getLoginState() == Login.STATE.INGAME || Login.getLoginState() == Login.STATE.LOGINSCREEN)) {
-                    General.println("We hopped to world: " + world);
+                    Printing.status("We hopped to world: " + world);
                     return true;
                 }
                 return false;

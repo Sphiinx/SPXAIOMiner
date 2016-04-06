@@ -194,7 +194,6 @@ public class MineOre extends Task {
 
     //<editor-fold defaultstate="collapsed" desc="GenerateWalkingPreference">
     private void generateWalkingPreference(RSObject currentOre) {
-        Printing.dev("Walking to ore");
         if (AntiBan.getABCUtil().generateWalkingPreference(Player.getPosition().distanceTo(currentOre)) == WalkingPreference.SCREEN) {
             Walking07.sceenWalkToObject(currentOre);
         } else {
@@ -261,10 +260,10 @@ public class MineOre extends Task {
     //<editor-fold defaultstate="collapsed" desc="IsOreDepleted">
     private boolean isOreDepleted(RSObject object) {
         if (object != null) {
-            RSObject[] chk = Objects.getAt(object);
+            RSObject[] check = Objects.getAt(object);
 
-            if (chk.length > 0) {
-                int id = chk[0].getID();
+            if (check.length > 0) {
+                int id = check[0].getID();
                 return rockID != id;
             }
             return true;
@@ -360,7 +359,9 @@ public class MineOre extends Task {
     @Override
     public boolean validate() {
         return !vars.isSlaveSystemIsRunning &&
-                !Inventory.isFull() && vars.area.distanceTo(Player.getPosition()) <= vars.radius &&
+                !vars.isHoppingWorlds &&
+                !Inventory.isFull() &&
+                vars.area.distanceTo(Player.getPosition()) <= vars.radius &&
                 (Inventory.getCount(Constants.PICKAXES) > 0 || Equipment.getItem(Equipment.SLOTS.WEAPON) != null);
     }
 

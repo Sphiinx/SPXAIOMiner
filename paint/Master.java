@@ -18,7 +18,6 @@ public class Master {
     public void drawMasterInfo(Graphics g) {
         g.drawString("Master Trades: " + paintManager.getMuleTrades(), 282, 348);
         g.drawString("Master Trades P/H: " + paintManager.getMasterTradesHr(), 282, 374);
-        g.drawString(" ", 282, 450);
     }
     //</editor-fold>
 
