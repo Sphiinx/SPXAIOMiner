@@ -168,14 +168,19 @@ public class Inventory07 {
                 Mouse.click(1);
                 General.sleep(50, 100);
             } else {
-                // Holding ctrl per request by TRiLeZ
-                Keyboard.sendPress(KeyEvent.CHAR_UNDEFINED, Keyboard.getKeyCode((char) KeyEvent.VK_CONTROL));
-                General.sleep(30, 60);
-                Mouse.hop(new Point((int) Mouse.getPos().getX(), y));
-                General.sleep(30, 60);
-                Keyboard.sendRelease(KeyEvent.CHAR_UNDEFINED, Keyboard.getKeyCode((char) KeyEvent.VK_CONTROL));
-                Mouse.click(1);
-                General.sleep(50, 100);
+                // New method of holding ctrl per request by TRiLeZ.
+                Keyboard.holdKey(KeyEvent.CHAR_UNDEFINED, Keyboard.getKeyCode((char) KeyEvent.VK_CONTROL), new Condition() {
+                    @Override
+                    public boolean active() {
+                        General.sleep(30, 60);
+                        Mouse.hop(new Point((int) Mouse.getPos().getX(), y));
+                        General.sleep(30, 60);
+                        Keyboard.sendRelease(KeyEvent.CHAR_UNDEFINED, Keyboard.getKeyCode((char) KeyEvent.VK_CONTROL));
+                        Mouse.click(1);
+                        General.sleep(50, 100);
+                        return true;
+                    }
+                });
             }
         }
     }

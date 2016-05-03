@@ -10,7 +10,7 @@ import org.tribot.api2007.types.RSInterface;
 import org.tribot.api2007.types.RSInterfaceChild;
 import org.tribot.api2007.types.RSInterfaceComponent;
 import org.tribot.api2007.types.RSItem;
-import scripts.API.Printing;
+import api.Printing;
 import scripts.SPXAIOMiner.api.game.utiity.Utility07;
 
 import java.awt.*;

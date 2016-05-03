@@ -144,8 +144,6 @@ public final class AntiBan {
      * @Return The reaction time.
      */
     public static int getReactionTime() {
-        resetShouldHover();
-        resetShouldOpenMenu();
 
         ABCProperties properties = getProperties();
 

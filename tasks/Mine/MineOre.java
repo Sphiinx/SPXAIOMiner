@@ -48,6 +48,7 @@ public class MineOre extends Task {
     private boolean shouldHover;
     private boolean shouldOpenMenu;
     private boolean clickingResult;
+    private boolean shouldMoveToAnticipated;
 
 
     public MineOre(Variables v) {
@@ -235,16 +236,17 @@ public class MineOre extends Task {
                     @Override
                     public boolean active() {
                         General.sleep(100);
+                        generateTrackers(startTime);
+                        switchResources();
                         handleHovering();
                         AntiBan.timedActions();
                         return isOreDepleted(currentOre);
                     }
                 }, timeout)) {
-                    generateTrackers(startTime);
                     depletedOres.add(currentOre.getPosition());
+                    shouldMoveToAnticipated = true;
                     createCache = Inventory.getAll().length;
                     isOreStolen();
-                    switchResources();
                     AntiBan.resetShouldHover();
                     AntiBan.resetShouldOpenMenu();
                     if (shouldHover && oreToHover != null) {
@@ -288,7 +290,6 @@ public class MineOre extends Task {
     private RSObject getActualOre() {
         RSObject[] actualOres = getAllObjects();
         if (actualOres.length > 0) {
-
             if (vars.oresHop) {
                 vars.shouldWeHop = false;
             }
@@ -298,12 +299,12 @@ public class MineOre extends Task {
             if (vars.oresHop) {
                 vars.shouldWeHop = true;
             }
-            if (AntiBan.getABCUtil().shouldMoveToAnticipated()) {
+            if (shouldMoveToAnticipated && AntiBan.getABCUtil().shouldMoveToAnticipated()) {
                 AntiBan.sleepReactionTime();
                 AntiBan.goToAnticipated(anticipatedLocation);
+                shouldMoveToAnticipated = false;
             }
         }
-
         return null;
     }
     //</editor-fold>

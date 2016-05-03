@@ -41,7 +41,6 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
 
     @Override
     public void run() {
-        checkUsername();
         General.useAntiBanCompliance(true);
         ThreadSettings.get().setClickingAPIUseDynamic(true);
         setDebugging();
@@ -49,19 +48,10 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
         variables.path = new File(Util.getWorkingDirectory().getAbsolutePath(), "[SPX]AIOMiner_" + General.getTRiBotUsername() + "_settings" + ".ini");
         variables.version = getClass().getAnnotation(ScriptManifest.class).version();
         getStartInformation();
-        initializeGui();
+        initializeGUI();
         getItemPrice();
         collection.addCollection();
         loop(100, 150);
-    }
-
-    private void checkUsername() {
-        if (General.getTRiBotUsername().equals("xSlapppz") || General.getTRiBotUsername().equals("Sphiinx")) {
-            General.println("You're an asshole. ;)");
-        } else {
-            General.println("You're not a member of the beta.");
-            stopScript();
-        }
     }
 
     //<editor-fold defaultstate="collapsed" desc="Loop">
@@ -83,7 +73,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="InitializeGUI">
-    public void initializeGui() {
+    private void initializeGUI() {
         EventQueue.invokeLater(() -> {
             try {
                 sleep(50);
