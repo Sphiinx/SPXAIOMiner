@@ -5,32 +5,27 @@ import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSItem;
-import scripts.SPXAIOMiner.api.framework.Task;
-import scripts.SPXAIOMiner.api.game.banking.Banking07;
-import scripts.SPXAIOMiner.api.game.game.Game07;
-import scripts.SPXAIOMiner.api.game.utiity.Utility07;
-import scripts.SPXAIOMiner.api.Printing;
-import scripts.SPXAIOMiner.antiban.AntiBan;
 import scripts.SPXAIOMiner.data.*;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.enums.Pickaxe;
+import scripts.SPXAIOMiner.framework.Task;
+import scripts.TribotAPI.game.banking.Banking07;
+import scripts.TribotAPI.game.game.Game07;
+import scripts.TribotAPI.game.utiity.Utility07;
+import scripts.TribotAPI.Printing;
+import scripts.TribotAPI.antiban.AntiBan;
 
 import java.util.ArrayList;
 
 /**
  * Created by Sphiinx on 2/12/2016.
  */
-public class UpgradePickaxe extends Task {
+public class UpgradePickaxe implements Task {
 
     private ArrayList<Pickaxe> unaval_list = new ArrayList<>();
     private Pickaxe pickaxeToGet = null;
-    public Variables variables;
+    public Vars vars;
 
-    public UpgradePickaxe(Variables v) {
-        super(v);
-    }
-
-    @Override
     public void execute() {
         withdrawItems();
     }
@@ -98,7 +93,7 @@ public class UpgradePickaxe extends Task {
                     if (unaval_list.size() > 0) {
                         for (Pickaxe pick : unaval_list) {
                             if (pickaxeToGet == pick) {
-                                pickaxeToGet = variables.pickaxe.getPreviousAxe();
+                                pickaxeToGet = vars.pickaxe.getPreviousAxe();
                                 return false;
                             } else {
                                 if (!Equipment.isEquipped(pickaxeToGet.getPickaxeID())) {
@@ -118,12 +113,10 @@ public class UpgradePickaxe extends Task {
     }
     //</editor-fold>
 
-    @Override
     public String toString() {
         return "Upgrading Axe" + Utility07.loadingPeriods();
     }
 
-    @Override
     public boolean validate() {
         return Game07.isInGame() && vars.upgradePickaxe && needsUpgrade();
     }

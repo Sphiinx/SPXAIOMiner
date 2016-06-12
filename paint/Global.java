@@ -5,8 +5,8 @@ import org.tribot.api.Timing;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSArea;
 import org.tribot.api2007.types.RSTile;
-import scripts.SPXAIOMiner.api.game.projection.Projection07;
 import scripts.SPXAIOMiner.data.Constants;
+import scripts.TribotAPI.game.projection.Projection07;
 
 import java.awt.*;
 

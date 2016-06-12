@@ -1,30 +1,23 @@
 package scripts.SPXAIOMiner.tasks.Mine;
 
 import org.tribot.api2007.Inventory;
-import scripts.SPXAIOMiner.api.framework.Task;
-import scripts.SPXAIOMiner.api.game.utiity.Utility07;
-import scripts.SPXAIOMiner.data.Variables;
+import scripts.SPXAIOMiner.data.Vars;
+import scripts.SPXAIOMiner.framework.Task;
+import scripts.TribotAPI.game.utiity.Utility07;
 
 /**
  * Created by Sphiinx on 1/17/2016.
  */
-public class Powermine extends Task {
+public class Powermine implements Task {
 
-    public Powermine(Variables v) {
-        super(v);
-    }
-
-    @Override
     public void execute() {
-        Inventory.drop(vars.oreType.getItemID());
+        Inventory.drop(Vars.get().oreType.getItemID());
     }
 
-    @Override
     public String toString() {
         return "Dropping items" + Utility07.loadingPeriods();
     }
 
-    @Override
     public boolean validate() {
         return Inventory.isFull();
     }

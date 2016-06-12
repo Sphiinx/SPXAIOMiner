@@ -15,15 +15,15 @@ import org.tribot.api2007.Player;
 import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.ext.Filters;
 import org.tribot.api2007.types.*;
-import scripts.SPXAIOMiner.api.framework.Task;
-import scripts.SPXAIOMiner.api.game.area.Area07;
-import scripts.SPXAIOMiner.api.game.mouse.Mouse07;
-import scripts.SPXAIOMiner.api.game.utiity.Utility07;
-import scripts.SPXAIOMiner.api.game.walking.Walking07;
-import scripts.SPXAIOMiner.api.Printing;
-import scripts.SPXAIOMiner.antiban.AntiBan;
 import scripts.SPXAIOMiner.data.*;
 import scripts.SPXAIOMiner.data.Constants;
+import scripts.SPXAIOMiner.framework.Task;
+import scripts.TribotAPI.game.area.Area07;
+import scripts.TribotAPI.game.mouse.Mouse07;
+import scripts.TribotAPI.game.utiity.Utility07;
+import scripts.TribotAPI.game.walking.Walking07;
+import scripts.TribotAPI.Printing;
+import scripts.TribotAPI.antiban.AntiBan;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ import java.util.ArrayList;
 /**
  * Created by Sphiinx on 1/16/2016.
  */
-public class MineOre extends Task {
+public class MineOre implements Task {
 
     private final Filter<RSObject> ORE_FILTER = oreFilter();
     private ArrayList<RSTile> depletedOres = new ArrayList<>();
@@ -50,13 +50,7 @@ public class MineOre extends Task {
     private boolean clickingResult;
     private boolean shouldMoveToAnticipated;
 
-
-    public MineOre(Variables v) {
-        super(v);
-    }
-
     //<editor-fold defaultstate="collapsed" desc="Execution">
-    @Override
     public void execute() {
         Mouse07.fixSelected();
 
@@ -95,7 +89,7 @@ public class MineOre extends Task {
 
     //<editor-fold defaultstate="collapsed" desc="SleepReactionTime">
     private void sleepReactionTime() {
-        if (!vars.disableSleeps) {
+        if (!Vars.get().disableSleeps) {
             int sleep = AntiBan.getReactionTime();
             Printing.status("Reaction Time: " + sleep);
             AntiBan.sleepReactionTime();
@@ -168,8 +162,8 @@ public class MineOre extends Task {
         long waitTime = Timing.timeFromMark(startTime);
         totalWaitTime += waitTime;
 
-        if (vars.oresMined > 0) {
-            waitTime = (int) (totalWaitTime / vars.oresMined);
+        if (Vars.get().oresMined > 0) {
+            waitTime = (int) (totalWaitTime / Vars.get().oresMined);
         } else {
             waitTime = 6000;
         }
@@ -183,9 +177,9 @@ public class MineOre extends Task {
             double winPercentage = (AntiBan.getResourcesWon() + AntiBan.getResourcesLost()) / AntiBan.getResourcesWon();
 
             if (winPercentage < 50.0 && Timing.currentTimeMillis() >= check_time) {
-                if (AntiBan.shouldSwitchResources(Area07.getPlayersInArea(vars.radius))) {
-                    if (vars.worldHop) {
-                        vars.shouldWeHop = true;
+                if (AntiBan.shouldSwitchResources(Area07.getPlayersInArea(Vars.get().radius))) {
+                    if (Vars.get().worldHop) {
+                        Vars.get().shouldWeHop = true;
                     }
                 }
             }
@@ -230,7 +224,7 @@ public class MineOre extends Task {
                 long startTime = System.currentTimeMillis();
                 generateCheckTime();
                 handleHoverCheck();
-                long timeout = totalWaitTime > 10000 && vars.oresMined > 0 ? (totalWaitTime / vars.oresMined) * 2 : 6500;
+                long timeout = totalWaitTime > 10000 && Vars.get().oresMined > 0 ? (totalWaitTime / Vars.get().oresMined) * 2 : 6500;
 
                 if (Timing.waitCondition(new Condition() {
                     @Override
@@ -290,14 +284,14 @@ public class MineOre extends Task {
     private RSObject getActualOre() {
         RSObject[] actualOres = getAllObjects();
         if (actualOres.length > 0) {
-            if (vars.oresHop) {
-                vars.shouldWeHop = false;
+            if (Vars.get().oresHop) {
+                Vars.get().shouldWeHop = false;
             }
-            vars.oreToDraw = actualOres;
+            Vars.get().oreToDraw = actualOres;
             return AntiBan.selectNextTarget(actualOres);
         } else {
-            if (vars.oresHop) {
-                vars.shouldWeHop = true;
+            if (Vars.get().oresHop) {
+                Vars.get().shouldWeHop = true;
             }
             if (shouldMoveToAnticipated && AntiBan.getABCUtil().shouldMoveToAnticipated()) {
                 AntiBan.sleepReactionTime();
@@ -312,7 +306,7 @@ public class MineOre extends Task {
     //<editor-fold defaultstate="collapsed" desc="ColorCheck">
     private boolean colorCheck(RSObject object) {
         for (short color : object.getDefinition().getModifiedColors()) {
-            if (color == vars.oreType.getColor()) {
+            if (color == Vars.get().oreType.getColor()) {
                 return true;
             }
         }
@@ -338,7 +332,7 @@ public class MineOre extends Task {
                         }
                     }
                 }
-                return colorCheck(rsObject) && Player.getPosition().distanceTo(rsObject) <= vars.radius;
+                return colorCheck(rsObject) && Player.getPosition().distanceTo(rsObject) <= Vars.get().radius;
             }
         }.combine(Filters.Objects.nameContains("Rock"), true);
     }
@@ -346,23 +340,21 @@ public class MineOre extends Task {
 
     //<editor-fold defaultstate="collapsed" desc="GetAllObjects">
     private RSObject[] getAllObjects() {
-        RSObject[] objects = Objects.getAll(vars.radius, ORE_FILTER);
+        RSObject[] objects = Objects.getAll(Vars.get().radius, ORE_FILTER);
         Sorting.sortByDistance(objects, Player.getPosition(), true);
         return objects;
     }
     //</editor-fold>
 
-    @Override
     public String toString() {
         return "Mining ore" + Utility07.loadingPeriods();
     }
 
-    @Override
     public boolean validate() {
-        return !vars.isSlaveSystemIsRunning &&
-                !vars.isHoppingWorlds &&
+        return !Vars.get().isSlaveSystemIsRunning &&
+                !Vars.get().isHoppingWorlds &&
                 !Inventory.isFull() &&
-                vars.area.distanceTo(Player.getPosition()) <= vars.radius &&
+                Vars.get().area.distanceTo(Player.getPosition()) <= Vars.get().radius &&
                 (Inventory.getCount(Constants.PICKAXES) > 0 || Equipment.getItem(Equipment.SLOTS.WEAPON) != null);
     }
 

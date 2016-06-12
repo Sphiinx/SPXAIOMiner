@@ -7,31 +7,26 @@ import org.tribot.api2007.Banking;
 import org.tribot.api2007.Equipment;
 import org.tribot.api2007.Inventory;
 import org.tribot.api2007.types.RSItem;
-import scripts.SPXAIOMiner.api.framework.Task;
-import scripts.SPXAIOMiner.api.game.banking.Banking07;
-import scripts.SPXAIOMiner.api.game.game.Game07;
-import scripts.SPXAIOMiner.api.game.utiity.Utility07;
-import scripts.SPXAIOMiner.api.Printing;
-import scripts.SPXAIOMiner.antiban.AntiBan;
 import scripts.SPXAIOMiner.data.Constants;
-import scripts.SPXAIOMiner.data.Variables;
+import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.data.enums.Pickaxe;
+import scripts.SPXAIOMiner.framework.Task;
+import scripts.TribotAPI.game.banking.Banking07;
+import scripts.TribotAPI.game.game.Game07;
+import scripts.TribotAPI.game.utiity.Utility07;
+import scripts.TribotAPI.Printing;
+import scripts.TribotAPI.antiban.AntiBan;
 
 import java.util.ArrayList;
 
 /**
  * Created by Sphiinx on 2/15/2016.
  */
-public class GetPickaxe extends Task {
+public class GetPickaxe implements Task {
 
     private ArrayList<Pickaxe> unaval_list = new ArrayList<>();
     private Pickaxe pickaxeToGet = null;
 
-    public GetPickaxe(Variables v) {
-        super(v);
-    }
-
-    @Override
     public void execute() {
         if (Banking.isBankScreenOpen()) {
             withdrawItems();
@@ -43,8 +38,8 @@ public class GetPickaxe extends Task {
     //<editor-fold defaultstate="collapsed" desc="GetBestPickaxe">
     private void getBestPickaxe() {
         if (pickaxeToGet == null) {
-            pickaxeToGet = vars.pickaxe.getBestPickaxe(vars.pickaxeInInventory);
-            vars.pickaxe = pickaxeToGet;
+            pickaxeToGet = Vars.get().pickaxe.getBestPickaxe(Vars.get().pickaxeInInventory);
+            Vars.get().pickaxe = pickaxeToGet;
         }
     }
     //</editor-fold>
@@ -65,8 +60,8 @@ public class GetPickaxe extends Task {
                                 return Inventory.getCount(pickaxeToGet.getPickaxeID()) >= 1;
                             }
                         }, General.random(750, 1000));
-                        if (vars.pickaxeInInventory) {
-                            vars.isUpgradingPickaxe = false;
+                        if (Vars.get().pickaxeInInventory) {
+                            Vars.get().isUpgradingPickaxe = false;
                         }
                     }
                 } else {
@@ -83,13 +78,13 @@ public class GetPickaxe extends Task {
             Printing.status("We could not find a pickaxe in the bank...");
             Printing.status("Stopping script...");
             AntiBan.destroy();
-            vars.stopScript = true;
+            Vars.get().stopScript = true;
         } else {
             if (!Equipment.isEquipped(pickaxeToGet.getPickaxeID())) {
                 unaval_list.add(pickaxeToGet);
             }
-            pickaxeToGet = vars.pickaxe.getPreviousAxe();
-            vars.pickaxe = pickaxeToGet;
+            pickaxeToGet = Vars.get().pickaxe.getPreviousAxe();
+            Vars.get().pickaxe = pickaxeToGet;
         }
     }
     //</editor-fold>
@@ -104,7 +99,7 @@ public class GetPickaxe extends Task {
                     return Equipment.getItem(Equipment.SLOTS.WEAPON) != null || Inventory.getCount(Constants.PICKAXES) >  0;
                 }
             }, General.random(5000, 6000))) {
-                vars.isUpgradingPickaxe = true;
+                Vars.get().isUpgradingPickaxe = true;
                 return true;
             }
         }
@@ -112,12 +107,10 @@ public class GetPickaxe extends Task {
     }
     //</editor-fold>
 
-    @Override
     public String toString() {
         return "Getting pickaxe" + Utility07.loadingPeriods();
     }
 
-    @Override
     public boolean validate() {
         return Game07.isInGame() && needsPickaxe();
     }

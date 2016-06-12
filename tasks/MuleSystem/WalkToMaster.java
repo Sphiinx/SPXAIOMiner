@@ -7,32 +7,27 @@ import org.tribot.api2007.Inventory;
 import org.tribot.api2007.Players;
 import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.types.RSTile;
-import scripts.SPXAIOMiner.api.framework.Task;
-import scripts.SPXAIOMiner.api.game.banking.Banking07;
-import scripts.SPXAIOMiner.api.game.utiity.Utility07;
-import scripts.SPXAIOMiner.api.game.worldhopper.WorldHopper07;
-import scripts.SPXAIOMiner.data.Variables;
+import scripts.SPXAIOMiner.data.Vars;
+import scripts.SPXAIOMiner.framework.Task;
+import scripts.TribotAPI.game.banking.Banking07;
+import scripts.TribotAPI.game.utiity.Utility07;
+import scripts.TribotAPI.game.worldhopper.WorldHopper07;
 
 /**
  * Created by Sphiinx on 2/3/2016.
  */
-public class WalkToMaster extends Task {
-
-    public WalkToMaster(Variables v) {
-        super(v);
-    }
+public class WalkToMaster implements Task {
 
     //<editor-fold defaultstate="collapsed" desc="Execution">
-    @Override
     public void execute() {
-        if (Utility07.getCurrentWorld() != vars.masterWorld) {
+        if (Utility07.getCurrentWorld() != Vars.get().masterWorld) {
             Banking07.closeBank();
-            if (WorldHopper07.switchWorld(vars.masterWorld)) {
+            if (WorldHopper07.switchWorld(Vars.get().masterWorld)) {
                 Timing.waitCondition(new Condition() {
                     @Override
                     public boolean active() {
                         General.sleep(100);
-                        return Utility07.getCurrentWorld() == vars.masterWorld;
+                        return Utility07.getCurrentWorld() == Vars.get().masterWorld;
                     }
                 }, General.random(2000, 2500));
             }
@@ -44,7 +39,7 @@ public class WalkToMaster extends Task {
 
     //<editor-fold defaultstate="collapsed" desc="GetPosition">
     public RSTile getPos() {
-        String tileString = vars.masterPositon.replaceAll("[()]", "");
+        String tileString = Vars.get().masterPositon.replaceAll("[()]", "");
         String[] tileStringArr = tileString.split(",");
         int x = Integer.parseInt(tileStringArr[0].trim());
         int y = Integer.parseInt(tileStringArr[1].trim());
@@ -60,8 +55,8 @@ public class WalkToMaster extends Task {
 
     @Override
     public boolean validate() {
-        vars.master = Players.find(vars.masterName);
-        return vars.isSlaveSystemIsRunning && vars.master.length <= 0 && Inventory.getCount(vars.oreType.getNotedItemID()) >= vars.resetOresMined;
+        Vars.get().master = Players.find(Vars.get().masterName);
+        return Vars.get().isSlaveSystemIsRunning && Vars.get().master.length <= 0 && Inventory.getCount(Vars.get().oreType.getNotedItemID()) >= Vars.get().resetOresMined;
     }
 
 }

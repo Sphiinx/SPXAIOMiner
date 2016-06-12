@@ -1,11 +1,10 @@
 package scripts.SPXAIOMiner.paint;
 
-import org.tribot.api.General;
 import org.tribot.api2007.Skills;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
 import scripts.SPXAIOMiner.data.Constants;
-import scripts.SPXAIOMiner.data.Variables;
+import scripts.SPXAIOMiner.data.Vars;
 
 import java.awt.*;
 
@@ -14,15 +13,9 @@ import java.awt.*;
  */
 public class PaintManager {
 
-    public Variables variables;
     private Global global = new Global(this);
     private Normal normal = new Normal(this);
     private Master master = new Master(this);
-
-
-    public PaintManager(Variables variables) {
-        this.variables = variables;
-    }
 
     //<editor-fold defaultstate="collapsed" desc="Get Information">
     public long getTimeRan() {
@@ -30,15 +23,15 @@ public class PaintManager {
     }
 
     public int getMasterTradesHr() {
-        return (int) (variables.muleTrades * 3600000D / (System.currentTimeMillis() - Constants.START_TIME));
+        return (int) (Vars.get().muleTrades * 3600000D / (System.currentTimeMillis() - Constants.START_TIME));
     }
 
     public int getGainedLevels() {
-        return Skills.getActualLevel(Skills.SKILLS.MINING) - variables.startLevel;
+        return Skills.getActualLevel(Skills.SKILLS.MINING) - Vars.get().startLevel;
     }
 
     public int getGainedXP() {
-        return Skills.getXP(Skills.SKILLS.MINING) - variables.startXP;
+        return Skills.getXP(Skills.SKILLS.MINING) - Vars.get().startXP;
     }
 
     public long getXPPerHour() {
@@ -46,7 +39,7 @@ public class PaintManager {
     }
 
     public long getProfit() {
-        return variables.oresMined * variables.orePrice;
+        return Vars.get().oresMined * Vars.get().orePrice;
     }
 
     public long getProfitPerHour() {
@@ -54,83 +47,83 @@ public class PaintManager {
     }
 
     public long getOrePerHour() {
-        return (long) (variables.oresMined * 3600000D / (System.currentTimeMillis() - Constants.START_TIME));
+        return (long) (Vars.get().oresMined * 3600000D / (System.currentTimeMillis() - Constants.START_TIME));
     }
 
     public long getProfitReset() {
-        return variables.resetOresMined * variables.orePrice;
+        return Vars.get().resetOresMined * Vars.get().orePrice;
     }
 
     public int getOresMined() {
-        return variables.oresMined;
+        return Vars.get().oresMined;
     }
 
     public int getMuleTrades() {
-        return variables.muleTrades;
+        return Vars.get().muleTrades;
     }
 
     public String getStatus() {
-        return variables.status;
+        return Vars.get().status;
     }
 
     public double getVersion() {
-        return variables.version;
+        return Vars.get().version;
     }
 
     public boolean drawRadius() {
-        return variables.drawRadius;
+        return Vars.get().drawRadius;
     }
 
     public boolean radiusMine() {
-        return variables.radiusMine;
+        return Vars.get().radiusMine;
     }
 
     public RSTile getArea() {
-        return variables.area;
+        return Vars.get().area;
     }
 
     public int getRadius() {
-        return variables.radius;
+        return Vars.get().radius;
     }
 
     public boolean drawObjects() {
-        return variables.drawObjects;
+        return Vars.get().drawObjects;
     }
 
     public RSObject[] getOreToDraw() {
-        return variables.oreToDraw;
+        return Vars.get().oreToDraw;
     }
 
     public boolean drawTiles() {
-        return variables.drawTiles;
+        return Vars.get().drawTiles;
     }
 
     public RSTile getOreToDrawTilePosition() {
-        return variables.oreToDraw[0].getPosition();
+        return Vars.get().oreToDraw[0].getPosition();
     }
 
     public boolean slaveSystem() {
-        return variables.slaveSystem;
+        return Vars.get().slaveSystem;
     }
 
     public int getTransferMinutes() {
-        return variables.transferMinutes;
+        return Vars.get().transferMinutes;
     }
 
     public int getTransferMade() {
-        return variables.transferMade;
+        return Vars.get().transferMade;
     }
 
     public int getOrePrice() {
-        return variables.orePrice;
+        return Vars.get().orePrice;
     }
 
     public long getMoneyLeftUntilTrade() {
-        return variables.transferMade - getProfitReset();
+        return Vars.get().transferMade - getProfitReset();
     }
 
     public long getTimeRanMinutes() {
-        return variables.timeRanMinutes;
+        return Vars.get().timeRanMinutes;
     }
     //</editor-fold>
 
@@ -171,7 +164,7 @@ public class PaintManager {
     //<editor-fold defaultstate="collapsed" desc="Slave">
     public long getTimeUntilTrade() {
         if (slaveSystem()) {
-            if (!variables.isSlaveSystemIsRunning) {
+            if (!Vars.get().isSlaveSystemIsRunning) {
                 if (getTransferMinutes() > 0 || getTransferMade() > 0) {
                     if (getTransferMade() <= getTransferMinutes()) {
                         return getTransferMinutes() - getTimeRanMinutes();

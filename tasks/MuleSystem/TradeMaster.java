@@ -7,25 +7,21 @@ import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
-import scripts.SPXAIOMiner.api.framework.Task;
-import scripts.SPXAIOMiner.api.game.utiity.Utility07;
-import scripts.SPXAIOMiner.data.Variables;
+import scripts.SPXAIOMiner.data.Vars;
+import scripts.SPXAIOMiner.framework.Task;
+import scripts.TribotAPI.game.utiity.Utility07;
 
 import java.awt.*;
 
 /**
  * Created by Sphiinx on 2/4/2016.
  */
-public class TradeMaster extends Task {
-
-    public TradeMaster(Variables v) {
-        super(v);
-    }
+public class TradeMaster implements Task {
 
     //<editor-fold defaultstate="collapsed" desc="Execution">
     @Override
     public void execute() {
-        RSPlayer[] master = Players.find(vars.masterName);
+        RSPlayer[] master = Players.find(Vars.get().masterName);
         if (master[0].isOnScreen()) {
             tradeMaster();
         } else {
@@ -37,7 +33,7 @@ public class TradeMaster extends Task {
     //<editor-fold defaultstate="collapsed" desc="Trade Master">
     public void tradeMaster() {
         if (Trading.getWindowState() == Trading.WINDOW_STATE.FIRST_WINDOW || Trading.getWindowState() == Trading.WINDOW_STATE.SECOND_WINDOW) {
-            if (Trading.getOpponentName().equals(vars.masterName)) {
+            if (Trading.getOpponentName().equals(Vars.get().masterName)) {
                 if (Trading.getOfferedItems(false).length > 0) {
                     acceptTrade();
                 } else {
@@ -48,7 +44,7 @@ public class TradeMaster extends Task {
             }
         } else {
             if (!Banking.isBankScreenOpen()) {
-                if (Clicking.click("Trade with " + vars.masterName, vars.master[0])) {
+                if (Clicking.click("Trade with " + Vars.get().masterName, Vars.get().master[0])) {
                     Timing.waitCondition(new Condition() {
                         @Override
                         public boolean active() {
@@ -88,7 +84,7 @@ public class TradeMaster extends Task {
 
     //<editor-fold defaultstate="collapsed" desc="OfferItems">
     public void offerItems() {
-        if (Trading.offer(0, vars.oreType.getNotedItemID())) {
+        if (Trading.offer(0, Vars.get().oreType.getNotedItemID())) {
             Timing.waitCondition(new Condition() {
                 @Override
                 public boolean active() {
@@ -116,37 +112,35 @@ public class TradeMaster extends Task {
 
     //<editor-fold defaultstate="collapsed" desc="WalkToMaster">
     public void walkToMaster() {
-        Point p = Projection.tileToMinimap(vars.master[0].getPosition());
+        Point p = Projection.tileToMinimap(Vars.get().master[0].getPosition());
         if (Projection.isInMinimap(p)) {
-            RSTile[] path = Walking.generateStraightScreenPath(vars.master[0].getPosition());
+            RSTile[] path = Walking.generateStraightScreenPath(Vars.get().master[0].getPosition());
             if (Walking.walkScreenPath(path)) {
                 Timing.waitCondition(new Condition() {
                     @Override
                     public boolean active() {
                         General.sleep(100);
-                        return vars.master[0].isOnScreen();
+                        return Vars.get().master[0].isOnScreen();
                     }
                 }, General.random(1000, 1200));
             }
         } else {
-            WebWalking.walkTo(vars.master[0]);
+            WebWalking.walkTo(Vars.get().master[0]);
         }
     }
     //</editor-fold>
 
-    @Override
     public String toString() {
         return "Trading master" + Utility07.loadingPeriods();
     }
 
     //<editor-fold defaultstate="collapsed" desc="Validation">
-    @Override
     public boolean validate() {
-        vars.master = Players.find(vars.masterName);
+        Vars.get().master = Players.find(Vars.get().masterName);
         if (Trading.getWindowState() == Trading.WINDOW_STATE.FIRST_WINDOW || Trading.getWindowState() == Trading.WINDOW_STATE.SECOND_WINDOW) {
             return true;
         }
-        return vars.isSlaveSystemIsRunning && vars.master.length > 0 && Inventory.getCount(vars.oreType.getNotedItemID()) >= vars.resetOresMined;
+        return Vars.get().isSlaveSystemIsRunning && Vars.get().master.length > 0 && Inventory.getCount(Vars.get().oreType.getNotedItemID()) >= Vars.get().resetOresMined;
     }
     //</editor-fold>
 

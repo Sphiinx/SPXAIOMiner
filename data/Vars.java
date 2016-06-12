@@ -3,8 +3,8 @@ package scripts.SPXAIOMiner.data;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
-import scripts.SPXAIOMiner.api.game.utiity.enums.WorldType;
 import scripts.SPXAIOMiner.data.enums.*;
+import scripts.TribotAPI.game.utiity.enums.WorldType;
 
 import java.io.File;
 import java.util.Properties;
@@ -12,7 +12,17 @@ import java.util.Properties;
 /**
  * Created by Sphiinx on 1/15/2016.
  */
-public class Variables {
+public class Vars {
+
+    public static Vars vars;
+
+    public static Vars get() {
+        return vars == null ? vars = new Vars() : vars;
+    }
+
+    public static void reset() {
+        vars = null;
+    }
 
     //<editor-fold defaultstate="collapsed" desc="Booleans">
     public boolean oresHop;

@@ -1,13 +1,13 @@
 package scripts.SPXAIOMiner.gui;
 
 import org.tribot.api2007.Player;
-import scripts.SPXAIOMiner.api.game.game.Game07;
-import scripts.SPXAIOMiner.api.Printing;
-import scripts.SPXAIOMiner.antiban.AntiBan;
-import scripts.SPXAIOMiner.api.game.utiity.enums.WorldType;
 import scripts.SPXAIOMiner.data.Constants;
-import scripts.SPXAIOMiner.data.Variables;
+import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.data.enums.*;
+import scripts.TribotAPI.game.game.Game07;
+import scripts.TribotAPI.game.utiity.enums.WorldType;
+import scripts.TribotAPI.Printing;
+import scripts.TribotAPI.antiban.AntiBan;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -20,15 +20,14 @@ import java.net.URL;
  */
 public class GUI extends JFrame {
 
-    public Variables variables;
+    public Vars vars;
     private Settings settings = new Settings(this);
 
-    public GUI(Variables variables) {
-        this.variables = variables;
+    public GUI() {
         initComponents();
     }
 
-    //<editor-fold defaultstate="collapsed" desc="Variables">
+    //<editor-fold defaultstate="collapsed" desc="Vars">
     public JButton start;
     public JButton loadSettings;
     public JButton saveSettings;
@@ -1102,111 +1101,111 @@ public class GUI extends JFrame {
 
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Setting Variables">
+    //<editor-fold defaultstate="collapsed" desc="Setting Vars">
     private void startActionPerformed() {
         if (radiusMine.isSelected()) {
             if (Game07.isInGame()) {
-                variables.radiusMine = true;
-                variables.oreType = ((OreType) radiusOreType.getSelectedItem());
-                variables.radius = Integer.parseInt(radiusAmount.getValue().toString());
-                variables.area = Player.getPosition();
-                variables.safePosition = Constants.DEFAULT_SAFE_ZONE;
+                Vars.get().radiusMine = true;
+                Vars.get().oreType = ((OreType) radiusOreType.getSelectedItem());
+                Vars.get().radius = Integer.parseInt(radiusAmount.getValue().toString());
+                Vars.get().area = Player.getPosition();
+                Vars.get().safePosition = Constants.DEFAULT_SAFE_ZONE;
             } else {
                 Printing.status("For radius mining, please start the script logged in...");
                 Printing.status("Stopping script...");
                 AntiBan.destroy();
-                variables.stopScript = true;
+                Vars.get().stopScript = true;
             }
         } else {
             if (useProgressive.isSelected()) {
-                variables.progressiveMode = true;
-                variables.oreType = ((OreType) ore1.getSelectedItem());
-                variables.ore1 = ((OreType) ore1.getSelectedItem());
-                variables.ore2 = ((OreType) ore2.getSelectedItem());
-                variables.ore3 = ((OreType) ore3.getSelectedItem());
-                variables.area = ((Location) location1.getSelectedItem()).getLocation();
-                variables.location1 = ((Location) location1.getSelectedItem()).getLocation();
-                variables.location2 = ((Location) location2.getSelectedItem()).getLocation();
-                variables.location3 = ((Location) location3.getSelectedItem()).getLocation();
+                Vars.get().progressiveMode = true;
+                Vars.get().oreType = ((OreType) ore1.getSelectedItem());
+                Vars.get().ore1 = ((OreType) ore1.getSelectedItem());
+                Vars.get().ore2 = ((OreType) ore2.getSelectedItem());
+                Vars.get().ore3 = ((OreType) ore3.getSelectedItem());
+                Vars.get().area = ((Location) location1.getSelectedItem()).getLocation();
+                Vars.get().location1 = ((Location) location1.getSelectedItem()).getLocation();
+                Vars.get().location2 = ((Location) location2.getSelectedItem()).getLocation();
+                Vars.get().location3 = ((Location) location3.getSelectedItem()).getLocation();
             } else {
-                variables.oreType = ((OreType) oreType.getSelectedItem());
-                variables.area = ((Location) quarryLocation.getSelectedItem()).getLocation();
-                variables.safePosition = ((Location) quarryLocation.getSelectedItem()).getSafePosition();
+                Vars.get().oreType = ((OreType) oreType.getSelectedItem());
+                Vars.get().area = ((Location) quarryLocation.getSelectedItem()).getLocation();
+                Vars.get().safePosition = ((Location) quarryLocation.getSelectedItem()).getSafePosition();
             }
         }
 
         if (dropGems.isSelected()) {
-            variables.dropGems = true;
+            Vars.get().dropGems = true;
         }
 
         if (worldHop.isSelected()) {
-            variables.worldHop = true;
-            variables.playersToHop = Integer.parseInt(worldHopPlayersNear.getValue().toString());
-            variables.worldType = ((WorldType) worldHopMode.getSelectedItem());
+            Vars.get().worldHop = true;
+            Vars.get().playersToHop = Integer.parseInt(worldHopPlayersNear.getValue().toString());
+            Vars.get().worldType = ((WorldType) worldHopMode.getSelectedItem());
             if (worldHopOresAval.isSelected()) {
-                variables.oresHop = true;
+                Vars.get().oresHop = true;
             }
         }
 
         if (masterSystem.isSelected()) {
             if (Game07.isInGame()) {
-                variables.masterSystem = true;
-                variables.currentMasterPosition = Player.getPosition();
+                Vars.get().masterSystem = true;
+                Vars.get().currentMasterPosition = Player.getPosition();
             } else {
                 Printing.status("For the Master System, please start the script logged in...");
                 Printing.status("Stopping script...");
                 AntiBan.destroy();
-                variables.stopScript = true;
+                Vars.get().stopScript = true;
             }
         }
 
         if (slaveSystem.isSelected()) {
-            variables.slaveSystem = true;
-            variables.isSlaveSystemIsRunning = false;
-            variables.masterWorld = Integer.parseInt(masterWorld.getValue().toString());
-            variables.masterName = masterUsername.getText();
-            variables.masterPositon = masterLocation.getText();
-            variables.transferMinutes = Integer.parseInt(transferMinutes.getValue().toString());
-            variables.transferMade = Integer.parseInt(transferMade.getValue().toString());
-            variables.variation = Integer.parseInt(variation.getValue().toString());
+            Vars.get().slaveSystem = true;
+            Vars.get().isSlaveSystemIsRunning = false;
+            Vars.get().masterWorld = Integer.parseInt(masterWorld.getValue().toString());
+            Vars.get().masterName = masterUsername.getText();
+            Vars.get().masterPositon = masterLocation.getText();
+            Vars.get().transferMinutes = Integer.parseInt(transferMinutes.getValue().toString());
+            Vars.get().transferMade = Integer.parseInt(transferMade.getValue().toString());
+            Vars.get().variation = Integer.parseInt(variation.getValue().toString());
         }
 
         if (disableSleeps.isSelected()) {
-            variables.disableSleeps = true;
+            Vars.get().disableSleeps = true;
         }
 
         if (upgradePickaxe.isSelected()) {
-            variables.upgradePickaxe = true;
+            Vars.get().upgradePickaxe = true;
         }
 
         if (pickaxeInInventory.isSelected()) {
-            variables.pickaxeInInventory = true;
+            Vars.get().pickaxeInInventory = true;
         }
 
         if (switchSlaveBack.isSelected()) {
-            variables.switchSlaveBack = true;
+            Vars.get().switchSlaveBack = true;
         }
 
         if (drawObjects.isSelected()) {
-            variables.drawObjects = true;
+            Vars.get().drawObjects = true;
         }
 
         if (!drawRadius.isSelected()) {
-            variables.drawRadius = false;
+            Vars.get().drawRadius = false;
         }
 
         if (drawTiles.isSelected()) {
-            variables.drawTiles = true;
+            Vars.get().drawTiles = true;
         }
 
         if (disablePaint.isSelected()) {
-            variables.disablePaint = true;
+            Vars.get().disablePaint = true;
         }
 
-        variables.pickaxe = Pickaxe.BRONZE;
-        variables.mode = ((Mode) droppingMode.getSelectedItem());
-        variables.levelToStop = Integer.parseInt(levelToStop.getValue().toString());
-        variables.guiComplete = true;
+        Vars.get().pickaxe = Pickaxe.BRONZE;
+        Vars.get().mode = ((Mode) droppingMode.getSelectedItem());
+        Vars.get().levelToStop = Integer.parseInt(levelToStop.getValue().toString());
+        Vars.get().guiComplete = true;
         setVisible(false);
     }
     //</editor-fold>
@@ -1214,9 +1213,9 @@ public class GUI extends JFrame {
     //<editor-fold defaultstate="collapsed" desc="Listeners">
     private void radiusAmountstateChanged() {
         if (radiusMine.isSelected()) {
-            variables.radius = Integer.parseInt(radiusAmount.getValue().toString());
-            if (variables.area == null) {
-                variables.area = Player.getPosition();
+            Vars.get().radius = Integer.parseInt(radiusAmount.getValue().toString());
+            if (Vars.get().area == null) {
+                Vars.get().area = Player.getPosition();
             }
         }
     }
@@ -1264,7 +1263,7 @@ public class GUI extends JFrame {
 
     private void radiusMineActionPerformed() {
         drawRadius.setEnabled(true);
-        variables.radiusMine = radiusMine.isSelected();
+        Vars.get().radiusMine = radiusMine.isSelected();
         setRadiusMineTab(radiusMine.isSelected());
         disableLocationTab(radiusMine.isSelected());
     }

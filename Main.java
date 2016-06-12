@@ -7,20 +7,29 @@ import org.tribot.api2007.util.ThreadSettings;
 import org.tribot.script.Script;
 import org.tribot.script.ScriptManifest;
 import org.tribot.script.interfaces.*;
-import org.tribot.script.interfaces.Painting;
 import org.tribot.util.Util;
 
-import scripts.SPXAIOMiner.api.framework.Task;
-import scripts.SPXAIOMiner.api.game.pricechecking.PriceChecking07;
-import scripts.SPXAIOMiner.api.Paint;
-import scripts.SPXAIOMiner.api.Printing;
 import scripts.SPXAIOMiner.data.Constants;
-import scripts.SPXAIOMiner.data.Variables;
+import scripts.SPXAIOMiner.data.Vars;
 
+import scripts.SPXAIOMiner.framework.Task;
+import scripts.SPXAIOMiner.framework.TaskManager;
 import scripts.SPXAIOMiner.gui.GUI;
 import scripts.SPXAIOMiner.messagerecieved.Server;
 import scripts.SPXAIOMiner.messagerecieved.Trade;
-import scripts.SPXAIOMiner.paint.*;
+import scripts.SPXAIOMiner.paint.PaintManager;
+import scripts.SPXAIOMiner.tasks.*;
+import scripts.SPXAIOMiner.tasks.Mine.*;
+import scripts.SPXAIOMiner.tasks.MuleSystem.MasterSystem;
+import scripts.SPXAIOMiner.tasks.MuleSystem.TradeMaster;
+import scripts.SPXAIOMiner.tasks.MuleSystem.WalkToMaster;
+import scripts.SPXAIOMiner.tasks.MuleSystem.WithdrawItems;
+import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.EquipPickaxe;
+import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.GetPickaxe;
+import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.UpgradePickaxe;
+import scripts.TribotAPI.*;
+import scripts.TribotAPI.game.pricechecking.PriceChecking07;
+import scripts.TribotAPI.Paint;
 
 import java.awt.*;
 import java.io.File;
@@ -32,36 +41,79 @@ import java.util.ArrayList;
 @ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.1)
 public class Main extends Script implements MessageListening07, Painting, MouseSplinePainting, MousePainting, MouseActions, Ending {
 
-    private Variables variables = new Variables();
-    private GUI gui = new GUI(variables);
-    private PaintManager paintManager = new PaintManager(variables);
-    private Collection collection = new Collection(variables);
-    private Trade trade = new Trade(variables);
-    private Server server = new Server(variables);
+    private GUI gui = new GUI();
+    private PaintManager paintManager = new PaintManager();
+    private Trade trade = new Trade();
+    private Server server = new Server();
+    private TaskManager taskManager = new TaskManager();
 
     @Override
     public void run() {
+        Vars.reset();
         General.useAntiBanCompliance(true);
         ThreadSettings.get().setClickingAPIUseDynamic(true);
         setDebugging();
         Printing.status("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
-        variables.path = new File(Util.getWorkingDirectory().getAbsolutePath(), "[SPX]AIOMiner_" + General.getTRiBotUsername() + "_settings" + ".ini");
-        variables.version = getClass().getAnnotation(ScriptManifest.class).version();
+        Vars.get().path = new File(Util.getWorkingDirectory().getAbsolutePath(), "[SPX]AIOMiner_settings.ini");
+        Vars.get().version = getClass().getAnnotation(ScriptManifest.class).version();
         getStartInformation();
         initializeGUI();
         getItemPrice();
-        collection.addCollection();
+        addCollection();
         loop(100, 150);
     }
 
+    //<editor-fold defaultstate="collapsed" desc="Collection">
+    private void addCollection() {
+        if (Vars.get().progressiveMode) {
+            taskManager.addTask(new Progressive());
+        }
+        if (Vars.get().worldHop) {
+            taskManager.addTask(new WorldHop());
+        }
+        if (Vars.get().dropGems) {
+            taskManager.addTask(new DropUnwanted());
+        }
+        if (Vars.get().slaveSystem) {
+            taskManager.addTask(new TradeMaster(), new WalkToMaster(), new WithdrawItems());
+        }
+        if (Vars.get().upgradePickaxe) {
+            taskManager.addTask(new UpgradePickaxe());
+        }
+        if (Vars.get().levelToStop > 0) {
+            taskManager.addTask(new StopSettings());
+        }
+        if (Vars.get().masterSystem) {
+            taskManager.addTask(new MasterSystem());
+        } else {
+            taskManager.addTask(new GetPickaxe(), new EquipPickaxe(), new WalkToQuarry(), new MineOre());
+        }
+        taskManager.addTask(new TimedActions());
+        switch (Vars.get().mode) {
+            case BANKING:
+                taskManager.addTask(new DepositItems());
+                break;
+            case POWERMINE:
+                taskManager.addTask(new Powermine());
+                break;
+            case M1D1:
+                taskManager.addTask(new M1D1());
+                break;
+            case MOUSEKEYS:
+                taskManager.addTask(new MouseKeys());
+                break;
+        }
+    }
+    //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Loop">
     private void loop(int min, int max) {
-        while (!variables.stopScript) {
-            collection.tasks.stream().filter(Task::validate).forEach(task -> {
-                variables.status = task.toString();
+        while (!Vars.get().stopScript) {
+            Task task = taskManager.getValidTask();
+            if (task != null) {
                 task.execute();
                 General.sleep(min, max);
-            });
+            }
         }
     }
     //</editor-fold>
@@ -77,7 +129,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
         EventQueue.invokeLater(() -> {
             try {
                 sleep(50);
-                variables.status = "Initializing...";
+                Vars.get().status = "Initializing...";
                 gui.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -85,20 +137,20 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
         });
         do
             sleep(10);
-        while (!variables.guiComplete);
+        while (!Vars.get().guiComplete);
     }
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="StartInformation">
     private void getStartInformation() {
-        variables.startLevel = Skills.getActualLevel(Skills.SKILLS.MINING);
-        variables.startXP = Skills.getXP(Skills.SKILLS.MINING);
-        variables.resetTimeRan = Timing.currentTimeMillis();
+        Vars.get().startLevel = Skills.getActualLevel(Skills.SKILLS.MINING);
+        Vars.get().startXP = Skills.getXP(Skills.SKILLS.MINING);
+        Vars.get().resetTimeRan = Timing.currentTimeMillis();
     }
 
     private void getItemPrice() {
-        if (variables.oreType != null) {
-            variables.orePrice = PriceChecking07.getOSbuddyPrice(variables.oreType.getItemID());
+        if (Vars.get().oreType != null) {
+            Vars.get().orePrice = PriceChecking07.getOSbuddyPrice(Vars.get().oreType.getItemID());
         }
     }
     //</editor-fold>
@@ -108,12 +160,12 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
         Graphics2D g = (Graphics2D) g1;
         g.setRenderingHints(Constants.ANTIALIASING);
         if (Login.getLoginState() == Login.STATE.INGAME) {
-            if (!variables.disablePaint) {
+            if (!Vars.get().disablePaint) {
                 paintManager.drawRadius(g);
                 paintManager.drawObjects(g);
                 paintManager.drawTiles(g);
                 paintManager.drawGeneralInfo(g);
-                if (variables.masterSystem) {
+                if (Vars.get().masterSystem) {
                     paintManager.drawMasterInfo(g);
                 } else {
                     paintManager.drawNormalInfo(g);
@@ -148,7 +200,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
             server.incrementOre();
         }
         if (s.contains("Accepted trade.")) {
-            if (variables.slaveSystem) {
+            if (Vars.get().slaveSystem) {
                 server.incrementTrades();
                 server.setSlaveSettings();
                 server.switchWorldBack();
@@ -196,15 +248,15 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     @Override
     public void mouseClicked(Point point, int i, boolean b) {
         if (Constants.START_SLAVESYSTEM.contains(point) && i == 1 && !b) {
-            if (variables.resetOresMined > 0) {
+            if (Vars.get().resetOresMined > 0) {
                 Printing.status("Enabling slave system...");
-                variables.isSlaveSystemIsRunning = true;
+                Vars.get().isSlaveSystemIsRunning = true;
             } else {
                 Printing.status("We cannot enable the slave system unless we've mined more ore!");
             }
         }
         if (Constants.CLOSE_PAINT.contains(point) && i == 1 && !b) {
-            variables.disablePaint = !variables.disablePaint;
+            Vars.get().disablePaint = !Vars.get().disablePaint;
         }
     }
     //</editor-fold>
@@ -213,7 +265,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     @Override
     public void onEnd() {
         Printing.status("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
-        DynamicSignature.sendSignatureData(variables.timeRanMinutes, variables.oresMined, variables.profit, variables.gainedXP, variables.gainedLevels, variables.muleTrades, variables.muleTrades);
+        DynamicSignature.sendSignatureData(Vars.get().timeRanMinutes, Vars.get().oresMined, Vars.get().profit, Vars.get().gainedXP, Vars.get().gainedLevels, Vars.get().muleTrades, Vars.get().muleTrades);
     }
     //</editor-fold>
 

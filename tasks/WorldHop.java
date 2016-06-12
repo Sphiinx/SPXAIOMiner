@@ -4,38 +4,32 @@ import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Player;
-import scripts.SPXAIOMiner.api.framework.Task;
-import scripts.SPXAIOMiner.api.game.area.Area07;
-
-import scripts.SPXAIOMiner.api.game.utiity.GetWorlds07;
-import scripts.SPXAIOMiner.api.game.utiity.Utility07;
-import scripts.SPXAIOMiner.api.game.worldhopper.WorldHopper07;
-import scripts.SPXAIOMiner.data.Variables;
+import scripts.SPXAIOMiner.data.Vars;
+import scripts.SPXAIOMiner.framework.Task;
+import scripts.TribotAPI.game.area.Area07;
+import scripts.TribotAPI.game.worldhopper.WorldHopper07;
+import scripts.TribotAPI.game.utiity.GetWorlds07;
+import scripts.TribotAPI.game.utiity.Utility07;
 
 
 /**
  * Created by Sphiinx on 1/17/2016.
  */
-public class WorldHop extends Task {
+public class WorldHop implements Task {
 
     private int[] worlds;
 
-    public WorldHop(Variables v) {
-        super(v);
-    }
-
     //<editor-fold defaultstate="collapsed" desc="Execution">
-    @Override
     public void execute() {
-        vars.isHoppingWorlds = true;
+        Vars.get().isHoppingWorlds = true;
         if (worlds == null) {
             if (GetWorlds07.isWorldSwitcherOpen()) {
-                worlds = GetWorlds07.getWorlds(vars.worldType.getTextureID());
+                worlds = GetWorlds07.getWorlds(Vars.get().worldType.getTextureID());
             } else {
                 GetWorlds07.openWorldSwitcher();
             }
         } else {
-            if (Area07.getPlayersInArea(vars.radius) > vars.playersToHop || vars.shouldWeHop) {
+            if (Area07.getPlayersInArea(Vars.get().radius) > Vars.get().playersToHop || Vars.get().shouldWeHop) {
                 if (worlds != null) {
                     int world = worlds[General.random(0, worlds.length - 1)];
                     if (WorldHopper07.switchWorld(world)) {
@@ -45,7 +39,7 @@ public class WorldHop extends Task {
                                 return Utility07.getCurrentWorld() == world;
                             }
                         }, General.random(5500, 6500))) {
-                            vars.isHoppingWorlds = false;
+                            Vars.get().isHoppingWorlds = false;
                         }
                     }
                 }
@@ -54,14 +48,12 @@ public class WorldHop extends Task {
     }
     //</editor-fold>
 
-    @Override
     public String toString() {
         return "Changing worlds" + Utility07.loadingPeriods();
     }
 
-    @Override
     public boolean validate() {
-        return vars.area.distanceTo(Player.getPosition()) <= vars.radius && Player.getAnimation() == -1 && (vars.playersToHop > 0 || vars.shouldWeHop);
+        return Vars.get().area.distanceTo(Player.getPosition()) <= Vars.get().radius && Player.getAnimation() == -1 && (Vars.get().playersToHop > 0 || Vars.get().shouldWeHop);
     }
 
 }

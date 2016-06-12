@@ -6,23 +6,18 @@ import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSPlayer;
-import scripts.SPXAIOMiner.api.framework.Task;
-import scripts.SPXAIOMiner.api.game.banking.Banking07;
-import scripts.SPXAIOMiner.api.game.game.Game07;
-import scripts.SPXAIOMiner.api.game.utiity.Utility07;
-import scripts.SPXAIOMiner.data.Variables;
+import scripts.SPXAIOMiner.data.Vars;
+import scripts.SPXAIOMiner.framework.Task;
+import scripts.TribotAPI.game.banking.Banking07;
+import scripts.TribotAPI.game.game.Game07;
+import scripts.TribotAPI.game.utiity.Utility07;
 
 /**
  * Created by Sphiinx on 2/3/2016.
  */
-public class MasterSystem extends Task {
-
-    public MasterSystem(Variables v) {
-        super(v);
-    }
+public class MasterSystem implements Task {
 
     //<editor-fold defaultstate="collapsed" desc="Execution">
-    @Override
     public void execute() {
         if (Inventory.isFull()) {
             if (Banking.isBankScreenOpen()) {
@@ -30,8 +25,8 @@ public class MasterSystem extends Task {
             } else {
                 Banking07.openBank();
             }
-        } else if (!vars.currentMasterPosition.isOnScreen()) {
-            WebWalking.walkTo(vars.currentMasterPosition);
+        } else if (!Vars.get().currentMasterPosition.isOnScreen()) {
+            WebWalking.walkTo(Vars.get().currentMasterPosition);
         } else {
             tradeSlave();
         }
@@ -45,10 +40,10 @@ public class MasterSystem extends Task {
                 acceptTrade();
             }
         } else {
-            RSPlayer[] player = Players.find(vars.playerTrading);
-            if (vars.playerTrading != null && player != null) {
-                if (vars.playerTrading.length() > 0 && player.length > 0) {
-                    if (Clicking.click("Trade with " + vars.playerTrading, player[0])) {
+            RSPlayer[] player = Players.find(Vars.get().playerTrading);
+            if (Vars.get().playerTrading != null && player != null) {
+                if (Vars.get().playerTrading.length() > 0 && player.length > 0) {
+                    if (Clicking.click("Trade with " + Vars.get().playerTrading, player[0])) {
                         Timing.waitCondition(new Condition() {
                             @Override
                             public boolean active() {
@@ -86,20 +81,18 @@ public class MasterSystem extends Task {
                         }
                     }, General.random(1000, 1200));
                 }
-                vars.playerTrading = null;
+                Vars.get().playerTrading = null;
             }
         }
     }
     //</editor-fold>
 
-    @Override
     public String toString() {
         return "Master System" + Utility07.loadingPeriods();
     }
 
-    @Override
     public boolean validate() {
-        return vars.masterSystem && Game07.isInGame();
+        return Vars.get().masterSystem && Game07.isInGame();
     }
 
 }
