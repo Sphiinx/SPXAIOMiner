@@ -1,11 +1,11 @@
 package scripts.SPXAIOMiner.tasks;
 
+import TribotAPI.util.Logging;
 import org.tribot.api2007.Skills;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.utiity.Utility07;
-import scripts.TribotAPI.Printing;
-import scripts.TribotAPI.antiban.AntiBan;
+import TribotAPI.game.utiity.Utility07;
+import TribotAPI.antiban.AntiBan;
 
 /**
  * Created by Sphiinx on 2/16/2016.
@@ -13,8 +13,8 @@ import scripts.TribotAPI.antiban.AntiBan;
 public class StopSettings implements Task {
 
     public void execute() {
-        Printing.status("You have reached your desired stopping level...");
-        Printing.status("Stopping script...");
+        Logging.status("You have reached your desired stopping level...");
+        Logging.status("Stopping script...");
         AntiBan.destroy();
         Vars.get().stopScript = true;
     }

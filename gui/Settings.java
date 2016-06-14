@@ -1,8 +1,7 @@
 package scripts.SPXAIOMiner.gui;
 
-import org.tribot.api.General;
+import TribotAPI.util.Logging;
 import scripts.SPXAIOMiner.data.Vars;
-import scripts.TribotAPI.Printing;
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -99,7 +98,7 @@ public class Settings {
 
             return true;
         } catch (Exception e1) {
-            Printing.status("Sorry, unable to save settings.");
+            Logging.status("Sorry, unable to save settings.");
             e1.printStackTrace();
         }
         return false;
@@ -199,7 +198,7 @@ public class Settings {
 
             return true;
         } catch (Exception e2) {
-            Printing.status("Sorry, unable to load settings.");
+            Logging.status("Sorry, unable to load settings.");
             e2.printStackTrace();
         }
         return false;

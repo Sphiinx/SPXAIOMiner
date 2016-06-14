@@ -9,9 +9,9 @@ import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.types.RSTile;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.banking.Banking07;
-import scripts.TribotAPI.game.utiity.Utility07;
-import scripts.TribotAPI.game.worldhopper.WorldHopper07;
+import TribotAPI.game.banking.Banking07;
+import TribotAPI.game.utiity.Utility07;
+import TribotAPI.game.worldhopper.WorldHopper07;
 
 /**
  * Created by Sphiinx on 2/3/2016.

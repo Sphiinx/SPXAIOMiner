@@ -9,7 +9,7 @@ import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.utiity.Utility07;
+import TribotAPI.game.utiity.Utility07;
 
 import java.awt.*;
 

@@ -1,12 +1,13 @@
 package scripts.SPXAIOMiner.paint;
 
 
+import TribotAPI.color.Colors;
 import org.tribot.api.Timing;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSArea;
 import org.tribot.api2007.types.RSTile;
 import scripts.SPXAIOMiner.data.Constants;
-import scripts.TribotAPI.game.projection.Projection07;
+import TribotAPI.painting.projection.Projection07;
 
 import java.awt.*;
 
@@ -16,6 +17,7 @@ import java.awt.*;
 public class Global {
 
     public PaintManager paintManager;
+    private Projection07 projection07 = new Projection07(Colors.RED_COLOR.getCOLOR(), Colors.GRAY_COLOR.getCOLOR());
 
     public Global(PaintManager paintManager) {
         this.paintManager = paintManager;
@@ -26,8 +28,7 @@ public class Global {
         if (paintManager.drawRadius() && paintManager.radiusMine()) {
             if (paintManager.getArea() != null) {
                 RSArea radiusArea = new RSArea(Player.getPosition(), paintManager.getRadius());
-                Projection07.drawArea(radiusArea, g);
-                Projection07.drawMinimapArea(radiusArea, g);
+                projection07.drawArea(radiusArea, g);
             }
         }
     }
@@ -36,8 +37,7 @@ public class Global {
     //<editor-fold defaultstate="collapsed" desc="Draw Objects">
     public void drawObjects(Graphics g) {
         if (paintManager.drawObjects()) {
-            Projection07.drawObject(paintManager.getOreToDraw(), g);
-            Projection07.drawMinimapObject(paintManager.getOreToDraw(), g);
+            projection07.drawObject(paintManager.getOreToDraw()[0], g);
         }
     }
     //</editor-fold>
@@ -46,8 +46,7 @@ public class Global {
     public void drawTiles(Graphics g) {
         if (paintManager.drawTiles()) {
             RSTile orePos = paintManager.getOreToDrawTilePosition();
-            Projection07.drawTile(orePos, g);
-            Projection07.drawMinimapTile(orePos, g);
+            projection07.drawTile(orePos, g);
         }
     }
     //</editor-fold>

@@ -1,5 +1,6 @@
 package scripts.SPXAIOMiner;
 
+import TribotAPI.util.Logging;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api2007.*;
@@ -27,9 +28,7 @@ import scripts.SPXAIOMiner.tasks.MuleSystem.WithdrawItems;
 import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.EquipPickaxe;
 import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.GetPickaxe;
 import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.UpgradePickaxe;
-import scripts.TribotAPI.*;
-import scripts.TribotAPI.game.pricechecking.PriceChecking07;
-import scripts.TribotAPI.Paint;
+import TribotAPI.game.pricechecking.PriceChecking07;
 
 import java.awt.*;
 import java.io.File;
@@ -39,7 +38,7 @@ import java.util.ArrayList;
  * Created by Sphiinx on 12/21/2015.
  */
 @ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.1)
-public class Main extends Script implements MessageListening07, Painting, MouseSplinePainting, MousePainting, MouseActions, Ending {
+public class Main extends Script implements MessageListening07, Painting, MouseSplinePainting, org.tribot.script.interfaces.MousePainting, MouseActions, Ending {
 
     private GUI gui = new GUI();
     private PaintManager paintManager = new PaintManager();
@@ -52,8 +51,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
         Vars.reset();
         General.useAntiBanCompliance(true);
         ThreadSettings.get().setClickingAPIUseDynamic(true);
-        setDebugging();
-        Printing.status("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
+        Logging.status("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
         Vars.get().path = new File(Util.getWorkingDirectory().getAbsolutePath(), "[SPX]AIOMiner_settings.ini");
         Vars.get().version = getClass().getAnnotation(ScriptManifest.class).version();
         getStartInformation();
@@ -118,12 +116,6 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="SetDebugging">
-    private void setDebugging() {
-        Printing.isDebugging = this.getRepoID() == -1;
-    }
-    //</editor-fold>
-
     //<editor-fold defaultstate="collapsed" desc="InitializeGUI">
     private void initializeGUI() {
         EventQueue.invokeLater(() -> {
@@ -150,7 +142,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
 
     private void getItemPrice() {
         if (Vars.get().oreType != null) {
-            Vars.get().orePrice = PriceChecking07.getOSbuddyPrice(Vars.get().oreType.getItemID());
+            Vars.get().orePrice = PriceChecking07.getOSBuddyPrice(Vars.get().oreType.getItemID());
         }
     }
     //</editor-fold>
@@ -177,10 +169,10 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="MousePainting">
+    //<editor-fold defaultstate="collapsed" desc="Logging">
     @Override
     public void paintMouse(Graphics graphics, Point point, Point point1) {
-        Paint.drawMouse(graphics);
+        //SPXMouse07.drawMouse(graphics);
     }
 
     @Override
@@ -249,10 +241,10 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     public void mouseClicked(Point point, int i, boolean b) {
         if (Constants.START_SLAVESYSTEM.contains(point) && i == 1 && !b) {
             if (Vars.get().resetOresMined > 0) {
-                Printing.status("Enabling slave system...");
+                Logging.status("Enabling slave system...");
                 Vars.get().isSlaveSystemIsRunning = true;
             } else {
-                Printing.status("We cannot enable the slave system unless we've mined more ore!");
+                Logging.status("We cannot enable the slave system unless we've mined more ore!");
             }
         }
         if (Constants.CLOSE_PAINT.contains(point) && i == 1 && !b) {
@@ -264,7 +256,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     //<editor-fold defaultstate="collapsed" desc="Ending">
     @Override
     public void onEnd() {
-        Printing.status("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
+        Logging.status("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
         DynamicSignature.sendSignatureData(Vars.get().timeRanMinutes, Vars.get().oresMined, Vars.get().profit, Vars.get().gainedXP, Vars.get().gainedLevels, Vars.get().muleTrades, Vars.get().muleTrades);
     }
     //</editor-fold>

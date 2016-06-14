@@ -29,7 +29,7 @@ public class Constants {
             new RSTile(2853, 2955, 0)
     };
 
-    //<editor-fold defaultstate="collapsed" desc="Paint Stats">
+    //<editor-fold defaultstate="collapsed" desc="SPXMouse07 Stats">
     public static final Image PAINT = getImage("http://i.imgur.com/qNbS3Yp.png");
     public static final Color BLUE_COLOR = new Color(4, 49, 73, 240);
     public static final Color TEXT_COLOR = new Color(249, 196, 70, 250);

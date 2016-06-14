@@ -31,8 +31,8 @@ public enum Location {
     //**TBA** HEROS_GUILD(new RSTile(2937, 9884, 0), LogType.RUNITE),
     //**TBA** QUARRY(new RSTile(3171, 2912, 0)),
 
-    private final RSTile location;
-    private final RSTile safePosition;
+    private RSTile location;
+    private RSTile safePosition;
     private OreType[] supportedOre;
 
     Location(RSTile location, RSTile safePosition, OreType... supportedOre) {

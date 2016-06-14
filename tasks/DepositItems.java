@@ -10,10 +10,10 @@ import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.data.enums.Location;
 import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.banking.Banking07;
-import scripts.TribotAPI.game.banking.DepositBox07;
-import scripts.TribotAPI.game.inventory.Inventory07;
-import scripts.TribotAPI.game.utiity.Utility07;
+import TribotAPI.game.banking.Banking07;
+import TribotAPI.game.banking.DepositBox07;
+import TribotAPI.game.inventory.Inventory07;
+import TribotAPI.game.utiity.Utility07;
 
 
 /**

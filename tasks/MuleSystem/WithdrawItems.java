@@ -8,8 +8,8 @@ import org.tribot.api2007.types.RSItem;
 import scripts.SPXAIOMiner.data.*;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.banking.Banking07;
-import scripts.TribotAPI.game.utiity.Utility07;
+import TribotAPI.game.banking.Banking07;
+import TribotAPI.game.utiity.Utility07;
 
 /**
  * Created by Sphiinx on 2/3/2016.

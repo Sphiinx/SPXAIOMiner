@@ -4,9 +4,9 @@ import org.tribot.api2007.Skills;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.data.enums.OreType;
 import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.game.Game07;
-import scripts.TribotAPI.game.pricechecking.PriceChecking07;
-import scripts.TribotAPI.Printing;
+import TribotAPI.util.Logging;
+import TribotAPI.game.game.Game07;
+import TribotAPI.game.pricechecking.PriceChecking07;
 
 /**
  * Created by Sphiinx on 2/27/2016.
@@ -14,9 +14,9 @@ import scripts.TribotAPI.Printing;
 public class Progressive implements Task {
 
     public void execute() {
-        Printing.status("Setting progressive mode LogType...");
+        Logging.status("Setting progressive mode LogType...");
         Vars.get().oreType = getBestOreType();
-        Vars.get().orePrice = PriceChecking07.getOSbuddyPrice(Vars.get().oreType.getItemID());
+        Vars.get().orePrice = PriceChecking07.getOSBuddyPrice(Vars.get().oreType.getItemID());
     }
 
     //<editor-fold defaultstate="collapsed" desc="Get Best Ore">

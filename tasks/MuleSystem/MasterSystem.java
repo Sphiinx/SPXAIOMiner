@@ -8,9 +8,9 @@ import org.tribot.api2007.*;
 import org.tribot.api2007.types.RSPlayer;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.banking.Banking07;
-import scripts.TribotAPI.game.game.Game07;
-import scripts.TribotAPI.game.utiity.Utility07;
+import TribotAPI.game.banking.Banking07;
+import TribotAPI.game.game.Game07;
+import TribotAPI.game.utiity.Utility07;
 
 /**
  * Created by Sphiinx on 2/3/2016.

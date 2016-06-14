@@ -3,7 +3,7 @@ package scripts.SPXAIOMiner.tasks.Mine;
 import org.tribot.api2007.Inventory;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.utiity.Utility07;
+import TribotAPI.game.utiity.Utility07;
 
 /**
  * Created by Sphiinx on 1/17/2016.

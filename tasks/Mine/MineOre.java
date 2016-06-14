@@ -1,10 +1,10 @@
 package scripts.SPXAIOMiner.tasks.Mine;
 
+import TribotAPI.util.Logging;
 import org.tribot.api.Clicking;
 import org.tribot.api.DynamicClicking;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
-import org.tribot.api.input.Mouse;
 import org.tribot.api.types.generic.Condition;
 import org.tribot.api.types.generic.Filter;
 import org.tribot.api.util.Sorting;
@@ -18,12 +18,11 @@ import org.tribot.api2007.types.*;
 import scripts.SPXAIOMiner.data.*;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.area.Area07;
-import scripts.TribotAPI.game.mouse.Mouse07;
-import scripts.TribotAPI.game.utiity.Utility07;
-import scripts.TribotAPI.game.walking.Walking07;
-import scripts.TribotAPI.Printing;
-import scripts.TribotAPI.antiban.AntiBan;
+import TribotAPI.game.area.Area07;
+import TribotAPI.game.mouse.Mouse07;
+import TribotAPI.game.utiity.Utility07;
+import TribotAPI.game.walking.Walking07;
+import TribotAPI.antiban.AntiBan;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -76,7 +75,7 @@ public class MineOre implements Task {
 
         Rectangle rectangle = hoverNode.getArea();
         if (rectangle != null) {
-            if (!rectangle.contains(Mouse.getPos())) {
+            if (!rectangle.contains(org.tribot.api.input.Mouse.getPos())) {
                 tempItem = new RSItem(0, 0, 0, RSItem.TYPE.OTHER);
                 tempItem.setArea(rectangle);
                 return Clicking.hover(tempItem);
@@ -91,7 +90,7 @@ public class MineOre implements Task {
     private void sleepReactionTime() {
         if (!Vars.get().disableSleeps) {
             int sleep = AntiBan.getReactionTime();
-            Printing.status("Reaction Time: " + sleep);
+            Logging.status("Reaction Time: " + sleep);
             AntiBan.sleepReactionTime();
         }
     }
@@ -109,8 +108,8 @@ public class MineOre implements Task {
     private void handleHoverCheck() {
         shouldHover = AntiBan.should_hover;
         shouldOpenMenu = AntiBan.should_open_menu;
-        Printing.status("Should Hover: " + shouldHover);
-        Printing.status("Should Open Menu: " + shouldOpenMenu);
+        Logging.status("Should Hover: " + shouldHover);
+        Logging.status("Should Open Menu: " + shouldOpenMenu);
         if (shouldHover) {
             RSObject[] potentialTargets = getAllObjects();
             oreToHover = AntiBan.selectNextTarget(potentialTargets);
@@ -124,7 +123,7 @@ public class MineOre implements Task {
     //<editor-fold defaultstate="collapsed" desc="HandleHovering">
     private boolean handleHovering() {
         if (!AntiBan.leaveGame()) {
-            if (shouldHover && Mouse.isInBounds() && oreToHover != null) {
+            if (shouldHover && org.tribot.api.input.Mouse.isInBounds() && oreToHover != null) {
                 if (shouldOpenMenu) {
                     if (!hoverMenuNode() && !ChooseOption.isOpen() && DynamicClicking.clickRSObject(oreToHover, 3)) {
                         if (Timing.waitCondition(new Condition() {
@@ -190,7 +189,7 @@ public class MineOre implements Task {
     //<editor-fold defaultstate="collapsed" desc="GenerateWalkingPreference">
     private void generateWalkingPreference(RSObject currentOre) {
         if (AntiBan.getABCUtil().generateWalkingPreference(Player.getPosition().distanceTo(currentOre)) == WalkingPreference.SCREEN) {
-            Walking07.sceenWalkToObject(currentOre);
+            Walking07.screenWalkToRSObject(currentOre);
         } else {
             WebWalking.walkTo(currentOre);
         }

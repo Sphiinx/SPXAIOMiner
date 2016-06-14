@@ -1,5 +1,6 @@
 package scripts.SPXAIOMiner.tasks.PickaxeUpgrading;
 
+import TribotAPI.util.Logging;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
@@ -11,11 +12,10 @@ import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.data.enums.Pickaxe;
 import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.banking.Banking07;
-import scripts.TribotAPI.game.game.Game07;
-import scripts.TribotAPI.game.utiity.Utility07;
-import scripts.TribotAPI.Printing;
-import scripts.TribotAPI.antiban.AntiBan;
+import TribotAPI.game.banking.Banking07;
+import TribotAPI.game.game.Game07;
+import TribotAPI.game.utiity.Utility07;
+import TribotAPI.antiban.AntiBan;
 
 import java.util.ArrayList;
 
@@ -75,8 +75,8 @@ public class GetPickaxe implements Task {
     //<editor-fold defaultstate="collapsed" desc="GetNextPickaxe">
     private void getNextPickaxe() {
         if (pickaxeToGet == Pickaxe.BRONZE) {
-            Printing.status("We could not find a pickaxe in the bank...");
-            Printing.status("Stopping script...");
+            Logging.status("We could not find a pickaxe in the bank...");
+            Logging.status("Stopping script...");
             AntiBan.destroy();
             Vars.get().stopScript = true;
         } else {

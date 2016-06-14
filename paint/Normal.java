@@ -1,7 +1,7 @@
 package scripts.SPXAIOMiner.paint;
 
 import scripts.SPXAIOMiner.data.Constants;
-import scripts.TribotAPI.game.utiity.Utility07;
+import TribotAPI.game.utiity.Utility07;
 
 import java.awt.*;
 

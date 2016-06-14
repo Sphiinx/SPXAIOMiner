@@ -2,8 +2,8 @@ package scripts.SPXAIOMiner.tasks;
 
 import org.tribot.api2007.Player;
 import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.utiity.Utility07;
-import scripts.TribotAPI.antiban.AntiBan;
+import TribotAPI.game.utiity.Utility07;
+import TribotAPI.antiban.AntiBan;
 
 /**
  * Created by Sphiinx on 5/21/2016.

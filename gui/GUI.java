@@ -1,13 +1,13 @@
 package scripts.SPXAIOMiner.gui;
 
+import TribotAPI.util.Logging;
 import org.tribot.api2007.Player;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.data.enums.*;
-import scripts.TribotAPI.game.game.Game07;
-import scripts.TribotAPI.game.utiity.enums.WorldType;
-import scripts.TribotAPI.Printing;
-import scripts.TribotAPI.antiban.AntiBan;
+import TribotAPI.game.game.Game07;
+import TribotAPI.game.utiity.enums.WorldType;
+import TribotAPI.antiban.AntiBan;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -1111,8 +1111,8 @@ public class GUI extends JFrame {
                 Vars.get().area = Player.getPosition();
                 Vars.get().safePosition = Constants.DEFAULT_SAFE_ZONE;
             } else {
-                Printing.status("For radius mining, please start the script logged in...");
-                Printing.status("Stopping script...");
+                Logging.status("For radius mining, please start the script logged in...");
+                Logging.status("Stopping script...");
                 AntiBan.destroy();
                 Vars.get().stopScript = true;
             }
@@ -1152,8 +1152,8 @@ public class GUI extends JFrame {
                 Vars.get().masterSystem = true;
                 Vars.get().currentMasterPosition = Player.getPosition();
             } else {
-                Printing.status("For the Master System, please start the script logged in...");
-                Printing.status("Stopping script...");
+                Logging.status("For the Master System, please start the script logged in...");
+                Logging.status("Stopping script...");
                 AntiBan.destroy();
                 Vars.get().stopScript = true;
             }
@@ -1227,13 +1227,13 @@ public class GUI extends JFrame {
 
     private void saveSettingsActionPerformed() {
         if (settings.saveSettings()) {
-            Printing.status("Successfully saved settings.");
+            Logging.status("Successfully saved settings.");
         }
     }
 
     private void loadSettingsActionPerformed() {
         if (settings.loadSettings()) {
-            Printing.status("Successfully loaded settings.");
+            Logging.status("Successfully loaded settings.");
         }
     }
 
