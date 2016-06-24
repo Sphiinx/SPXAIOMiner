@@ -1,13 +1,13 @@
 package scripts.SPXAIOMiner.gui;
 
-import TribotAPI.util.Logging;
+import scripts.TribotAPI.util.Logging;
 import org.tribot.api2007.Player;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.data.enums.*;
-import TribotAPI.game.game.Game07;
-import TribotAPI.game.utiity.enums.WorldType;
-import TribotAPI.antiban.AntiBan;
+import scripts.TribotAPI.game.game.Game07;
+import scripts.TribotAPI.game.utiity.enums.WorldType;
+import scripts.TribotAPI.antiban.AntiBan;
 
 import javax.swing.*;
 import javax.swing.border.TitledBorder;
@@ -653,7 +653,7 @@ public class GUI extends JFrame {
         jPanel6.setPreferredSize(new java.awt.Dimension(384, 161));
 
         jLabel12.setFont(new java.awt.Font("Ubuntu", 0, 12));
-        jLabel12.setText("Upgrade Axe:");
+        jLabel12.setText("Upgrade Pickaxe:");
 
         jLabel13.setFont(new java.awt.Font("Ubuntu", 0, 12));
         jLabel13.setText("Draw Objects:");

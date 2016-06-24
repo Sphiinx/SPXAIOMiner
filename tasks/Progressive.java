@@ -4,9 +4,9 @@ import org.tribot.api2007.Skills;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.data.enums.OreType;
 import scripts.SPXAIOMiner.framework.Task;
-import TribotAPI.util.Logging;
-import TribotAPI.game.game.Game07;
-import TribotAPI.game.pricechecking.PriceChecking07;
+import scripts.TribotAPI.util.Logging;
+import scripts.TribotAPI.game.game.Game07;
+import scripts.TribotAPI.game.pricechecking.PriceChecking07;
 
 /**
  * Created by Sphiinx on 2/27/2016.

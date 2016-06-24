@@ -1,13 +1,13 @@
 package scripts.SPXAIOMiner.paint;
 
 
-import TribotAPI.color.Colors;
+import scripts.TribotAPI.color.Colors;
 import org.tribot.api.Timing;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.types.RSArea;
 import org.tribot.api2007.types.RSTile;
 import scripts.SPXAIOMiner.data.Constants;
-import TribotAPI.painting.projection.Projection07;
+import scripts.TribotAPI.painting.projection.Projection07;
 
 import java.awt.*;
 

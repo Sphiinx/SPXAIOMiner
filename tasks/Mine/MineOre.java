@@ -1,6 +1,6 @@
 package scripts.SPXAIOMiner.tasks.Mine;
 
-import TribotAPI.util.Logging;
+import scripts.TribotAPI.util.Logging;
 import org.tribot.api.Clicking;
 import org.tribot.api.DynamicClicking;
 import org.tribot.api.General;
@@ -18,11 +18,11 @@ import org.tribot.api2007.types.*;
 import scripts.SPXAIOMiner.data.*;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.framework.Task;
-import TribotAPI.game.area.Area07;
-import TribotAPI.game.mouse.Mouse07;
-import TribotAPI.game.utiity.Utility07;
-import TribotAPI.game.walking.Walking07;
-import TribotAPI.antiban.AntiBan;
+import scripts.TribotAPI.game.area.Area07;
+import scripts.TribotAPI.game.mouse.Mouse07;
+import scripts.TribotAPI.game.utiity.Utility07;
+import scripts.TribotAPI.game.walking.Walking07;
+import scripts.TribotAPI.antiban.AntiBan;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -99,7 +99,7 @@ public class MineOre implements Task {
     //<editor-fold defaultstate="collapsed" desc="GenerateCheckTime">
     private void generateCheckTime() {
         if (Timing.currentTimeMillis() > check_time) {
-            check_time = Timing.currentTimeMillis() + General.random(20000, 30000);
+            check_time = Timing.currentTimeMillis() + General.random(3000, 4000);
         }
     }
     //</editor-fold>

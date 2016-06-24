@@ -1,6 +1,8 @@
 package scripts.SPXAIOMiner;
 
-import TribotAPI.util.Logging;
+import scripts.TribotAPI.color.Colors;
+import scripts.TribotAPI.painting.mouse.SPXMouse07;
+import scripts.TribotAPI.util.Logging;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api2007.*;
@@ -28,7 +30,7 @@ import scripts.SPXAIOMiner.tasks.MuleSystem.WithdrawItems;
 import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.EquipPickaxe;
 import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.GetPickaxe;
 import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.UpgradePickaxe;
-import TribotAPI.game.pricechecking.PriceChecking07;
+import scripts.TribotAPI.game.pricechecking.PriceChecking07;
 
 import java.awt.*;
 import java.io.File;
@@ -38,13 +40,14 @@ import java.util.ArrayList;
  * Created by Sphiinx on 12/21/2015.
  */
 @ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.1)
-public class Main extends Script implements MessageListening07, Painting, MouseSplinePainting, org.tribot.script.interfaces.MousePainting, MouseActions, Ending {
+public class Main extends Script implements MessageListening07, Painting, MouseSplinePainting, MousePainting, MouseActions, Ending {
 
     private GUI gui = new GUI();
     private PaintManager paintManager = new PaintManager();
     private Trade trade = new Trade();
     private Server server = new Server();
     private TaskManager taskManager = new TaskManager();
+    private SPXMouse07 spxMouse07 = new SPXMouse07(Colors.RED_COLOR.getCOLOR(), Colors.GRAY_COLOR.getCOLOR());
 
     @Override
     public void run() {
@@ -110,6 +113,7 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
             Task task = taskManager.getValidTask();
             if (task != null) {
                 task.execute();
+                Vars.get().status = task.toString();
                 General.sleep(min, max);
             }
         }
@@ -169,10 +173,10 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Logging">
+    //<editor-fold defaultstate="collapsed" desc="Mouse">
     @Override
     public void paintMouse(Graphics graphics, Point point, Point point1) {
-        //SPXMouse07.drawMouse(graphics);
+        spxMouse07.drawMouse(graphics);
     }
 
     @Override

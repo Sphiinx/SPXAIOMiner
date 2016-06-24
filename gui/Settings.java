@@ -1,6 +1,6 @@
 package scripts.SPXAIOMiner.gui;
 
-import TribotAPI.util.Logging;
+import scripts.TribotAPI.util.Logging;
 import scripts.SPXAIOMiner.data.Vars;
 
 import java.io.FileInputStream;

@@ -1,11 +1,11 @@
 package scripts.SPXAIOMiner.tasks;
 
-import TribotAPI.util.Logging;
+import scripts.TribotAPI.util.Logging;
 import org.tribot.api2007.Skills;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.framework.Task;
-import TribotAPI.game.utiity.Utility07;
-import TribotAPI.antiban.AntiBan;
+import scripts.TribotAPI.game.utiity.Utility07;
+import scripts.TribotAPI.antiban.AntiBan;
 
 /**
  * Created by Sphiinx on 2/16/2016.

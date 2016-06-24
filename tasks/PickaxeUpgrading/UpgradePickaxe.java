@@ -1,6 +1,6 @@
 package scripts.SPXAIOMiner.tasks.PickaxeUpgrading;
 
-import TribotAPI.util.Logging;
+import scripts.TribotAPI.util.Logging;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
@@ -10,10 +10,10 @@ import scripts.SPXAIOMiner.data.*;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.enums.Pickaxe;
 import scripts.SPXAIOMiner.framework.Task;
-import TribotAPI.game.banking.Banking07;
-import TribotAPI.game.game.Game07;
-import TribotAPI.game.utiity.Utility07;
-import TribotAPI.antiban.AntiBan;
+import scripts.TribotAPI.game.banking.Banking07;
+import scripts.TribotAPI.game.game.Game07;
+import scripts.TribotAPI.game.utiity.Utility07;
+import scripts.TribotAPI.antiban.AntiBan;
 
 import java.util.ArrayList;
 
@@ -33,8 +33,8 @@ public class UpgradePickaxe implements Task {
     //<editor-fold defaultstate="collapsed" desc="GetBestPickaxe">
     private void getBestPickaxe() {
         if (pickaxeToGet == null) {
-            pickaxeToGet = vars.pickaxe.getBestPickaxe(vars.pickaxeInInventory);
-            vars.pickaxe = pickaxeToGet;
+            pickaxeToGet = Vars.get().pickaxe.getBestPickaxe(Vars.get().pickaxeInInventory);
+            Vars.get().pickaxe = pickaxeToGet;
         }
     }
     //</editor-fold>
@@ -55,8 +55,8 @@ public class UpgradePickaxe implements Task {
                                 return Inventory.getCount(pickaxeToGet.getPickaxeID()) >= 1;
                             }
                         }, General.random(750, 1000));
-                        if (vars.pickaxeInInventory) {
-                            vars.isUpgradingPickaxe = false;
+                        if (Vars.get().pickaxeInInventory) {
+                            Vars.get().isUpgradingPickaxe = false;
                         }
                     }
                 } else {
@@ -73,13 +73,13 @@ public class UpgradePickaxe implements Task {
             Logging.status("We could not find a pickaxe in the bank...");
             Logging.status("Stopping script...");
             AntiBan.destroy();
-            vars.stopScript = true;
+            Vars.get().stopScript = true;
         } else {
             if (!Equipment.isEquipped(pickaxeToGet.getPickaxeID())) {
                 unaval_list.add(pickaxeToGet);
             }
-            pickaxeToGet = vars.pickaxe.getPreviousAxe();
-            vars.pickaxe = pickaxeToGet;
+            pickaxeToGet = Vars.get().pickaxe.getPreviousAxe();
+            Vars.get().pickaxe = pickaxeToGet;
         }
     }
     //</editor-fold>
@@ -87,24 +87,54 @@ public class UpgradePickaxe implements Task {
     //<editor-fold defaultstate="collapsed" desc="NeedsUpgrade">
     private boolean needsUpgrade() {
         RSItem pickaxe = Equipment.getItem(Equipment.SLOTS.WEAPON);
-        if (pickaxe != null || Inventory.getCount(Constants.PICKAXES) > 0) {
+        if (pickaxe != null && Inventory.getCount(Constants.PICKAXES) <= 0) {
+            General.println("Running 1");
             if (Banking.isBankScreenOpen()) {
-                if (Equipment.getItem(Equipment.SLOTS.WEAPON).getID() != vars.pickaxe.getBestPickaxe(vars.pickaxeInInventory).getPickaxeID() || (Inventory.find(Constants.PICKAXES)[0].getID() != vars.pickaxe.getBestPickaxe(vars.pickaxeInInventory).getPickaxeID())) {
-                    if (unaval_list.size() > 0) {
-                        for (Pickaxe pick : unaval_list) {
-                            if (pickaxeToGet == pick) {
-                                pickaxeToGet = vars.pickaxe.getPreviousAxe();
-                                return false;
-                            } else {
-                                if (!Equipment.isEquipped(pickaxeToGet.getPickaxeID())) {
-                                    vars.isUpgradingPickaxe = true;
-                                    return true;
+                if (pickaxe.getID() != Vars.get().pickaxe.getBestPickaxe(Vars.get().pickaxeInInventory).getPickaxeID()) {
+                    if (Banking.find(Constants.PICKAXES).length > 0) {
+                        if (unaval_list.size() > 0) {
+                            for (Pickaxe pick : unaval_list) {
+                                if (pickaxeToGet == pick) {
+                                    pickaxeToGet = Vars.get().pickaxe.getPreviousAxe();
+                                    return false;
+                                } else {
+                                    if (!Equipment.isEquipped(pickaxeToGet.getPickaxeID())) {
+                                        Vars.get().isUpgradingPickaxe = true;
+                                        return true;
+                                    }
                                 }
                             }
+                        } else {
+                            Vars.get().isUpgradingPickaxe = true;
+                            return true;
                         }
-                    } else {
-                        vars.isUpgradingPickaxe = true;
-                        return true;
+                    }
+                }
+            }
+        }
+
+        if (Inventory.getCount(Constants.PICKAXES) > 0 && pickaxe == null) {
+            General.println("Running 2");
+            if (Banking.isBankScreenOpen()) {
+                RSItem[] item = Inventory.find(Constants.PICKAXES);
+                if (item[0].getID() != Vars.get().pickaxe.getBestPickaxe(Vars.get().pickaxeInInventory).getPickaxeID()) {
+                    if (Banking.find(Constants.PICKAXES).length > 0) {
+                        if (unaval_list.size() > 0) {
+                            for (Pickaxe pick : unaval_list) {
+                                if (pickaxeToGet == pick) {
+                                    pickaxeToGet = Vars.get().pickaxe.getPreviousAxe();
+                                    return false;
+                                } else {
+                                    if (!Equipment.isEquipped(pickaxeToGet.getPickaxeID())) {
+                                        Vars.get().isUpgradingPickaxe = true;
+                                        return true;
+                                    }
+                                }
+                            }
+                        } else {
+                            Vars.get().isUpgradingPickaxe = true;
+                            return true;
+                        }
                     }
                 }
             }
@@ -114,11 +144,11 @@ public class UpgradePickaxe implements Task {
     //</editor-fold>
 
     public String toString() {
-        return "Upgrading Axe" + Utility07.loadingPeriods();
+        return "Upgrading Pickaxe" + Utility07.loadingPeriods();
     }
 
     public boolean validate() {
-        return Game07.isInGame() && vars.upgradePickaxe && needsUpgrade();
+        return Game07.isInGame() && Vars.get().get().upgradePickaxe && needsUpgrade();
     }
 
 }

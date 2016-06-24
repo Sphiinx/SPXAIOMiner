@@ -6,8 +6,8 @@ import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Inventory;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.framework.Task;
-import TribotAPI.game.inventory.Inventory07;
-import TribotAPI.game.utiity.Utility07;
+import scripts.TribotAPI.game.inventory.Inventory07;
+import scripts.TribotAPI.game.utiity.Utility07;
 
 /**
  * Created by Sphiinx on 1/18/2016.

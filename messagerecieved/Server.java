@@ -4,9 +4,9 @@ import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
 import scripts.SPXAIOMiner.data.Vars;
-import TribotAPI.game.worldhopper.WorldHopper07;
-import TribotAPI.game.utiity.Utility07;
-import TribotAPI.antiban.AntiBan;
+import scripts.TribotAPI.game.worldhopping.WorldHopper07;
+import scripts.TribotAPI.game.utiity.Utility07;
+import scripts.TribotAPI.antiban.AntiBan;
 
 /**
  * Created by Sphiinx on 2/16/2016.

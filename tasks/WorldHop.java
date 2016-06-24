@@ -6,10 +6,10 @@ import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Player;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.framework.Task;
-import TribotAPI.game.area.Area07;
-import TribotAPI.game.worldhopper.WorldHopper07;
-import TribotAPI.game.utiity.GetWorlds07;
-import TribotAPI.game.utiity.Utility07;
+import scripts.TribotAPI.game.area.Area07;
+import scripts.TribotAPI.game.worldhopping.WorldHopper07;
+import scripts.TribotAPI.game.utiity.GetWorlds07;
+import scripts.TribotAPI.game.utiity.Utility07;
 
 
 /**

@@ -4,7 +4,7 @@ import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSPlayer;
 import org.tribot.api2007.types.RSTile;
 import scripts.SPXAIOMiner.data.enums.*;
-import TribotAPI.game.utiity.enums.WorldType;
+import scripts.TribotAPI.game.utiity.enums.WorldType;
 
 import java.io.File;
 import java.util.Properties;

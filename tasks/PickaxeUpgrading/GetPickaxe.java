@@ -1,6 +1,6 @@
 package scripts.SPXAIOMiner.tasks.PickaxeUpgrading;
 
-import TribotAPI.util.Logging;
+import scripts.TribotAPI.util.Logging;
 import org.tribot.api.General;
 import org.tribot.api.Timing;
 import org.tribot.api.types.generic.Condition;
@@ -12,10 +12,10 @@ import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.data.enums.Pickaxe;
 import scripts.SPXAIOMiner.framework.Task;
-import TribotAPI.game.banking.Banking07;
-import TribotAPI.game.game.Game07;
-import TribotAPI.game.utiity.Utility07;
-import TribotAPI.antiban.AntiBan;
+import scripts.TribotAPI.game.banking.Banking07;
+import scripts.TribotAPI.game.game.Game07;
+import scripts.TribotAPI.game.utiity.Utility07;
+import scripts.TribotAPI.antiban.AntiBan;
 
 import java.util.ArrayList;
 

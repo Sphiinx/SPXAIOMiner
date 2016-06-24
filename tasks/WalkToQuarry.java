@@ -6,7 +6,7 @@ import org.tribot.api2007.*;
 import scripts.SPXAIOMiner.data.Constants;
 import scripts.SPXAIOMiner.data.Vars;
 import scripts.SPXAIOMiner.framework.Task;
-import TribotAPI.game.utiity.Utility07;
+import scripts.TribotAPI.game.utiity.Utility07;
 
 /**
  * Created by Sphiinx on 1/16/2016.
