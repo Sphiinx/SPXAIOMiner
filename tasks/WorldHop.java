@@ -1,59 +1,44 @@
-package scripts.SPXAIOMiner.tasks;
+package scripts.spxaiominer.tasks;
 
 import org.tribot.api.General;
-import org.tribot.api.Timing;
-import org.tribot.api.types.generic.Condition;
 import org.tribot.api2007.Player;
-import scripts.SPXAIOMiner.data.Vars;
-import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.area.Area07;
-import scripts.TribotAPI.game.worldhopping.WorldHopper07;
-import scripts.TribotAPI.game.utiity.GetWorlds07;
-import scripts.TribotAPI.game.utiity.Utility07;
-
+import org.tribot.api2007.types.RSObject;
+import scripts.spxaiominer.data.Vars;
+import scripts.task_framework.framework.Task;
+import scripts.tribotapi.game.area.Area07;
+import scripts.tribotapi.game.objects.Objects07;
+import scripts.tribotapi.game.player.Player07;
+import scripts.tribotapi.game.timing.Timing07;
+import scripts.tribotapi.game.worldswitcher.GetSwitcherWorlds07;
+import scripts.tribotapi.game.worldswitcher.WorldSwitcher07;
+import scripts.tribotapi.util.ArrayUtil;
 
 /**
- * Created by Sphiinx on 1/17/2016.
+ * Created by Sphiinx on 8/5/2016.
  */
 public class WorldHop implements Task {
 
-    private int[] worlds;
-
-    //<editor-fold defaultstate="collapsed" desc="Execution">
-    public void execute() {
-        Vars.get().isHoppingWorlds = true;
-        if (worlds == null) {
-            if (GetWorlds07.isWorldSwitcherOpen()) {
-                worlds = GetWorlds07.getWorlds(Vars.get().worldType.getTextureID());
-            } else {
-                GetWorlds07.openWorldSwitcher();
-            }
-        } else {
-            if (Area07.getPlayersInArea(Vars.get().radius) > Vars.get().playersToHop || Vars.get().shouldWeHop) {
-                if (worlds != null) {
-                    int world = worlds[General.random(0, worlds.length - 1)];
-                    if (WorldHopper07.switchWorld(world)) {
-                        if (Timing.waitCondition(new Condition() {
-                            @Override
-                            public boolean active() {
-                                return Utility07.getCurrentWorld() == world;
-                            }
-                        }, General.random(5500, 6500))) {
-                            Vars.get().isHoppingWorlds = false;
-                        }
-                    }
-                }
-            }
-        }
-    }
-    //</editor-fold>
-
-    public String toString() {
-        return "Changing worlds" + Utility07.loadingPeriods();
-    }
-
+    @Override
     public boolean validate() {
-        return Vars.get().area.distanceTo(Player.getPosition()) <= Vars.get().radius && Player.getAnimation() == -1 && (Vars.get().playersToHop > 0 || Vars.get().shouldWeHop);
+        if (Vars.get().is_upgrading_pickaxe)
+            return false;
+
+        final RSObject ore = Objects07.getObjectByColorInArea(Vars.get().mining_location_tile, Vars.get().radius, Vars.get().ore_type.COLOR);
+        return !Vars.get().is_transferring && Vars.get().world_hop && (Vars.get().hop_if_no_ores_available && ore == null && Player.getPosition().distanceTo(Vars.get().mining_location_tile) <= Vars.get().radius) || (Player.getPosition().distanceTo(Vars.get().mining_location_tile) <= Vars.get().radius && Area07.getPlayersInArea(Vars.get().radius) > Vars.get().hop_if_players_greater_than && Vars.get().hop_if_players_greater_than > 0);
+
     }
 
+    @Override
+    public void execute() {
+        final int world = ArrayUtil.getRandomInt(GetSwitcherWorlds07.getWorlds(Vars.get().world_type.getTextureID()));
+        if (WorldSwitcher07.switchWorld(world))
+            Timing07.waitCondition(() -> Player07.getCurrentWorld() == world, General.random(6500, 7000));
+
+    }
+
+    @Override
+    public String toString() {
+        return "Switching worlds";
+    }
 }
+

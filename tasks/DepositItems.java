@@ -1,92 +1,93 @@
-package scripts.SPXAIOMiner.tasks;
+package scripts.spxaiominer.tasks;
 
 import org.tribot.api.General;
-import org.tribot.api.Timing;
-import org.tribot.api.types.generic.Condition;
-import org.tribot.api2007.*;
-
+import org.tribot.api2007.Banking;
+import org.tribot.api2007.Inventory;
+import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.types.RSItem;
-import scripts.SPXAIOMiner.data.Constants;
-import scripts.SPXAIOMiner.data.Vars;
-import scripts.SPXAIOMiner.data.enums.Location;
-import scripts.SPXAIOMiner.framework.Task;
-import scripts.TribotAPI.game.banking.Banking07;
-import scripts.TribotAPI.game.banking.DepositBox07;
-import scripts.TribotAPI.game.inventory.Inventory07;
-import scripts.TribotAPI.game.utiity.Utility07;
-
+import org.tribot.api2007.types.RSTile;
+import scripts.spxaiominer.data.Cons;
+import scripts.spxaiominer.data.Vars;
+import scripts.task_framework.framework.Task;
+import scripts.tribotapi.game.banking.Banking07;
+import scripts.tribotapi.game.banking.DepositBox07;
+import scripts.tribotapi.game.inventory.Inventory07;
+import scripts.tribotapi.game.timing.Timing07;
 
 /**
- * Created by Sphiinx on 1/16/2016.
+ * Created by Sphiinx on 8/5/2016.
  */
 public class DepositItems implements Task {
 
-    public void execute() {
-        handleBanking();
-    }
+    private final RSTile RIMMINGTON_DEPOSIT_BOX = new RSTile(3045, 3235, 0);
+    private final RSTile PORTKHAZARD_DEPOSIT_BOX = new RSTile(2663, 3160, 0);
+    private RSItem item_to_deposit;
 
-    //<editor-fold defaultstate="collapsed" desc="HandleBanking">
-    private void handleBanking() {
-        if (isUsingCustomPath()) {
-            if (DepositBox07.isAtDepositBox()) {
-                handleDepositBox();
-            } else {
-                useCustomPaths();
-            }
-        } else {
-            if (Banking.isBankScreenOpen()) {
-                if (Vars.get().pickaxeInInventory) {
-                    RSItem[] pick = Inventory.find(Constants.PICKAXES);
-                    Banking07.depositAllExcept(pick[0].getID());
-                } else {
-                    Banking07.depositInventory();
-                }
-            } else {
-                Banking07.openBank();
-            }
-        }
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Check Custom Path">
-    private boolean isUsingCustomPath() {
-        return Vars.get().area.equals(Location.RIMMINGTON.getLocation()) ||
-                Vars.get().area.equals(Location.PORT_KHAZARD.getLocation());
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Handle Deposit Box">
-    private void handleDepositBox() {
-        RSItem[] ore = Inventory.find(Vars.get().oreType.getItemID());
-        if (DepositBox07.deposit(0, ore[0])) {
-            Timing.waitCondition(new Condition() {
-                @Override
-                public boolean active() {
-                    return Inventory07.getAmountOfSpace() == 0;
-                }
-            }, General.random(2000, 3000));
-        }
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Use Custom Path">
-    private void useCustomPaths() {
-        if (Vars.get().area.equals(Location.RIMMINGTON.getLocation())) {
-            WebWalking.walkTo(Constants.RIMMINGTON_DEPOSIT_BOX);
-        } else{
-            if (Vars.get().area.equals(Location.PORT_KHAZARD.getLocation())) {
-                WebWalking.walkTo(Constants.PORTKHAZARD_DEPOSIT_BOX);
-            }
-        }
-    }
-    //</editor-fold>
-
-    public String toString() {
-        return "Depositing items" + Utility07.loadingPeriods();
-    }
-
+    @Override
     public boolean validate() {
+        if (Vars.get().is_upgrading_pickaxe)
+            return false;
+
         return Inventory.isFull();
     }
 
+    @Override
+    public void execute() {
+        if (isUsingCustomBank()) {
+            if (DepositBox07.isAtDepositBox()) {
+                if (item_to_deposit == null) {
+                    if (Inventory.getCount(Cons.GEM_NAMES) > 0)
+                        item_to_deposit = Inventory07.getItem(Cons.GEM_NAMES);
+                    else
+                        item_to_deposit = Inventory07.getItem(Vars.get().ore_type.getItemID());
+                } else {
+                    if (DepositBox07.deposit(0, item_to_deposit))
+                        Timing07.waitCondition(() -> Inventory.getCount(Vars.get().ore_type.getItemID()) <= 0, General.random(2000, 2500));
+                }
+            } else {
+                walkToCustomBank();
+            }
+        } else {
+            if (Banking07.isBankItemsLoaded()) {
+                final RSItem[] inventory_cache = Inventory.getAll();
+                if (Banking.depositAllExcept(Cons.PICKAXE_IDS) > 0)
+                    Timing07.waitCondition(() -> inventory_cache.length != Inventory.getAll().length, General.random(1500, 2000));
+            } else {
+                if (!Banking07.isInBank())
+                    WebWalking.walkToBank();
+
+                if (Banking.openBank())
+                    Timing07.waitCondition(Banking07::isBankItemsLoaded, General.random(1500, 2000));
+            }
+        }
+    }
+
+    private boolean isUsingCustomBank() {
+        switch (Vars.get().mining_location) {
+            case RIMMINGTON:
+                return true;
+            case PORT_KHAZARD:
+                return true;
+        }
+
+        return false;
+    }
+
+    private void walkToCustomBank() {
+        switch (Vars.get().mining_location) {
+            case RIMMINGTON:
+                WebWalking.walkTo(RIMMINGTON_DEPOSIT_BOX);
+                break;
+            case PORT_KHAZARD:
+                WebWalking.walkTo(PORTKHAZARD_DEPOSIT_BOX);
+                break;
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Depositing items";
+    }
+
 }
+

@@ -1,11 +1,11 @@
-package scripts.SPXAIOMiner.data.enums;
+package scripts.spxaiominer.data.enums;
 
 import org.tribot.api2007.types.RSTile;
 
 /**
- * Created by Sphiinx on 1/16/2016.
+ * Created by Sphiinx on 8/5/2016.
  */
-public enum Location {
+public enum MiningLocation {
 
     VARROCK_WEST(new RSTile(3181, 3372, 0), new RSTile(3171, 3389, 0), OreType.CLAY, OreType.TIN, OreType.IRON, OreType.SILVER),
     VARROCK_EAST(new RSTile(3285, 3366, 0), new RSTile(3222, 3217, 0), OreType.COPPER, OreType.TIN, OreType.IRON),
@@ -27,30 +27,27 @@ public enum Location {
     WILDERNESS_SOUTHW(new RSTile(3017, 3592, 0), new RSTile(3222, 3217, 0), OreType.COAL),
     WILDERNESS_SOUTH(new RSTile(3106, 3567, 0), new RSTile(3222, 3217, 0), OreType.COAL, OreType.IRON),
     WILDERNESS_NORTH(new RSTile(3087, 3762, 0), new RSTile(3222, 3217, 0), OreType.IRON, OreType.COAL, OreType.MITHRIL, OreType.ADAMANTITE);
-    //**TBA** SHILO_VILLAGE(new RSTile(2824, 2999, 0), new RSTile(3222, 3217, 0), LogType.GEMS),
-    //**TBA** HEROS_GUILD(new RSTile(2937, 9884, 0), LogType.RUNITE),
-    //**TBA** QUARRY(new RSTile(3171, 2912, 0)),
 
-    private RSTile location;
-    private RSTile safePosition;
-    private OreType[] supportedOre;
+    private final RSTile TILE;
+    private final RSTile SAFE_TILE;
+    private final OreType[] SUPPORTED_ORE;
 
-    Location(RSTile location, RSTile safePosition, OreType... supportedOre) {
-        this.location = location;
-        this.safePosition = safePosition;
-        this.supportedOre = supportedOre;
+    MiningLocation(RSTile tile, RSTile safe_tile, OreType... supported_ore) {
+        this.TILE = tile;
+        this.SAFE_TILE = safe_tile;
+        this.SUPPORTED_ORE = supported_ore;
     }
 
-    public RSTile getLocation() {
-        return location;
+    public RSTile getTile() {
+        return TILE;
     }
 
-    public RSTile getSafePosition() {
-        return safePosition;
+    public RSTile getSafeTile() {
+        return SAFE_TILE;
     }
 
-    public OreType[] getOreType() {
-        return supportedOre;
+    public OreType[] getSupportedOre() {
+        return SUPPORTED_ORE;
     }
 
 }

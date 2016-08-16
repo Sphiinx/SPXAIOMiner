@@ -1,7 +1,7 @@
-package scripts.SPXAIOMiner.data.enums;
+package scripts.spxaiominer.data.enums;
 
 /**
- * Created by Sphiinx on 1/18/2016.
+ * Created by Sphiinx on 8/5/2016.
  */
 public enum Mode {
 
@@ -11,3 +11,4 @@ public enum Mode {
     MOUSEKEYS
 
 }
+

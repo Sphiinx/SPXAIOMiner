@@ -1,216 +1,169 @@
-package scripts.SPXAIOMiner;
+package scripts.spxaiominer;
 
-import scripts.TribotAPI.color.Colors;
-import scripts.TribotAPI.painting.mouse.SPXMouse07;
-import scripts.TribotAPI.util.Logging;
-import org.tribot.api.General;
+import com.allatori.annotations.DoNotRename;
 import org.tribot.api.Timing;
-import org.tribot.api2007.*;
-import org.tribot.api2007.util.ThreadSettings;
-import org.tribot.script.Script;
+import org.tribot.api2007.types.RSArea;
 import org.tribot.script.ScriptManifest;
 import org.tribot.script.interfaces.*;
-import org.tribot.util.Util;
-
-import scripts.SPXAIOMiner.data.Constants;
-import scripts.SPXAIOMiner.data.Vars;
-
-import scripts.SPXAIOMiner.framework.Task;
-import scripts.SPXAIOMiner.framework.TaskManager;
-import scripts.SPXAIOMiner.gui.GUI;
-import scripts.SPXAIOMiner.messagerecieved.Server;
-import scripts.SPXAIOMiner.messagerecieved.Trade;
-import scripts.SPXAIOMiner.paint.PaintManager;
-import scripts.SPXAIOMiner.tasks.*;
-import scripts.SPXAIOMiner.tasks.Mine.*;
-import scripts.SPXAIOMiner.tasks.MuleSystem.MasterSystem;
-import scripts.SPXAIOMiner.tasks.MuleSystem.TradeMaster;
-import scripts.SPXAIOMiner.tasks.MuleSystem.WalkToMaster;
-import scripts.SPXAIOMiner.tasks.MuleSystem.WithdrawItems;
-import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.EquipPickaxe;
-import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.GetPickaxe;
-import scripts.SPXAIOMiner.tasks.PickaxeUpgrading.UpgradePickaxe;
-import scripts.TribotAPI.game.pricechecking.PriceChecking07;
+import scripts.spxaiominer.data.Vars;
+import scripts.spxaiominer.tasks.*;
+import scripts.spxaiominer.tasks.dropping.DropGems;
+import scripts.spxaiominer.tasks.dropping.M1D1;
+import scripts.spxaiominer.tasks.dropping.MouseKeys;
+import scripts.spxaiominer.tasks.dropping.Powermine;
+import scripts.spxaiominer.tasks.mule.AcceptSlaveTrade;
+import scripts.spxaiominer.tasks.mule.WalkBackToMuleTile;
+import scripts.spxaiominer.tasks.pickaxe.GetPickaxe;
+import scripts.spxaiominer.tasks.pickaxe.UpgradePickaxe;
+import scripts.spxaiominer.tasks.slave.*;
+import scripts.spxaiominer.tasks.pickaxe.EquipPickaxe;
+import scripts.task_framework.framework.Task;
+import scripts.tribotapi.AbstractScript;
+import scripts.tribotapi.antiban.AntiBan;
+import scripts.tribotapi.game.pricechecking.PriceChecking07;
+import scripts.tribotapi.game.utiity.Utility07;
+import scripts.tribotapi.gui.GUI;
+import scripts.tribotapi.painting.paint.Calculations;
+import scripts.tribotapi.painting.paint.SkillData;
+import scripts.tribotapi.painting.paint.enums.DataPosition;
+import scripts.tribotapi.painting.projection.ProjectionManager;
 
 import java.awt.*;
-import java.io.File;
-import java.util.ArrayList;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
- * Created by Sphiinx on 12/21/2015.
+ * Created by Sphiinx on 8/5/2016.
  */
-@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "[SPX] AIO Miner", version = 0.1)
-public class Main extends Script implements MessageListening07, Painting, MouseSplinePainting, MousePainting, MouseActions, Ending {
+@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "SPX AIO Miner", version = 1.1)
+@DoNotRename
+public class Main extends AbstractScript implements Painting, MousePainting, MouseSplinePainting, MessageListening07, EventBlockingOverride, Ending {
 
-    private GUI gui = new GUI();
-    private PaintManager paintManager = new PaintManager();
-    private Trade trade = new Trade();
-    private Server server = new Server();
-    private TaskManager taskManager = new TaskManager();
-    private SPXMouse07 spxMouse07 = new SPXMouse07(Colors.RED_COLOR.getCOLOR(), Colors.GRAY_COLOR.getCOLOR());
+    private ProjectionManager projection_manager = new ProjectionManager();
+
+    @Override
+    protected GUI getGUI() {
+        try {
+            return new GUI(new URL("http://spxscripts.com/spxaiominer/GUI.fxml"));
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 
     @Override
     public void run() {
         Vars.reset();
-        General.useAntiBanCompliance(true);
-        ThreadSettings.get().setClickingAPIUseDynamic(true);
-        Logging.status("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
-        Vars.get().path = new File(Util.getWorkingDirectory().getAbsolutePath(), "[SPX]AIOMiner_settings.ini");
-        Vars.get().version = getClass().getAnnotation(ScriptManifest.class).version();
-        getStartInformation();
-        initializeGUI();
-        getItemPrice();
-        addCollection();
-        loop(100, 150);
+        Vars.get().slave_time_ran = System.currentTimeMillis();
+        super.run();
     }
 
-    //<editor-fold defaultstate="collapsed" desc="Collection">
-    private void addCollection() {
-        if (Vars.get().progressiveMode) {
-            taskManager.addTask(new Progressive());
-        }
-        if (Vars.get().worldHop) {
-            taskManager.addTask(new WorldHop());
-        }
-        if (Vars.get().dropGems) {
-            taskManager.addTask(new DropUnwanted());
-        }
-        if (Vars.get().slaveSystem) {
-            taskManager.addTask(new TradeMaster(), new WalkToMaster(), new WithdrawItems());
-        }
-        if (Vars.get().upgradePickaxe) {
-            taskManager.addTask(new UpgradePickaxe());
-        }
-        if (Vars.get().levelToStop > 0) {
-            taskManager.addTask(new StopSettings());
-        }
-        if (Vars.get().masterSystem) {
-            taskManager.addTask(new MasterSystem());
+    @Override
+    public void addTasks(Task... tasks) {
+        if (!Vars.get().is_mule) {
+            switch (Vars.get().mode) {
+                case BANKING:
+                    super.addTasks(new DepositItems());
+                    break;
+                case POWERMINE:
+                    super.addTasks(new Powermine());
+                    break;
+                case M1D1:
+                    super.addTasks(new M1D1());
+                    break;
+                case MOUSEKEYS:
+                    super.addTasks(new MouseKeys());
+                    break;
+            }
+            if (Vars.get().upgrade_pickaxe)
+                super.addTasks(new UpgradePickaxe());
+            if (Vars.get().drop_gems)
+                super.addTasks(new DropGems());
+            if (Vars.get().world_hop)
+                super.addTasks(new WorldHop());
+            if (Vars.get().is_slave)
+                super.addTasks(new EnableTransfer(), new WithdrawTransferItems(), new WalkToMule(), new TradeMule());
+            if (Vars.get().switch_slave_back_to_original_world)
+                super.addTasks(new SwitchBackToOriginalWorld());
+            super.addTasks(new GetPickaxe(), new EquipPickaxe(), new WalkToMiningLocation(), new MineOre(), new TimedAntiBan());
         } else {
-            taskManager.addTask(new GetPickaxe(), new EquipPickaxe(), new WalkToQuarry(), new MineOre());
+            super.addTasks(new WalkBackToMuleTile(), new AcceptSlaveTrade());
         }
-        taskManager.addTask(new TimedActions());
-        switch (Vars.get().mode) {
-            case BANKING:
-                taskManager.addTask(new DepositItems());
-                break;
-            case POWERMINE:
-                taskManager.addTask(new Powermine());
-                break;
-            case M1D1:
-                taskManager.addTask(new M1D1());
-                break;
-            case MOUSEKEYS:
-                taskManager.addTask(new MouseKeys());
-                break;
-        }
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Loop">
-    private void loop(int min, int max) {
-        while (!Vars.get().stopScript) {
-            Task task = taskManager.getValidTask();
-            if (task != null) {
-                task.execute();
-                Vars.get().status = task.toString();
-                General.sleep(min, max);
-            }
-        }
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="InitializeGUI">
-    private void initializeGUI() {
-        EventQueue.invokeLater(() -> {
-            try {
-                sleep(50);
-                Vars.get().status = "Initializing...";
-                gui.setVisible(true);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        });
-        do
-            sleep(10);
-        while (!Vars.get().guiComplete);
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="StartInformation">
-    private void getStartInformation() {
-        Vars.get().startLevel = Skills.getActualLevel(Skills.SKILLS.MINING);
-        Vars.get().startXP = Skills.getXP(Skills.SKILLS.MINING);
-        Vars.get().resetTimeRan = Timing.currentTimeMillis();
-    }
-
-    private void getItemPrice() {
-        if (Vars.get().oreType != null) {
-            Vars.get().orePrice = PriceChecking07.getOSBuddyPrice(Vars.get().oreType.getItemID());
-        }
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Painting">
-    public void onPaint(Graphics g1) {
-        Graphics2D g = (Graphics2D) g1;
-        g.setRenderingHints(Constants.ANTIALIASING);
-        if (Login.getLoginState() == Login.STATE.INGAME) {
-            if (!Vars.get().disablePaint) {
-                paintManager.drawRadius(g);
-                paintManager.drawObjects(g);
-                paintManager.drawTiles(g);
-                paintManager.drawGeneralInfo(g);
-                if (Vars.get().masterSystem) {
-                    paintManager.drawMasterInfo(g);
-                } else {
-                    paintManager.drawNormalInfo(g);
-                }
-            } else {
-                paintManager.drawCloseButton(g);
-            }
-        }
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Mouse">
-    @Override
-    public void paintMouse(Graphics graphics, Point point, Point point1) {
-        spxMouse07.drawMouse(graphics);
     }
 
     @Override
-    public void paintMouseSpline(Graphics graphics, ArrayList<Point> arrayList) {
-    }
-    //</editor-fold>
+    public void onPaint(Graphics g) {
+        super.onPaint(g);
+        if (Vars.get().ore_type != null) {
+            if (Vars.get().ore_price <= 0)
+                Vars.get().ore_price = PriceChecking07.getOSBuddyPrice(Vars.get().ore_type.getItemID());
 
-    //<editor-fold defaultstate="collapsed" desc="MessageListening07">
-    @Override
-    public void tradeRequestReceived(String s) {
-        trade.getPlayerTrading(s);
+            Vars.get().profit = Vars.get().ore_price * Vars.get().ore_mined;
+        }
+        if (!Vars.get().is_mule) {
+            paint_manager.drawGeneralData("Mined: ", Vars.get().ore_mined + Calculations.getPerHour(Vars.get().ore_mined, this.getRunningTime()), DataPosition.TWO, g);
+            paint_manager.drawGeneralData("Profit: ", Utility07.formatNumber(Vars.get().profit) + Calculations.getGPPerHour(Vars.get().profit, this.getRunningTime()), DataPosition.THREE, g);
+            paint_manager.drawGeneralData("Mining: ", paint_manager.getSkillData(SkillData.MINING, this.getRunningTime()), DataPosition.FOUR, g);
+            paint_manager.drawGeneralData("Status: ", task_manager.getStatus() + Utility07.getLoadingPeriods(), DataPosition.FIVE, g);
+
+            if (Vars.get().is_slave) {
+                paint_manager.drawGeneralData("Mule trades: ", Vars.get().mule_trades + Calculations.getGPPerHour(Vars.get().mule_trades, this.getRunningTime()), DataPosition.SIX, g);
+                paint_manager.drawGeneralData("Next trade: ", getTimeUntilTransfer() + " minutes" + Utility07.getLoadingPeriods(), DataPosition.SEVEN, g);
+            }
+        } else {
+            paint_manager.drawGeneralData("Mule trades: ", Vars.get().mule_trades + Calculations.getGPPerHour(Vars.get().mule_trades, this.getRunningTime()), DataPosition.TWO, g);
+            paint_manager.drawGeneralData("Status: ", task_manager.getStatus() + Utility07.getLoadingPeriods(), DataPosition.THREE, g);
+        }
+
+        if (Vars.get().radius_mine) {
+            final RSArea radius_area = new RSArea(Vars.get().mining_location_tile, Vars.get().radius);
+            projection_manager.drawArea(radius_area, g);
+            projection_manager.drawMinimapArea(Vars.get().mining_location_tile, Vars.get().radius, g);
+        }
+    }
+
+    private long getTimeUntilTransfer() {
+        if (Vars.get().is_transferring)
+            return 0;
+
+        if (Vars.get().transfer_after_minutes <= 0 && Vars.get().transfer_after_profit <= 0)
+            return 0;
+
+        if (Vars.get().transfer_after_profit <= Vars.get().transfer_after_minutes)
+            return Vars.get().transfer_after_minutes - Timing.timeFromMark(Vars.get().slave_time_ran) / 60000;
+        else {
+            if (Vars.get().profit <= 0)
+                return 0;
+
+            return (long) ((Vars.get().transfer_after_profit - Vars.get().profit) / ((3600000.0 / this.getRunningTime()) * Vars.get().profit) * 60);
+        }
     }
 
     @Override
     public void serverMessageReceived(String s) {
         if (s.contains("You manage to mine some") || s.contains("You just mined")) {
-            server.incrementOre();
+            Vars.get().ore_mined++;
+            Vars.get().slave_ores_mined++;
+            AntiBan.incrementResourcesWon();
         }
+
         if (s.contains("Accepted trade.")) {
-            if (Vars.get().slaveSystem) {
-                server.incrementTrades();
-                server.setSlaveSettings();
-                server.switchWorldBack();
+            if (!Vars.get().is_mule) {
+                Vars.get().mule_trades++;
+                Vars.get().slave_ores_mined = 0;
+                Vars.get().slave_time_ran = System.currentTimeMillis();
+                if (!Vars.get().switch_slave_back_to_original_world)
+                    Vars.get().is_transferring = false;
+                Vars.get().is_switching_to_slave_world = true;
+            } else {
+                Vars.get().slave_trading_name = null;
             }
         }
     }
 
     @Override
     public void playerMessageReceived(String s, String s1) {
-
-    }
-
-    @Override
-    public void personalMessageReceived(String s, String s1) {
 
     }
 
@@ -223,46 +176,22 @@ public class Main extends Script implements MessageListening07, Painting, MouseS
     public void clanMessageReceived(String s, String s1) {
 
     }
-    //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="MouseActions">
     @Override
-    public void mouseReleased(Point point, int i, boolean b) {
-
+    public void tradeRequestReceived(String s) {
+        Vars.get().slave_trading_name = s;
     }
 
     @Override
-    public void mouseMoved(Point point, boolean b) {
+    public void personalMessageReceived(String s, String s1) {
 
     }
 
-    @Override
-    public void mouseDragged(Point point, int i, boolean b) {
-
-    }
-
-    @Override
-    public void mouseClicked(Point point, int i, boolean b) {
-        if (Constants.START_SLAVESYSTEM.contains(point) && i == 1 && !b) {
-            if (Vars.get().resetOresMined > 0) {
-                Logging.status("Enabling slave system...");
-                Vars.get().isSlaveSystemIsRunning = true;
-            } else {
-                Logging.status("We cannot enable the slave system unless we've mined more ore!");
-            }
-        }
-        if (Constants.CLOSE_PAINT.contains(point) && i == 1 && !b) {
-            Vars.get().disablePaint = !Vars.get().disablePaint;
-        }
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Ending">
     @Override
     public void onEnd() {
-        Logging.status("Thank you for using SPX Scripts " + General.getTRiBotUsername() + "!");
-        DynamicSignature.sendSignatureData(Vars.get().timeRanMinutes, Vars.get().oresMined, Vars.get().profit, Vars.get().gainedXP, Vars.get().gainedLevels, Vars.get().muleTrades, Vars.get().muleTrades);
+        SignatureData.sendSignatureData(this.getRunningTime() / 1000, Vars.get().ore_mined, Vars.get().profit, SkillData.getTotalExperienceGained(), SkillData.getTotalLevelsGained(), Vars.get().mule_trades, Vars.get().mule_trades);
+        super.onEnd();
     }
-    //</editor-fold>
 
 }
+

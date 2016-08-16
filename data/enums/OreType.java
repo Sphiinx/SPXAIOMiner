@@ -1,73 +1,42 @@
-package scripts.SPXAIOMiner.data.enums;
-
+package scripts.spxaiominer.data.enums;
 
 /**
- * Created by Sphiinx on 1/15/2016.
+ * Created by Sphiinx on 8/5/2016.
  */
 public enum OreType {
 
-    CLAY(6705, 434, Location.VARROCK_WEST, Location.RIMMINGTON, Location.CRAFTING_GUILD, Location.YANILLE),
-    COPPER(4645, 436, Location.VARROCK_EAST, Location.LUMBRIDGE_EAST, Location.AL_KHARID, Location.WEST_FALADOR, Location.DWARVEN_MINE, Location.RIMMINGTON, Location.YANILLE, Location.PORT_KHAZARD),
-    TIN(53, 438, Location.VARROCK_WEST, Location.VARROCK_EAST, Location.LUMBRIDGE_EAST, Location.BARBARIAN_VILLAGE, Location.WEST_FALADOR, Location.DWARVEN_MINE, Location.RIMMINGTON, Location.YANILLE, Location.PORT_KHAZARD),
-    IRON(2576, 440, Location.VARROCK_WEST, Location.VARROCK_EAST, Location.AL_KHARID, Location.WEST_FALADOR, Location.DWARVEN_MINE, Location.RIMMINGTON, Location.EAST_ARDOUGNE, Location.SOUTH_ARDOUGNE, Location.YANILLE, Location.WILDERNESS_SOUTH, Location.WILDERNESS_NORTH),
-    SILVER(74, 442, Location.VARROCK_WEST, Location.AL_KHARID, Location.CRAFTING_GUILD),
-    COAL(10508, 453, Location.LUMBRIDGE_WEST, Location.AL_KHARID, Location.BARBARIAN_VILLAGE, Location.WEST_FALADOR, Location.DWARVEN_MINE, Location.MINING_GUILD, Location.EAST_ARDOUGNE, Location.SOUTH_ARDOUGNE, Location.COAL_TRUCKS, Location.WILDERNESS_SOUTHW, Location.WILDERNESS_SOUTH, Location.WILDERNESS_NORTH),
-    GOLD(8885, 444, Location.AL_KHARID, Location.DWARVEN_MINE, Location.RIMMINGTON, Location.CRAFTING_GUILD),
-    MITHRIL(-22239, 447, Location.LUMBRIDGE_WEST, Location.AL_KHARID, Location.MINING_GUILD, Location.YANILLE, Location.PORT_KHAZARD, Location.WILDERNESS_SOUTH),
-    ADAMANTITE(21662, 449, Location.LUMBRIDGE_WEST, Location.AL_KHARID, Location.DWARVEN_MINE, Location.WILDERNESS_SOUTH),
-    LIMESTONE(10295, 3211, Location.SILVAREA);
-    //**TBA** RUNITE(-31437, 451),
-    //**TBA** GEMS(-10335, 1625, 1627, 1629);
-    //**TBA** GRANITE(),
-    //**TBA** ESSENCE(),
-    //**TBA** SANDSTONE(),
+    CLAY(6705, 434, MiningLocation.VARROCK_WEST, MiningLocation.RIMMINGTON, MiningLocation.CRAFTING_GUILD, MiningLocation.YANILLE),
+    COPPER(4645, 436, MiningLocation.VARROCK_EAST, MiningLocation.LUMBRIDGE_EAST, MiningLocation.AL_KHARID, MiningLocation.WEST_FALADOR, MiningLocation.DWARVEN_MINE, MiningLocation.RIMMINGTON, MiningLocation.YANILLE, MiningLocation.PORT_KHAZARD),
+    TIN(53, 438, MiningLocation.VARROCK_WEST, MiningLocation.VARROCK_EAST, MiningLocation.LUMBRIDGE_EAST, MiningLocation.BARBARIAN_VILLAGE, MiningLocation.WEST_FALADOR, MiningLocation.DWARVEN_MINE, MiningLocation.RIMMINGTON, MiningLocation.YANILLE, MiningLocation.PORT_KHAZARD),
+    IRON(2576, 440, MiningLocation.VARROCK_WEST, MiningLocation.VARROCK_EAST, MiningLocation.AL_KHARID, MiningLocation.WEST_FALADOR, MiningLocation.DWARVEN_MINE, MiningLocation.RIMMINGTON, MiningLocation.EAST_ARDOUGNE, MiningLocation.SOUTH_ARDOUGNE, MiningLocation.YANILLE, MiningLocation.WILDERNESS_SOUTH, MiningLocation.WILDERNESS_NORTH),
+    SILVER(74, 442, MiningLocation.VARROCK_WEST, MiningLocation.AL_KHARID, MiningLocation.CRAFTING_GUILD),
+    COAL(10508, 453, MiningLocation.LUMBRIDGE_WEST, MiningLocation.AL_KHARID, MiningLocation.BARBARIAN_VILLAGE, MiningLocation.WEST_FALADOR, MiningLocation.DWARVEN_MINE, MiningLocation.MINING_GUILD, MiningLocation.EAST_ARDOUGNE, MiningLocation.SOUTH_ARDOUGNE, MiningLocation.COAL_TRUCKS, MiningLocation.WILDERNESS_SOUTHW, MiningLocation.WILDERNESS_SOUTH, MiningLocation.WILDERNESS_NORTH),
+    GOLD(8885, 444, MiningLocation.AL_KHARID, MiningLocation.DWARVEN_MINE, MiningLocation.RIMMINGTON, MiningLocation.CRAFTING_GUILD),
+    MITHRIL(-22239, 447, MiningLocation.LUMBRIDGE_WEST, MiningLocation.AL_KHARID, MiningLocation.MINING_GUILD, MiningLocation.YANILLE, MiningLocation.PORT_KHAZARD, MiningLocation.WILDERNESS_SOUTH),
+    ADAMANTITE(21662, 449, MiningLocation.LUMBRIDGE_WEST, MiningLocation.AL_KHARID, MiningLocation.DWARVEN_MINE, MiningLocation.WILDERNESS_SOUTH),
+    LIMESTONE(10295, 3211, MiningLocation.SILVAREA);
 
-    private int color;
-    private int itemID;
-    private Location[] supportedLocations;
+    public final int COLOR;
+    public final int ITEM_ID;
+    public final MiningLocation[] SUPPORTED_LOCATIONS;
 
-    public static OreType[] ore1 = new OreType[]{
-            OreType.CLAY,
-            OreType.COPPER,
-            OreType.TIN
-    };
-    public static OreType[] ore2 = new OreType[]{
-            OreType.CLAY,
-            OreType.COPPER,
-            OreType.TIN,
-            OreType.IRON,
-            OreType.LIMESTONE
-    };
-    public static OreType[] ore3 = new OreType[]{
-            OreType.CLAY,
-            OreType.COPPER,
-            OreType.TIN,
-            OreType.IRON,
-            OreType.LIMESTONE,
-            OreType.SILVER,
-            OreType.COAL,
-    };
-
-    OreType(int color, int itemID, Location... supportedLocations) {
-        this.color = color;
-        this.itemID = itemID;
-        this.supportedLocations = supportedLocations;
+    OreType(int color, int item_id, MiningLocation... supported_locations) {
+        this.COLOR = color;
+        this.ITEM_ID = item_id;
+        this.SUPPORTED_LOCATIONS = supported_locations;
     }
 
     public int getColor() {
-        return color;
+        return COLOR;
     }
 
     public int getItemID() {
-        return itemID;
+        return ITEM_ID;
     }
 
-    public Location[] getLocations() {
-        return supportedLocations;
-    }
-
-    public int getNotedItemID() {
-        return itemID + 1;
+    public MiningLocation[] getSupportedLocations() {
+        return SUPPORTED_LOCATIONS;
     }
 
 }
+
