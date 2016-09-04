@@ -23,7 +23,7 @@ public class WorldHop implements Task {
         if (Vars.get().is_upgrading_pickaxe)
             return false;
 
-        final RSObject ore = Objects07.getObjectByColorInArea(Vars.get().mining_location_tile, Vars.get().radius, Vars.get().ore_type.COLOR);
+        final RSObject ore = Objects07.getObjectByColorInArea(Vars.get().mining_location_tile, Vars.get().radius, Vars.get().ore_type.COLOR, true);
         return !Vars.get().is_transferring && Vars.get().world_hop && (Vars.get().hop_if_no_ores_available && ore == null && Player.getPosition().distanceTo(Vars.get().mining_location_tile) <= Vars.get().radius) || (Player.getPosition().distanceTo(Vars.get().mining_location_tile) <= Vars.get().radius && Area07.getPlayersInArea(Vars.get().radius) > Vars.get().hop_if_players_greater_than && Vars.get().hop_if_players_greater_than > 0);
 
     }

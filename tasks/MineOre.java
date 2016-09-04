@@ -3,19 +3,19 @@ package scripts.spxaiominer.tasks;
 import org.tribot.api.Clicking;
 import org.tribot.api.General;
 import org.tribot.api.types.generic.Condition;
+import org.tribot.api.types.generic.Filter;
+import org.tribot.api.util.Sorting;
 import org.tribot.api.util.abc.preferences.WalkingPreference;
-import org.tribot.api2007.Equipment;
-import org.tribot.api2007.Inventory;
-import org.tribot.api2007.Player;
-import org.tribot.api2007.WebWalking;
+import org.tribot.api2007.*;
+import org.tribot.api2007.types.RSArea;
 import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSObjectDefinition;
 import org.tribot.api2007.types.RSTile;
-import scripts.spxaiominer.data.Cons;
 import scripts.spxaiominer.data.Vars;
 import scripts.task_framework.framework.Task;
 import scripts.tribotapi.antiban.AntiBan;
-import scripts.tribotapi.game.mining.Mining07;
+import scripts.tribotapi.game.mining.enums.Pickaxe;
+
 import scripts.tribotapi.game.objects.Objects07;
 import scripts.tribotapi.game.timing.Timing07;
 import scripts.tribotapi.game.walking.Walking07;
@@ -32,15 +32,20 @@ public class MineOre implements Task {
         if (Vars.get().is_upgrading_pickaxe)
             return false;
 
-        final RSObject ore = Objects07.getObjectByColorInArea(Vars.get().mining_location_tile, Vars.get().radius, Vars.get().ore_type.COLOR);
-        return !Vars.get().is_transferring && ore != null && !Inventory.isFull() && Mining07.getBestUsablePickaxe(false) != null;
+        final RSObject ore = Objects07.getObjectByColorInArea(Vars.get().mining_location_tile, Vars.get().radius, Vars.get().ore_type.COLOR, true);
+        return !Vars.get().is_transferring && ore != null && !Inventory.isFull() && (Inventory.getCount(Pickaxe.getItemIDs()) > 0 || Equipment.isEquipped(Pickaxe.getItemIDs()));
     }
 
     @Override
     public void execute() {
-        final RSObject ore = Objects07.getObjectByColorInArea(Vars.get().mining_location_tile, Vars.get().radius, Vars.get().ore_type.COLOR);
+        final RSObject ore = getOreToMine();
         if (ore == null)
             return;
+
+        if (Player.getAnimation() != -1) {
+            General.println("Current: " + current_ore_tile);
+            General.println("Next: " + ore.getPosition());
+        }
 
         if (Player.isMoving())
             return;
@@ -55,6 +60,39 @@ public class MineOre implements Task {
         } else {
             walkToOre(ore);
         }
+    }
+
+    private RSObject getOreToMine() {
+        if (Player.getAnimation() != -1 || isMiningEmptyRock() || Player.getAnimation() == -1)
+            return oreFilter(Vars.get().mining_location_tile, Vars.get().radius, Vars.get().ore_type.COLOR, current_ore_tile, false);
+
+        return null;
+    }
+
+    private RSObject oreFilter(RSTile tile, int distance, int color, RSTile current_ore_tile, boolean sort_objects) {
+        return Objects07.getObject(distance, sort_objects, new Filter<RSObject>() {
+            @Override
+            public boolean accept(RSObject object) {
+                final RSArea radius_area = new RSArea(tile, distance);
+                if (!radius_area.contains(object))
+                    return false;
+
+                if (object.getPosition() == current_ore_tile)
+                    return false;
+
+                final RSObjectDefinition object_definition = object.getDefinition();
+                if (object_definition == null)
+                    return false;
+
+                for (short object_color : object_definition.getModifiedColors()) {
+                    if (object_color == color) {
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+        });
     }
 
     private boolean isMiningEmptyRock() {
@@ -76,8 +114,7 @@ public class MineOre implements Task {
             WebWalking.walkTo(object, new Condition() {
                 @Override
                 public boolean active() {
-                    final RSObject ore = Objects07.getObjectByColorInArea(Vars.get().mining_location_tile, Vars.get().radius, Vars.get().ore_type.getColor());
-                    return ore != null && ore.isOnScreen();
+                    return object != null && object.isOnScreen();
                 }
             }, 250);
         }

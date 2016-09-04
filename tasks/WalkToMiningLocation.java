@@ -23,7 +23,7 @@ public class WalkToMiningLocation implements Task {
         if (Vars.get().is_upgrading_pickaxe)
             return false;
 
-        final RSObject ore = Objects07.getObjectByColorInArea(Vars.get().mining_location_tile, Vars.get().radius, Vars.get().ore_type.getColor());
+        final RSObject ore = Objects07.getObjectByColorInArea(Vars.get().mining_location_tile, Vars.get().radius, Vars.get().ore_type.getColor(), true);
         return !Vars.get().is_transferring && (ore == null && Player.getPosition().distanceTo(Vars.get().mining_location_tile) > Vars.get().radius) && !Inventory.isFull() && Mining07.getBestUsablePickaxe(false) != null;
     }
 
@@ -32,7 +32,7 @@ public class WalkToMiningLocation implements Task {
         WebWalking.walkTo(Vars.get().mining_location_tile, new Condition() {
             @Override
             public boolean active() {
-                final RSObject ore = Objects07.getObjectByColorInArea(Vars.get().mining_location_tile, Vars.get().radius, Vars.get().ore_type.getColor());
+                final RSObject ore = Objects07.getObjectByColorInArea(Vars.get().mining_location_tile, Vars.get().radius, Vars.get().ore_type.getColor(), true);
                 return ore != null && ore.isOnScreen();
             }
         }, 250);

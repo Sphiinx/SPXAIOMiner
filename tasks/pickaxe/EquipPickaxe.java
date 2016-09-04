@@ -32,12 +32,12 @@ public class EquipPickaxe implements Task {
             if (Banking.close())
                 Timing07.waitCondition(() -> !Banking.isBankScreenOpen(), General.random(1500, 2000));
 
-        final RSItem item_to_equip = Inventory07.getItem(Cons.PICKAXE_IDS);
+        final RSItem item_to_equip = Inventory07.getItem(Pickaxe.getItemIDs());
         if (item_to_equip == null)
             return;
 
         if (Clicking.click("Wield", item_to_equip))
-            Timing07.waitCondition(() -> Equipment.isEquipped(Cons.PICKAXE_IDS), General.random(2000, 2500));
+            Timing07.waitCondition(() -> Equipment.isEquipped(Pickaxe.getItemIDs()), General.random(2000, 2500));
     }
 
     @Override

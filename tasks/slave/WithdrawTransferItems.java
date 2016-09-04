@@ -11,6 +11,7 @@ import scripts.spxaiominer.data.Vars;
 import scripts.task_framework.framework.Task;
 import scripts.task_framework.framework.TaskManager;
 import scripts.tribotapi.game.banking.Banking07;
+import scripts.tribotapi.game.mining.enums.Pickaxe;
 import scripts.tribotapi.game.timing.Timing07;
 import scripts.tribotapi.util.Logging;
 
@@ -32,7 +33,7 @@ public class WithdrawTransferItems implements Task {
     public void execute() {
         if (Banking07.isBankItemsLoaded()) {
             if (Inventory.getCount(Vars.get().ore_type.getItemID()) > 0) {
-                if (Banking.depositAllExcept(Cons.PICKAXE_IDS) > 0)
+                if (Banking.depositAllExcept(Pickaxe.getItemIDs()) > 0)
                     Timing07.waitCondition(() -> Inventory.getCount(Vars.get().ore_type.getItemID()) <= 0, General.random(1500, 2000));
             } else {
                 if (!Banking07.isNotedSelected()) {

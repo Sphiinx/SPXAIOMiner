@@ -12,6 +12,7 @@ import scripts.task_framework.framework.Task;
 import scripts.tribotapi.game.banking.Banking07;
 import scripts.tribotapi.game.banking.DepositBox07;
 import scripts.tribotapi.game.inventory.Inventory07;
+import scripts.tribotapi.game.mining.enums.Pickaxe;
 import scripts.tribotapi.game.timing.Timing07;
 
 /**
@@ -50,7 +51,7 @@ public class DepositItems implements Task {
         } else {
             if (Banking07.isBankItemsLoaded()) {
                 final RSItem[] inventory_cache = Inventory.getAll();
-                if (Banking.depositAllExcept(Cons.PICKAXE_IDS) > 0)
+                if (Banking.depositAllExcept(Pickaxe.getItemIDs()) > 0)
                     Timing07.waitCondition(() -> inventory_cache.length != Inventory.getAll().length, General.random(1500, 2000));
             } else {
                 if (!Banking07.isInBank())
