@@ -198,7 +198,7 @@ public class GUIController extends AbstractGUIController {
         mining_location.getItems().setAll(MiningLocation.values());
         mining_location.getSelectionModel().select(0);
 
-        ore_type.getItems().setAll(OreType.values());
+        ore_type.getItems().setAll(mining_location.getSelectionModel().getSelectedItem().getSupportedOre());
         ore_type.getSelectionModel().select(0);
 
         radius_ore_type.getItems().setAll(OreType.values());
@@ -217,6 +217,11 @@ public class GUIController extends AbstractGUIController {
         private_message.setOnAction((event -> Utility.openURL("https://tribot.org/forums/profile/176138-sphiinx/")));
 
         website_link.setOnAction((event -> Utility.openURL("http://spxscripts.com/")));
+
+        mining_location.setOnAction(event -> {
+            ore_type.getItems().setAll(mining_location.getSelectionModel().getSelectedItem().getSupportedOre());
+            ore_type.getSelectionModel().select(0);
+        });
 
         send_report.setOnAction((event) -> {
             if (PostRequest.LAST_SENT_TIME <= 0 || Timing.timeFromMark(PostRequest.LAST_SENT_TIME) > 60000) {
@@ -263,11 +268,10 @@ public class GUIController extends AbstractGUIController {
             }
 
             // Settings
-            if (upgrade_pickaxe.isSelected())
-                Vars.get().upgrade_pickaxe = true;
+                Vars.get().upgrade_pickaxe = upgrade_pickaxe.isSelected();
+                Vars.get().disable_abc2_sleeps = disable_abc2_sleeps.isSelected();
 
             // Mule system
-            if (is_mule.isSelected())
                 Vars.get().is_mule = is_mule.isSelected();
 
             // World hopping

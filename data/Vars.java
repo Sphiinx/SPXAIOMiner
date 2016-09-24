@@ -1,5 +1,6 @@
 package scripts.spxaiominer.data;
 
+import org.tribot.api2007.types.RSObject;
 import org.tribot.api2007.types.RSTile;
 import scripts.spxaiominer.data.enums.MiningLocation;
 import scripts.spxaiominer.data.enums.Mode;
@@ -15,7 +16,6 @@ import java.util.Properties;
 public class Vars {
 
     public static Vars vars;
-
 
     public static Vars get() {
         return vars == null ? vars = new Vars() : vars;
@@ -47,10 +47,10 @@ public class Vars {
     public boolean radius_mine;
     public boolean upgrade_pickaxe;
     public boolean is_transferring;
+    public boolean disable_abc2_sleeps;
     public boolean is_upgrading_pickaxe;
     public boolean hop_if_no_ores_available;
     public boolean is_switching_to_slave_world;
-    public boolean mine_with_pickaxe_in_the_inventory;
     public boolean switch_slave_back_to_original_world;
 
     public String mule_username;
@@ -67,5 +67,6 @@ public class Vars {
 
     public File file_path;
     public Properties file_properties = new Properties();
+
 }
 

@@ -35,7 +35,7 @@ import java.net.URL;
 /**
  * Created by Sphiinx on 8/5/2016.
  */
-@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "SPX AIO Miner", version = 1.1)
+@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "SPX AIO Miner", version = 1.3)
 @DoNotRename
 public class Main extends AbstractScript implements Painting, MousePainting, MouseSplinePainting, MessageListening07, EventBlockingOverride, Ending {
 
