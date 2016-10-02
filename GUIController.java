@@ -11,11 +11,12 @@ import scripts.spxaiominer.data.enums.MiningLocation;
 import scripts.spxaiominer.data.enums.Mode;
 import scripts.spxaiominer.data.enums.OreType;
 import scripts.tribotapi.Client;
-import scripts.tribotapi.FileManagment;
-import scripts.tribotapi.PostRequest;
+import scripts.generalapi.FileManagment;
+import scripts.generalapi.PostRequest;
 import scripts.tribotapi.game.worldswitcher.enums.SwitcherWorldType;
 import scripts.tribotapi.gui.AbstractGUIController;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -299,9 +300,11 @@ public class GUIController extends AbstractGUIController {
         });
 
         // Setting the settings list
-        final String[] settings_files = FileManagment.getFileNamesInDirectory(Util.getWorkingDirectory().getAbsolutePath() + "\\SPXScripts\\SPX_AIO_Miner");
-        saved_settings.getItems().setAll(settings_files);
-        saved_settings.getSelectionModel().select(0);
+        final String[] settings_files = FileManagment.getFileNamesInDirectory(Util.getWorkingDirectory().getAbsolutePath() + File.separator + "SPXScripts" + File.separator + "SPX_AIO_Miner");
+        if (settings_files != null) {
+            saved_settings.getItems().setAll(settings_files);
+            saved_settings.getSelectionModel().select(0);
+        }
 
         // Save settings action event
         save_settings.setOnAction((event -> {
@@ -320,22 +323,22 @@ public class GUIController extends AbstractGUIController {
     public boolean saveSettings() {
         try {
             if (Vars.get().file_path == null)
-                FileManagment.createFile(Util.getWorkingDirectory().getAbsolutePath() + "\\SPXScripts\\SPX_AIO_Miner", settings_file_name.getText(), ".ini");
+                FileManagment.createFile(Util.getWorkingDirectory().getAbsolutePath() + File.separator + "SPXScripts" + File.separator + "SPX_AIO_Miner", settings_file_name.getText(), ".ini");
 
-            Vars.get().file_path = FileManagment.getFileInDirectory(Util.getWorkingDirectory().getAbsolutePath() + "\\SPXScripts\\SPX_AIO_Miner", settings_file_name.getText() + ".ini");
-            Vars.get().file_properties.put("mining_location", String.valueOf(mining_location.getSelectionModel().getSelectedIndex()));
-            Vars.get().file_properties.put("ore_type", String.valueOf(ore_type.getSelectionModel().getSelectedIndex()));
+            Vars.get().file_path = FileManagment.getFileInDirectory(Util.getWorkingDirectory().getAbsolutePath() + File.separator + "SPXScripts" + File.separator + "SPX_AIO_Miner", settings_file_name.getText() + ".ini");
+            Vars.get().file_properties.put("tree_location", String.valueOf(mining_location.getSelectionModel().getSelectedIndex()));
+            Vars.get().file_properties.put("tree_type", String.valueOf(ore_type.getSelectionModel().getSelectedIndex()));
             Vars.get().file_properties.put("mode", String.valueOf(mode.getSelectionModel().getSelectedIndex()));
             Vars.get().file_properties.put("drop_gems", String.valueOf(drop_gems.isSelected()));
             Vars.get().file_properties.put("world_hop", String.valueOf(world_hop.isSelected()));
             Vars.get().file_properties.put("world_type", String.valueOf(world_type.getSelectionModel().getSelectedIndex()));
             Vars.get().file_properties.put("hop_if_players_greater_than", String.valueOf(hop_if_players_greater_than.getValue()));
-            Vars.get().file_properties.put("hop_if_no_ores_available", String.valueOf(hop_if_no_ores_available.isSelected()));
-            Vars.get().file_properties.put("radius_mine", String.valueOf(radius_mine.isSelected()));
+            Vars.get().file_properties.put("hop_if_no_trees_available", String.valueOf(hop_if_no_ores_available.isSelected()));
+            Vars.get().file_properties.put("radius_chop", String.valueOf(radius_mine.isSelected()));
             Vars.get().file_properties.put("radius_amount", String.valueOf(radius_amount.getValue()));
             Vars.get().file_properties.put("radius_ore_type", String.valueOf(radius_ore_type.getSelectionModel().getSelectedIndex()));
             Vars.get().file_properties.put("disable_abc2_sleeps", String.valueOf(disable_abc2_sleeps.isSelected()));
-            Vars.get().file_properties.put("upgrade_pickaxe", String.valueOf(upgrade_pickaxe.isSelected()));
+            Vars.get().file_properties.put("upgrade_axe", String.valueOf(upgrade_pickaxe.isSelected()));
             Vars.get().file_properties.put("is_mule", String.valueOf(is_mule.isSelected()));
             Vars.get().file_properties.put("is_slave", String.valueOf(is_slave.isSelected()));
             Vars.get().file_properties.put("mule_username", String.valueOf(mule_username.getText()));
@@ -359,21 +362,21 @@ public class GUIController extends AbstractGUIController {
     public boolean loadSettings() {
         try {
 
-            Vars.get().file_path = FileManagment.getFileInDirectory(Util.getWorkingDirectory().getAbsolutePath() + "\\SPXScripts\\SPX_AIO_Miner", saved_settings.getSelectionModel().getSelectedItem());
+            Vars.get().file_path = FileManagment.getFileInDirectory(Util.getWorkingDirectory().getAbsolutePath() + File.separator + "SPXScripts" + File.separator + "SPX_AIO_Miner", saved_settings.getSelectionModel().getSelectedItem());
             Vars.get().file_properties.load(new FileInputStream(Vars.get().file_path));
-            mining_location.getSelectionModel().select(Integer.parseInt(Vars.get().file_properties.getProperty("mining_location", "0")));
-            ore_type.getSelectionModel().select(Integer.parseInt(Vars.get().file_properties.getProperty("ore_type", "0")));
+            mining_location.getSelectionModel().select(Integer.parseInt(Vars.get().file_properties.getProperty("tree_location", "0")));
+            ore_type.getSelectionModel().select(Integer.parseInt(Vars.get().file_properties.getProperty("tree_type", "0")));
             mode.getSelectionModel().select(Integer.parseInt(Vars.get().file_properties.getProperty("mode", "0")));
             drop_gems.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("drop_gems")));
             world_hop.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("world_hop")));
             world_type.getSelectionModel().select(Integer.parseInt(Vars.get().file_properties.getProperty("world_type", "0")));
             hop_if_players_greater_than.getValueFactory().setValue(Integer.parseInt(Vars.get().file_properties.getProperty("hop_if_players_greater_than")));
-            hop_if_no_ores_available.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("hop_if_no_ores_available")));
-            radius_mine.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("radius_mine")));
+            hop_if_no_ores_available.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("hop_if_no_trees_available")));
+            radius_mine.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("radius_chop")));
             radius_amount.getValueFactory().setValue(Integer.parseInt(Vars.get().file_properties.getProperty("radius_amount")));
             radius_ore_type.getSelectionModel().select(Integer.parseInt(Vars.get().file_properties.getProperty("radius_ore_type", "0")));
             disable_abc2_sleeps.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("disable_abc2_sleeps")));
-            upgrade_pickaxe.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("upgrade_pickaxe")));
+            upgrade_pickaxe.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("upgrade_axe")));
             is_mule.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("is_mule")));
             is_slave.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("is_slave")));
             mule_username.setText(String.valueOf(Vars.get().file_properties.getProperty("mule_username")));

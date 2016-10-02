@@ -35,7 +35,7 @@ import java.net.URL;
 /**
  * Created by Sphiinx on 8/5/2016.
  */
-@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "SPX AIO Miner", version = 1.3)
+@ScriptManifest(authors = "Sphiinx", category = "Mining", name = "SPX AIO Miner", version = 1.4)
 @DoNotRename
 public class Main extends AbstractScript implements Painting, MousePainting, MouseSplinePainting, MessageListening07, EventBlockingOverride, Ending {
 
@@ -44,7 +44,7 @@ public class Main extends AbstractScript implements Painting, MousePainting, Mou
     @Override
     protected GUI getGUI() {
         try {
-            return new GUI(new URL("http://spxscripts.com/spxaiominer/GUI.fxml"));
+            return new GUI(new URL("http://www.spxscripts.com/spxaiominer/GUI.fxml"));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }

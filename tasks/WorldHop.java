@@ -11,7 +11,7 @@ import scripts.tribotapi.game.player.Player07;
 import scripts.tribotapi.game.timing.Timing07;
 import scripts.tribotapi.game.worldswitcher.GetSwitcherWorlds07;
 import scripts.tribotapi.game.worldswitcher.WorldSwitcher07;
-import scripts.tribotapi.util.ArrayUtil;
+import scripts.generalapi.util.ArrayUtil;
 
 /**
  * Created by Sphiinx on 8/5/2016.
