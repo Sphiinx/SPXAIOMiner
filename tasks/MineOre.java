@@ -12,7 +12,7 @@ import scripts.spxaiominer.data.Vars;
 import scripts.task_framework.framework.Task;
 import scripts.tribotapi.antiban.AntiBan;
 import scripts.tribotapi.game.combat.Combat07;
-import scripts.tribotapi.game.mining.enums.Pickaxe;
+import scripts.tribotapi.game.skills.mining.enums.Pickaxe;
 
 import scripts.tribotapi.game.objects.Objects07;
 import scripts.tribotapi.game.timing.Timing07;
@@ -51,18 +51,15 @@ public class MineOre implements Task {
         }
 
         if (ore.isOnScreen()) {
-            General.println("On Screen");
             if (isMiningEmptyRock() || Player.getAnimation() == -1) {
                 sleepReactionTime();
                 if (ChooseOption.isOpen() && ChooseOption.isOptionValid("Mine")) {
-                    General.println("Selecting");
                     if (ChooseOption.select("Mine"))
                         if (Timing07.waitCondition(() -> Player.getAnimation() != -1 || Player.isMoving(), General.random(6500, 7000))) {
                             current_ore_tile = ore.getPosition();
                             ore = null;
                         }
                 } else {
-                    General.println("Clicking");
                     if (Clicking.click("Mine", ore)) {
                         if (Timing07.waitCondition(() -> Player.getAnimation() != -1, General.random(6500, 7000))) {
                             current_ore_tile = ore.getPosition();
@@ -112,7 +109,7 @@ public class MineOre implements Task {
     private void sleepReactionTime() {
         if (!Vars.get().disable_abc2_sleeps) {
             final int sleep_time = AntiBan.getReactionTime();
-            Logging.clientdebug("Reaction Time: " + sleep_time + "ms");
+            Logging.status("Reaction Time: " + sleep_time + "ms");
             AntiBan.sleepReactionTime();
         }
     }
@@ -127,8 +124,8 @@ public class MineOre implements Task {
         if (ore == null)
             return;
 
-        Logging.clientdebug("Should hover: " + AntiBan.should_hover);
-        Logging.clientdebug("Should open menu: " + AntiBan.should_open_menu);
+        Logging.status("Should hover: " + AntiBan.should_hover);
+        Logging.status("Should open menu: " + AntiBan.should_open_menu);
         if (AntiBan.should_hover) {
             if (ore.hover()) {
                 final RSModel ore_model = ore.getModel();

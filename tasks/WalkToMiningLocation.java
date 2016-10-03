@@ -1,15 +1,13 @@
 package scripts.spxaiominer.tasks;
 
 import org.tribot.api.types.generic.Condition;
-import org.tribot.api2007.Equipment;
 import org.tribot.api2007.Inventory;
 import org.tribot.api2007.Player;
 import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.types.RSObject;
-import scripts.spxaiominer.data.Cons;
 import scripts.spxaiominer.data.Vars;
 import scripts.task_framework.framework.Task;
-import scripts.tribotapi.game.mining.Mining07;
+import scripts.tribotapi.game.skills.mining.Mining07;
 import scripts.tribotapi.game.objects.Objects07;
 
 /**

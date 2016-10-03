@@ -12,7 +12,7 @@ import scripts.task_framework.framework.Task;
 import scripts.tribotapi.game.banking.Banking07;
 import scripts.tribotapi.game.banking.DepositBox07;
 import scripts.tribotapi.game.inventory.Inventory07;
-import scripts.tribotapi.game.mining.enums.Pickaxe;
+import scripts.tribotapi.game.skills.mining.enums.Pickaxe;
 import scripts.tribotapi.game.timing.Timing07;
 
 /**

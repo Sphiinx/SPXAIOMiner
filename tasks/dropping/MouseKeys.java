@@ -3,10 +3,9 @@ package scripts.spxaiominer.tasks.dropping;
 import org.tribot.api.General;
 import org.tribot.api2007.Inventory;
 import org.tribot.api2007.types.RSItem;
-import scripts.spxaiominer.data.Cons;
 import scripts.task_framework.framework.Task;
 import scripts.tribotapi.game.inventory.Inventory07;
-import scripts.tribotapi.game.mining.enums.Pickaxe;
+import scripts.tribotapi.game.skills.mining.enums.Pickaxe;
 import scripts.tribotapi.game.timing.Timing07;
 
 /**

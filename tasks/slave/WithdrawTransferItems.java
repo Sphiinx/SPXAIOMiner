@@ -6,12 +6,11 @@ import org.tribot.api2007.Inventory;
 import org.tribot.api2007.Trading;
 import org.tribot.api2007.WebWalking;
 import org.tribot.api2007.types.RSItem;
-import scripts.spxaiominer.data.Cons;
 import scripts.spxaiominer.data.Vars;
 import scripts.task_framework.framework.Task;
 import scripts.task_framework.framework.TaskManager;
 import scripts.tribotapi.game.banking.Banking07;
-import scripts.tribotapi.game.mining.enums.Pickaxe;
+import scripts.tribotapi.game.skills.mining.enums.Pickaxe;
 import scripts.tribotapi.game.timing.Timing07;
 import scripts.tribotapi.util.Logging;
 

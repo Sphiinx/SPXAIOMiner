@@ -329,7 +329,7 @@ public class GUIController extends AbstractGUIController {
             Vars.get().file_properties.put("tree_location", String.valueOf(mining_location.getSelectionModel().getSelectedIndex()));
             Vars.get().file_properties.put("tree_type", String.valueOf(ore_type.getSelectionModel().getSelectedIndex()));
             Vars.get().file_properties.put("mode", String.valueOf(mode.getSelectionModel().getSelectedIndex()));
-            Vars.get().file_properties.put("drop_gems", String.valueOf(drop_gems.isSelected()));
+            Vars.get().file_properties.put("pick_up_nests", String.valueOf(drop_gems.isSelected()));
             Vars.get().file_properties.put("world_hop", String.valueOf(world_hop.isSelected()));
             Vars.get().file_properties.put("world_type", String.valueOf(world_type.getSelectionModel().getSelectedIndex()));
             Vars.get().file_properties.put("hop_if_players_greater_than", String.valueOf(hop_if_players_greater_than.getValue()));
@@ -367,7 +367,7 @@ public class GUIController extends AbstractGUIController {
             mining_location.getSelectionModel().select(Integer.parseInt(Vars.get().file_properties.getProperty("tree_location", "0")));
             ore_type.getSelectionModel().select(Integer.parseInt(Vars.get().file_properties.getProperty("tree_type", "0")));
             mode.getSelectionModel().select(Integer.parseInt(Vars.get().file_properties.getProperty("mode", "0")));
-            drop_gems.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("drop_gems")));
+            drop_gems.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("pick_up_nests")));
             world_hop.setSelected(Boolean.valueOf(Vars.get().file_properties.getProperty("world_hop")));
             world_type.getSelectionModel().select(Integer.parseInt(Vars.get().file_properties.getProperty("world_type", "0")));
             hop_if_players_greater_than.getValueFactory().setValue(Integer.parseInt(Vars.get().file_properties.getProperty("hop_if_players_greater_than")));

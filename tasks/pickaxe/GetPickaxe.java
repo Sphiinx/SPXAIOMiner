@@ -7,8 +7,8 @@ import scripts.spxaiominer.data.Vars;
 import scripts.task_framework.framework.Task;
 import scripts.tribotapi.game.banking.Banking07;
 import scripts.tribotapi.game.game.Game07;
-import scripts.tribotapi.game.mining.Mining07;
-import scripts.tribotapi.game.mining.enums.Pickaxe;
+import scripts.tribotapi.game.skills.mining.Mining07;
+import scripts.tribotapi.game.skills.mining.enums.Pickaxe;
 import scripts.tribotapi.game.timing.Timing07;
 /**
  * Created by Sphiinx on 8/16/2016.

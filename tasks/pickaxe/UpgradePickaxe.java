@@ -1,19 +1,13 @@
 package scripts.spxaiominer.tasks.pickaxe;
 
-import obf.In;
-import org.tribot.api.Clicking;
 import org.tribot.api.General;
 import org.tribot.api2007.Banking;
 import org.tribot.api2007.Equipment;
-import org.tribot.api2007.Inventory;
-import org.tribot.api2007.types.RSItem;
-import scripts.spxaiominer.data.Cons;
 import scripts.spxaiominer.data.Vars;
 import scripts.tribotapi.game.banking.Banking07;
 import scripts.tribotapi.game.game.Game07;
-import scripts.tribotapi.game.inventory.Inventory07;
-import scripts.tribotapi.game.mining.Mining07;
-import scripts.tribotapi.game.mining.enums.Pickaxe;
+import scripts.tribotapi.game.skills.mining.Mining07;
+import scripts.tribotapi.game.skills.mining.enums.Pickaxe;
 import scripts.tribotapi.game.timing.Timing07;
 
 /**
